@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".Activities.BaseActivity"
+    android:background="@color/white">
+
+    <LinearLayout style="@style/tab_outer">
+
+        <LinearLayout style="@style/tab_inner"
+            android:padding="0dp">
+
+            <TextView style="@style/title"
+                android:text="@string/settings"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/settings_title_outer"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp">
+
+                <LinearLayout style="@style/settings_title_inner">
+
+                    <TextView style="@style/title"
+                        android:text="@string/app_settins"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner">
+
+                    <TextView style="@style/test_settings"
+                        android:layout_weight="1"
+                        android:text="@string/can_measure" />
+
+                    <ImageView android:id="@+id/can_measure"
+                        android:visibility="gone"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/legend_round_bad" />
+
+                    <ImageView android:id="@+id/can_not_measure"
+                        android:visibility="gone"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/legend_round_adequate" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:onClick="recalibrate">
+
+                    <TextView style="@style/test_settings"
+                        android:text="@string/recalibrate_settings"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:onClick="autoUploadSetting">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/auto_upload_option"/>
+                    </LinearLayout>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/auto_upload_option"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginRight="25dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:onClick="autoSyncSetting">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/auto_sync_option"
+                            android:maxLines="5"/>
+                    </LinearLayout>
+
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/auto_sync_option"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginRight="25dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_title_outer"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp">
+
+                <LinearLayout style="@style/settings_title_inner">
+
+                    <TextView style="@style/title"
+                        android:text="@string/account_settings"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:onClick="relogin">
+
+                    <TextView style="@style/test_settings"
+                        android:text="@string/relogin"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:onClick="logout">
+
+                    <TextView style="@style/test_settings"
+                        android:text="@string/logout"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_title_outer"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp">
+
+                <LinearLayout style="@style/settings_title_inner">
+
+                    <TextView style="@style/title"
+                        android:text="@string/app_info"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_outer">
+
+                <LinearLayout style="@style/settings_inner"
+                    android:orientation="horizontal">
+
+                    <TextView style="@style/test_settings"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/version"/>
+
+                    <TextView style="@style/text"
+                        android:id="@+id/version"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/settings_title_outer"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp">
+
+                <LinearLayout style="@style/settings_title_inner"
+                    android:orientation="horizontal"
+                    android:onClick="debugSetting">
+
+                    <TextView style="@style/title"
+                        android:layout_weight="1"
+                        android:text="@string/debug"/>
+
+                    <Switch android:id="@+id/debug_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/debug_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:onClick="exportFullSetting">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView style="@style/test_settings"
+                                android:text="@string/export_full_option"/>
+                        </LinearLayout>
+
+                        <Switch
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/export_full_switch"
+                            android:layout_marginEnd="25dp"
+                            android:layout_marginRight="25dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="setBaseUrl">
+
+                        <TextView style="@style/test_settings"
+                            android:id="@+id/ip"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/ic_menu_edit"
+                            android:layout_marginEnd="25dp"
+                            android:layout_marginRight="25dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="resetBaseUrl">
+
+                        <TextView style="@style/test_settings"
+                            android:layout_weight="1"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text="@string/reset_ip" />
+
+                        <TextView android:text="@string/hard_coded_ip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="setBaseSocket">
+
+                        <TextView style="@style/test_settings"
+                            android:id="@+id/socket"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/ic_menu_edit"
+                            android:layout_marginEnd="25dp"
+                            android:layout_marginRight="25dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="resetBaseSocket">
+
+                        <TextView style="@style/test_settings"
+                            android:layout_weight="1"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text="@string/reset_socket" />
+
+                        <TextView android:text="@string/hard_coded_socket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="setAllNotSent">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/set_all_not_sent"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="exportLog">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/export_log"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="deleteLog">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/delete_log"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/settings_outer">
+
+                    <LinearLayout style="@style/settings_inner"
+                        android:onClick="crash">
+
+                        <TextView style="@style/test_settings"
+                            android:text="@string/crash"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

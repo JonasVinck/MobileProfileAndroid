@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".Activities.ProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/stats_container">
+
+            <LinearLayout style="@style/tab_inner"
+                android:id="@+id/stats">
+
+                <TextView style="@style/tab_text"
+                    android:text="@string/stats"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/routes_container">
+
+            <LinearLayout style="@style/tab_inner"
+                android:id="@+id/routes">
+
+                <TextView style="@style/tab_text"
+                    android:text="@string/routes"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/profile_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:actionBarNavMode="tabs"/>
+
+</LinearLayout>
+

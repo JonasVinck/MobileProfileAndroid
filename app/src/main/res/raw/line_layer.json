@@ -1,0 +1,23 @@
+{
+  "id":"rit",
+  "type":"line",
+  "source":{
+    "type":"geojson",
+    "data":{
+      "type":"Feature",
+      "properties":{},
+      "geometry":{
+        "type":"LineString",
+        "coordinates":[]
+      }
+    }
+  },
+  "layout":{
+    "line-join":"round",
+    "lin-cap":"round"
+  },
+  "paint":{
+    "line-color":"#ff0000",
+    "line-width":8
+  }
+}

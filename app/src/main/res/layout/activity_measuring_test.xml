@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:keepScreenOn="true">
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView style="@style/text"
+                    android:text="@string/distance"/>
+
+                <TextView style="@style/text"
+                    android:id="@+id/distance"/>
+            </TableRow>
+            <TextView style="@style/text"
+                android:text="@string/speed"/>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView style="@style/text"
+                    android:text="@string/average"/>
+                <TextView style="@style/text"
+                    android:id="@+id/averageSpeed"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView style="@style/text"
+                    android:text="@string/moment"/>
+                <TextView style="@style/text"
+                    android:id="@+id/momentSpeed"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TextView style="@style/text"
+                android:text="@string/location"/>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView style="@style/text"
+                    android:text="@string/latitude"/>
+                <TextView style="@style/text"
+                    android:id="@+id/latitude"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView style="@style/text"
+                    android:text="@string/longitude"/>
+                <TextView style="@style/text"
+                    android:id="@+id/longitude"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TextView style="@style/text"
+                android:text="@string/vibration"/>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView style="@style/text"
+                    android:text="@string/vibrationX"/>
+                <TextView style="@style/text"
+                    android:id="@+id/vbrX"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView style="@style/text"
+                    android:text="@string/vibrationY"/>
+                <TextView style="@style/text"
+                    android:id="@+id/vbrY"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp">
+                <TextView style="@style/text"
+                    android:text="@string/vibrationZ"/>
+                <TextView style="@style/text"
+                    android:id="@+id/vbrZ"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginStart="2dp"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/light"
+        android:background="@color/red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_weight="1">
+
+        <Button style="@style/button"
+            android:id="@+id/end"
+            android:text="@string/end"
+            android:layout_gravity="end"
+            android:layout_margin="50dp"/>
+    </LinearLayout>
+</LinearLayout>

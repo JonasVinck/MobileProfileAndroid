@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/colorPrimaryDark">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_gravity="top"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="7dp"
+            android:src="@drawable/logo_light"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/settings_title_outer">
+
+            <LinearLayout style="@style/settings_title_inner"
+                android:background="@color/colorPrimaryDark">
+
+                <TextView android:id="@+id/title"
+                    android:textColor="@color/white"
+                    style="@style/title"
+                    android:textSize="18sp"
+                    android:padding="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView style="@style/text"
+            android:layout_margin="10dp"
+            android:id="@+id/message"
+            android:textColor="@color/border_grey"
+            android:maxLines="100"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

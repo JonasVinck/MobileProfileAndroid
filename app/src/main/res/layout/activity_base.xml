@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".Activities.BaseActivity">
+
+    <com.commeto.kuleuven.commetov2.Views.LockableViewPager
+        android:id="@+id/base_pager"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:padding="0dp"
+                android:id="@+id/to_map"
+                android:onClick="toMap"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/map_icon"
+                    android:src="@drawable/ic_map"/>
+
+                <TextView style="@style/logo_text"
+                    android:id="@+id/map_text"
+                    android:text="@string/global_map"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:padding="0dp"
+                android:id="@+id/to_profile"
+                android:onClick="toProfile"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profile_icon"
+                    android:src="@drawable/ic_user"/>
+
+                <TextView style="@style/logo_text"
+                    android:id="@+id/user_text"
+                    android:text="@string/profile"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <LinearLayout style="@style/tab_inner"
+                android:id="@+id/to_start"
+                android:onClick="toStart"
+                android:padding="0dp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/start_icon"
+                    android:src="@drawable/logo_light"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:padding="0dp"
+                android:id="@+id/to_list"
+                android:onClick="toList"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_icon"
+                    android:src="@drawable/ic_list"/>
+
+                <TextView style="@style/logo_text"
+                    android:id="@+id/list_text"
+                    android:text="@string/route_list"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:id="@+id/to_settings"
+                android:onClick="toSettings"
+                android:padding="0dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/settings_icon"
+                    android:src="@drawable/ic_settings"/>
+
+                <TextView style="@style/logo_text"
+                    android:id="@+id/settings_text"
+                    android:text="@string/settings"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

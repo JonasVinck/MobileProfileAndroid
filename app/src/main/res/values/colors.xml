@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#24292E</color>
+    <color name="colorPrimaryDark">#24292E</color>
+    <color name="colorAccent">#37A3F7</color>
+    <color name="accent">#37A3F7</color>
+    <color name="logo">#24292e</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="border_grey">#dddddd</color>
+    <color name="logo_text">#a0a0a0</color>
+    <color name="darker_grey">#5a5a5a</color>
+
+    <color name="box_container">#101010</color>
+    <color name="ontouch">#34393E</color>
+    <color name="box_outer">#ff1616</color>
+
+    <color name="start">#008e07</color>
+    <color name="start_clicked">#00d600</color>
+
+    <color name="red">#ff0000</color>
+    <color name="green">#00ff00</color>
+    <color name="yellow">#ffff00</color>
+
+
+    <color name="excelent">#318CFC</color>
+    <color name="adequate">#45FD94</color>
+    <color name="medium">#F2DE02</color>
+    <color name="bad">#FD0808</color>
+    <color name="terrible">#000000</color>
+
+    <color name="busy_lower">#ffc7c7</color>
+    <color name="busy_middle">#f11313</color>
+    <color name="busy_upper">#000000</color>
+
+    <color name="light_lower">#574d00</color>
+    <color name="light_middle">#f9e12a</color>
+    <color name="light_upper">#ffffff</color>
+</resources>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        style="@style/list_box_container"
+        android:layout_width="match_parent"
+        android:layout_margin="0dp">
+
+        <LinearLayout style="@style/list_box_outer"
+            android:layout_width="match_parent"
+            android:id="@+id/outer">
+
+            <LinearLayout style="@style/list_box_inner"
+                android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView style="@style/text_bigger"
+                            android:id="@+id/route_name"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:scrollHorizontally="true"
+                            android:isScrollContainer="true"/>
+
+                        <TextView style="@style/text"
+                            android:textColor="@color/darker_grey"
+                            android:text="@string/route_name"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView style="@style/text_bigger"
+                            android:id="@+id/date"/>
+
+                        <TextView style="@style/text"
+                            android:textColor="@color/darker_grey"
+                            android:text="@string/date"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/speed_container"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content">
+
+                            <TextView style="@style/text_bigger"
+                                android:id="@+id/speed"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="end">
+
+                            <TextView style="@style/text"
+                                android:textColor="@color/darker_grey"
+                                android:text="@string/average_speed"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/distance_container"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content">
+
+                            <TextView style="@style/text_bigger"
+                                android:id="@+id/distance"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="end">
+
+                            <TextView style="@style/text"
+                                android:textColor="@color/darker_grey"
+                                android:text="@string/total_distance"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/duration_container"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:gravity="end">
+
+                            <TextView style="@style/text_bigger"
+                                android:id="@+id/duration"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content">
+
+                            <TextView style="@style/text"
+                                android:textColor="@color/darker_grey"
+                                android:text="@string/duration"/>
+                        </LinearLayout>
+                    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

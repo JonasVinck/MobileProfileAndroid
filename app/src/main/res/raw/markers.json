@@ -1,0 +1,47 @@
+{
+  "id":"markers",
+  "type":"symbol",
+  "source":{
+    "data":{
+      "type":"FeatureCollection",
+      "features":[
+        {
+          "type":"Feature",
+          "geometry":{
+            "type":"point",
+            "coordinates":[]
+          },
+          "properties":{
+            "title":"Begin",
+            "icon":"bicycle"
+          }
+        },
+        {
+
+          "type":"Feature",
+          "geometry":{
+            "type":"point",
+            "coordinates":[]
+          },
+          "properties":{
+            "title":"Einde",
+            "icon":"bicycle"
+          }
+        }
+      ]
+    }
+  },
+  "layout":{
+    "icon-image":"{icon}-15",
+    "text-field":"{title}",
+    "text-font":["Open Sans Semibold", "Arial Unicode MS Bold"],
+    "text-anchor":"top",
+    "text-offset":[0, 0.6],
+    "text-size":15
+  },
+  "paint":{
+    "text-color":"#ffffff",
+    "text-halo-width":1,
+    "text-halo-color":"#000000"
+  }
+}

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns="http://schemas.android.com/tools"
+    xmlns:mapview="http://schemas.android.com/apk/res-auto"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    context=".Activities.RideDisplayActivity">
+
+    <LinearLayout style="@style/tab_outer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout style="@style/tab_inner"
+            android:padding="0dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView  style="@style/tab_text"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_margin="0dp"
+                    android:id="@+id/route_name"
+                    android:textAlignment="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="11dp"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:isScrollContainer="true"/>
+
+                <EditText style="@style/tab_text"
+                    android:textSize="22sp"
+                    android:id="@+id/route_name_edit"
+                    android:maxLines="1"
+                    android:layout_margin="0dp"
+                    android:inputType="text"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/list_box_container"
+        android:padding="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout style="@style/list_box_outer"
+            android:layout_height="match_parent">
+
+            <LinearLayout style="@style/list_box_inner"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp">
+
+                <LinearLayout android:id="@+id/message_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView style="@style/title"
+                        android:id="@+id/message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout style="@style/tab_outer">
+
+                        <LinearLayout style="@style/tab_inner"
+                            android:id="@+id/show_anyway"
+                            android:onClick="showAnyway">
+
+                            <TextView style="@style/tab_text"
+                                android:textSize="18sp"
+                                android:id="@+id/message_button"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/map_container"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:src="@android:drawable/ic_menu_zoom"
+                        mapview:backgroundTint="@color/colorPrimaryDark"
+                        mapview:layout_constraintBottom_toBottomOf="parent"
+                        mapview:layout_constraintEnd_toEndOf="parent"
+                        mapview:fabSize="normal"
+                        android:onClick="fullscreenMap"/>
+
+                    <com.mapbox.mapboxsdk.maps.MapView
+                        android:id="@+id/map"
+                        mapbox:mapbox_styleUrl="@string/ride_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <fragment android:id="@+id/details"
+        class="com.commeto.kuleuven.commetov2.Fragments.DetailsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout style="@style/list_box_container"
+        android:padding="0dp">
+
+        <LinearLayout style="@style/list_box_outer"
+            android:padding="0dp">
+
+            <LinearLayout style="@style/list_box_inner"
+                android:padding="0dp"
+                android:orientation="horizontal">
+
+                <LinearLayout style="@style/tab_outer"
+                    android:layout_weight="1">
+
+                    <LinearLayout style="@style/tab_inner"
+                        android:id="@+id/edit"
+                        android:onClick="edit"
+                        android:layout_marginBottom="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@android:drawable/ic_menu_edit"
+                            android:contentDescription="@string/image"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/tab_outer"
+                    android:layout_weight="1">
+
+                    <LinearLayout style="@style/tab_inner"
+                        android:id="@+id/delete"
+                        android:onClick="delete"
+                        android:layout_marginBottom="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/ic_menu_delete" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout style="@style/tab_outer"
+                    android:layout_weight="1">
+
+                    <LinearLayout style="@style/tab_inner"
+                        android:id="@+id/export"
+                        android:onClick="export"
+                        android:layout_marginBottom="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/ic_popup_sync" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

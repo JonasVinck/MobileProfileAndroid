@@ -1,0 +1,246 @@
+<resources>
+    <string name="app_name">Mobile Profile</string>
+    <string name="font">sans-serif</string>
+
+    <string name="username">Gebruikersnaam</string>
+    <string name="password">Wachtwoord</string>
+    <string name="login">Login</string>
+    <string name="create_new">Geen account? Registreer!</string>
+    <string name="login_error">Username/wachtwoord verkeerd.</string>
+
+    <string name="list_password">Gelieve een wachtwoord in te geven.</string>
+    <string name="list_username">Gelieve een gebruikersnaam in te geven.</string>
+    <string name="wrong_password">Verkeerd wachtwoord.</string>
+    <string name="user_exists">Gebruikersnaam mogelijks al in gebruik.</string>
+    <string name="no_server">Server mogelijks tijdelijk niet beschikbaar.</string>
+    <string name="password_mismatch">Wachtwoorden komen niet overeen.</string>
+    <string name="error">Er ging iets mis.</string>
+    <string name="fill_all">Gelieve alles in te vullen.</string>
+    <string name="user_created">Gebruiker aangemaakt.</string>
+
+    <string name="start">Start</string>
+    <string name="profile">Profiel</string>
+    <string name="route_list">Lijst</string>
+    <string name="global_map">Kaart</string>
+    <string name="settings">Settings</string>
+
+    <string name="fill_in_info">Gelieve alles in te vullen.</string>
+    <string name="name">Voornaam</string>
+    <string name="last_name">Achternaam</string>
+    <string name="email">E-mail</string>
+    <string name="password_confirm">Bevestig wachtwoord</string>
+    <string name="confirm">Bevestig</string>
+    <string name="clear">Filter wissen</string>
+    <string name="create_error">Gebruiker bestaat al.</string>
+
+    <string name="logout">Logout</string>
+
+    <string name="sorter_title">Sorteer op: </string>
+    <string name="sorter_button">sorteren</string>
+    <string-array name="sorter_options">
+        <item>Datum</item>
+        <item>Duur</item>
+        <item>Afstand</item>
+        <item>Snelheid</item>
+        <item>Naam</item>
+    </string-array>
+    <string name="order">Volgorde:</string>
+    <string-array name="order_options">
+        <item>Oplopend</item>
+        <item>Aflopend</item>
+    </string-array>
+    <string name="map_options_title">Kies een kaart om te bekijken</string>
+    <string-array name="maps_options">
+        <item>Comfort</item>
+        <item>Fietsverkeer</item>
+        <item>Verlichting</item>
+    </string-array>
+    <string-array name="maps_options_descriptions">
+        <item>
+            Een kaart die de qualiteit van het fietsen weergeeft.
+        </item>
+        <item>
+            Een kaart die een idee geeft over de meest bereden wegen door fietsers.
+        </item>
+        <item>
+            Een kaart die weergeeft waar de wegen het best verlicht zijn.
+        </item>
+    </string-array>
+
+    <string name="filter_sort">Filteren</string>
+    <string name="filter">Filteren</string>
+    <string name="filter_by">Filteren op: </string>
+    <string name="ride_name">Ritnaam: </string>
+
+    <string name="option_title">kies soort rit:</string>
+    <string-array name="options">
+        <item>Offroad</item>
+        <item>Sport</item>
+        <item>Plezier</item>
+        <item>Meting</item>
+    </string-array>
+
+    <string name="stats">Statistieken</string>
+    <string name="total_distance">Afstand</string>
+    <string name="number_of_routes">Aantal routes: </string>
+    <string name="average_speed">Gemiddelde snelheid</string>
+    <string name="routes">Routes</string>
+
+    <string name="distance">Afstand </string>
+    <string name="location">locatie: </string>
+    <string name="latitude">latitude: </string>
+    <string name="longitude">longitude: </string>
+    <string name="speed">Snelheid </string>
+    <string name="average">gemiddelde: </string>
+    <string name="moment">moment: </string>
+    <string name="lightlevel">licht niveau:</string>
+    <string name="vibration">trilling: </string>
+    <string name="vibrationX">x: </string>
+    <string name="vibrationY">y: </string>
+    <string name="vibrationZ">z: </string>
+    <string name="end">Beëindigen</string>
+
+    <string name="save_route">Route opslaan</string>
+
+    <string-array name="export_spinner">
+        <item>post to server</item>
+        <item>post to server (override)</item>
+        <item>json (post)</item>
+        <item>json (full)</item>
+        <item>gpx</item>
+    </string-array>
+    <string name="export">Exporteren</string>
+
+    <string name="date">Datum</string>
+    <string name="time">Tijdstip</string>
+    <string name="title_activity_route_map">Map</string>
+    <string name="route_name">Routenaam</string>
+    <string name="title_activity_map_fragment">Map</string>
+    <string name="duration">Duur</string>
+    <string name="type">Rit type</string>
+
+    <string name="description">Beschrijving</string>
+    <string name="show">Tonen op kaart</string>
+    <string name="hide">Kaart verbergen</string>
+    <string name="enlarge">Kaart vergroten</string>
+    <string name="title_activity_ride_map_fragment">Map</string>
+
+    <string name="waiting_gps">Wachten op gps &#8230;</string>
+    <string name="gps_conected">Gps verbonden!</string>
+    <string name="kmh">km/h</string>
+    <string name="m">m</string>
+    <string name="km">km</string>
+
+    <string name="start_date">Begindatum</string>
+    <string name="end_date">Einddatum</string>
+
+    <string name="callibrationg">Callibreren</string>
+    <string name="recallibrate">Opnieuw</string>
+    <string name="calibration_message">
+        Om te kunnen bepalen of uw apparaat voldoende uitgerust is om metingen te kunnen doen,
+        dienen we eerst na te gaan of het een voldoende trillingsbereik heeft. Om dit te bepalen
+        drukt u op start en shud u vervolgens stevig met het apparaat.
+    </string>
+
+    <string name="calibration_notice">
+        Harder schudden zorgt niet noodzakelijk voor een ander resultaat. Sommige smartphones
+        hebben niet voldoende bereik.
+    </string>
+
+    <string name="bad_message">
+        U kan de applicatie gebruiken om te fietsen en voor uzelf statistieken bij te houden,
+        maar u komt niet in aanmerking om trillingen te meten. U ondervindt hier geen hinder door
+        in het gebruik van de app.
+    </string>
+    <string name="good_message">
+        U kan de applicatie gebruiken om te fietsen en voor uzelf statistieken bij te houden, u
+        komt ook in aanmaerking om trillingen te meten. Deze trillingen zullen worden opgeslagen
+        in een databank om ed kwaliteit van de wegen in België voor de fietsers te kunnen
+        beoordelen.
+    </string>
+
+    <string name="recalibrate_settings">Hercalibreren</string>
+    <string name="version">Versie:</string>
+    <string name="relogin">Opnieuw inloggen</string>
+    <string name="reset_ip">Ip address opnieuw instellen op</string>
+    <string name="reset_socket">Socket opnieuw instellen op</string>
+    <string name="reset_ip_dialog">Wijzig huidig ip adress van server</string>
+    <string name="hard_coded_ip">213.118.13.252</string>
+    <string name="hard_coded_socket">443</string>
+    <string name="export_full_option">Exporteer full na rit</string>
+    <string name="auto_upload_option">Automatisch uploaden na rit</string>
+    <string name="auto_sync_option">Ritten automatisch syncen met de databank</string>
+    <string name="export_log">Logbestand exporteren</string>
+    <string name="delete_log">Logbestand wissen</string>
+    <string name="app_settins">App</string>
+    <string name="account_settings">Account</string>
+    <string name="app_info">Info</string>
+    <string name="can_measure">Meten mogelijk met dit apparaat:</string>
+    <string name="debug">Debug</string>
+    <string name="set_all_not_sent">Alle ritten intern op "niet verzonden" zetten</string>
+    <string name="warning">WAARSCHUWING!</string>
+    <string name="crash">Deze knop crasht de app.</string>
+    <string name="set_all_not_sent_message">
+        Actie enkel ondernemen in combinatie met het wissen van alle ritten in de databank. Anders
+        ontstaat het gevaar dat ritten 2 maal bestaan op de server!
+    </string>
+
+    <string name="give_name">Geef de rit een naam</string>
+
+    <string name="center">centreren</string>
+    <string name="score">Score</string>
+
+    <string name="image">Edit</string>
+
+    <string name="edit">Bewerken</string>
+    <string name="save">opslaan</string>
+    <string name="close">sluiten</string>
+
+    <string name="try_anyway">toch proberen</string>
+    <string name="show_anyway">toch weergeven</string>
+    <string name="on_4g">
+        U gebruikt een mobiele internetconnectie. Het weergeven van de kaart kan extra kosten met
+        zich meebrengen.
+    </string>
+    <string name="no_connect">
+        U hebt geen internetverbinding. Mogelijks kan de kaart niet worden weergegeven.
+    </string>
+
+    <string name="back">terug</string>
+
+    <string name="total_ride">Aantal gereden ritten</string>
+    <string name="total_ride_km">Totaal afgelegde afstand</string>
+    <string name="average_speed_totak">Totaal gemiddelde snelheid</string>
+    <string name="total_average_km">Gemiddelde afstand per rit</string>
+    <string name="total_average_speed">Gemiddelde snelheid per rit</string>
+    <string name="total_average_duration">Gemiddelde duur per rit</string>
+    <string name="top_speed">snelste gemmiddelde</string>
+
+    <string name="fastest_ride">Snelste rit</string>
+    <string name="longest_ride">Langste rit</string>
+    <string name="furthest_ride">Verste rit</string>
+
+    <string name="back_confirm">Druk nogmaals op terug om af te sluiten.</string>
+
+    <string name="legend">Legende</string>
+    <string name="excelent">Uitstekend</string>
+    <string name="inadequate">Behoorlijk</string>
+    <string name="medium">Gebrekkig</string>
+    <string name="bad">Slecht</string>
+    <string name="terrible">Zeer slecht</string>
+    <string name="worst">Minst</string>
+    <string name="best">Meest</string>
+
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+
+    <array name="music">
+        <item>Standaard</item>
+        <item>Spotify</item>
+    </array>
+
+    <array name="packages_music">
+        <item>com.google.android.music</item>
+        <item>com.spotify.music</item>
+    </array>
+</resources>

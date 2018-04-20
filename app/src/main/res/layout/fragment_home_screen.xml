@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".Activities.BaseActivity">
+
+    <LinearLayout style="@style/tab_outer">
+
+        <LinearLayout style="@style/tab_inner"
+            android:padding="0dp">
+
+            <TextView style="@style/title"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/start"
+        android:onClick="start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView style="@style/logo"
+            android:scaleY="1.5"
+            android:scaleX="1.5"
+            android:src="@drawable/logo_svg"
+            android:id="@+id/start_button"/>
+
+        <TextView style="@style/title"
+            android:layout_marginTop="20dp"
+            android:textSize="50sp"
+            android:text="@string/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

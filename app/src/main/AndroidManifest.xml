@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.commeto.kuleuven.commetov2">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".Activities.CheckLoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.CreateUserActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activities.BaseActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MeasuringActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".Activities.MeasuringActivityTest" />
+        <activity
+            android:name=".Activities.RideDisplayActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.Callibration"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.RideFinishedActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.FullScreenActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.FilterSortActivity"
+            android:screenOrientation="portrait"/>
+
+        <service android:name=".Services.MeasuringService" />
+        <service android:name=".Services.SensorService" />
+        <service android:name=".HTTP.HTTPSendAllService" />
+        <service android:name=".Services.SyncService" />
+
+        <receiver android:name=".Activities.MeasuringActivityTest$MeasurementBroadcastReceiver" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+    </application>
+
+</manifest>

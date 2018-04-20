@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    tools:context=".Activities.FilterSortActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/list_box_container">
+
+                <LinearLayout style="@style/list_box_outer">
+
+                    <LinearLayout style="@style/list_box_inner"
+                        android:padding="20dp"
+                        android:orientation="vertical">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:gravity="center">
+
+                                <TextView style="@style/title"
+                                    android:layout_weight="1"
+                                    android:text="@string/sorter_title"
+                                    android:layout_gravity="end"/>
+
+                                <Spinner android:id="@+id/attribute"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="1dp">
+                                </Spinner>
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:gravity="center">
+
+                                <TextView style="@style/text"
+                                    android:text="@string/order"
+                                    android:padding="10dp"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="end"/>
+
+                                <Spinner android:id="@+id/by"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                </Spinner>
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/list_box_container">
+
+                <LinearLayout style="@style/list_box_outer">
+
+                    <LinearLayout style="@style/list_box_inner"
+                        android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView style="@style/title"
+                                android:text="@string/date"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"/>
+
+                            <Switch android:id="@+id/date_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/date_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:background="@color/accent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:paddingTop="10dp"
+                                android:layout_marginTop="2dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/darker_grey"
+                                    android:padding="2dp">
+
+                                    <TextView android:id="@+id/start_date"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:onClick="setStartDate"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="10dp"
+                                        android:background="@color/white"/>
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/date"
+                                    android:background="@android:drawable/arrow_down_float"
+                                    android:padding="5dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/darker_grey"
+                                    android:padding="2dp">
+
+                                    <TextView android:id="@+id/end_date"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:onClick="setEndDate"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="10dp"
+                                        android:background="@color/white"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/list_box_container">
+
+                <LinearLayout style="@style/list_box_outer">
+
+                    <LinearLayout style="@style/list_box_inner"
+                        android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView style="@style/title"
+                                android:text="@string/duration"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"/>
+
+                            <Switch android:id="@+id/duration_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/duration_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/accent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_marginTop="2dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="10dp"
+                                android:background="@color/white">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/darker_grey"
+                                    android:padding="2dp">
+
+                                    <TextView android:id="@+id/duration_lower"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:onClick="setDurationLower"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="10dp"
+                                        android:background="@color/white"/>
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:drawable/arrow_down_float"
+                                    android:contentDescription="@string/duration"
+                                    android:padding="5dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/darker_grey"
+                                    android:padding="2dp">
+
+                                    <TextView android:id="@+id/duration_upper"
+                                        android:layout_height="match_parent"
+                                        android:layout_width="match_parent"
+                                        android:onClick="setDurationUpper"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="10dp"
+                                        android:background="@color/white"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/list_box_container">
+
+                <LinearLayout style="@style/list_box_outer">
+
+                    <LinearLayout style="@style/list_box_inner"
+                        android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView style="@style/title"
+                                android:text="@string/distance"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"/>
+
+                            <Switch android:id="@+id/distance_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"/>
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/distance_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            android:background="@color/accent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginTop="2dp"
+                                android:paddingTop="10dp"
+                                android:background="@color/white">
+
+                                <EditText android:id="@+id/distance_lower"
+                                    style="@style/form_text"
+                                    android:layout_width="match_parent"
+                                    android:inputType="number"
+                                    android:textAlignment="center"/>
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/distance"
+                                    android:background="@android:drawable/arrow_down_float"
+                                    android:padding="5dp" />
+
+                                <EditText android:id="@+id/distance_upper"
+                                    style="@style/form_text"
+                                    android:layout_width="match_parent"
+                                    android:inputType="number"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout style="@style/list_box_container">
+
+                <LinearLayout style="@style/list_box_outer">
+
+                    <LinearLayout style="@style/list_box_inner"
+                        android:paddingLeft="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingRight="0dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:baselineAligned="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/title"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/speed" />
+
+                            <Switch
+                                android:id="@+id/speed_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center" />
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/speed_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            android:background="@color/accent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginTop="2dp"
+                                android:paddingTop="10dp"
+                                android:background="@color/white">
+
+                                <EditText android:id="@+id/speed_lower"
+                                    style="@style/form_text"
+                                    android:layout_width="match_parent"
+                                    android:inputType="number"
+                                    android:textAlignment="center"/>
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/speed"
+                                    android:background="@android:drawable/arrow_down_float"
+                                    android:padding="5dp" />
+
+                                <EditText android:id="@+id/speed_upper"
+                                    style="@style/form_text"
+                                    android:layout_width="match_parent"
+                                    android:inputType="number"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:onClick="clear"
+                android:id="@+id/clear">
+
+                <TextView style="@style/tab_text"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/tab_outer"
+            android:layout_weight="1">
+
+            <LinearLayout style="@style/tab_inner"
+                android:id="@+id/confirm"
+                android:onClick="confirm">
+
+                <TextView style="@style/tab_text"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirm"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

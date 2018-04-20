@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key">
+        pk.eyJ1Ijoiam9uYXN2aW5jayIsImEiOiJjamY5dG1scmExc3AzMzRudjVhMXQ0b21hIn0.1m88aSsFmBfBOfdJ3MpsSQ
+    </string>
+    <string name="jern_key">
+        pk.eyJ1IjoibW9iaWxlcHJvZmlsZSIsImEiOiJjamV5Y2tqM28xYWt3MzNwdXdscGNrc2Q5In0.I7MV0bM25zdi2gnMvYn70A
+    </string>
+    <string name="comfort_style">
+        mapbox://styles/mobileprofile/cjf1k97791vg92rn05mchzp4g
+    </string>
+    <string name="fietsverkeer_style">
+        mapbox://styles/mobileprofile/cjfvfopix15272rmzvhn01dkj
+    </string>
+    <string name="lightlevel_style">
+        mapbox://styles/mobileprofile/cjeycul7443tt2rqjtr76k73f
+    </string>
+    <string name="ride_style">
+        mapbox://styles/mobileprofile/cjeycuzzi11v82srswe7vid11
+    </string>
+</resources>

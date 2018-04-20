@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activities.RideDisplayActivity"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/list_box_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            style="@style/list_box_outer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                style="@style/list_box_inner"
+                android:layout_width="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            style="@style/logo_text"/>
+
+                        <TextView
+                            style="@style/text"
+                            android:text="@string/time"
+                            android:textColor="@color/darker_grey"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/total_distance"
+                            style="@style/text_bigger"/>
+
+                        <TextView
+                            style="@style/text"
+                            android:text="@string/total_distance"
+                            android:textColor="@color/darker_grey"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/average_speed"
+                            style="@style/text_bigger"/>
+
+                        <TextView
+                            style="@style/text"
+                            android:text="@string/average_speed"
+                            android:textColor="@color/darker_grey"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/duration"
+                            style="@style/text_bigger"/>
+
+                        <TextView
+                            style="@style/text"
+                            android:text="@string/duration"
+                            android:textColor="@color/darker_grey"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout style="@style/list_box_container"
+        android:padding="0dp">
+
+        <LinearLayout style="@style/list_box_outer">
+
+            <LinearLayout style="@style/list_box_inner"
+                android:padding="0dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout style="@style/tab_outer"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:baselineAligned="false">
+
+                    <LinearLayout style="@style/tab_inner"
+                        android:id="@+id/description"
+                        android:onClick="description">
+
+                        <TextView style="@style/tab_text"
+                            android:layout_margin="0dp"
+                            android:textSize="18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/description"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
