@@ -232,7 +232,7 @@ public class RouteListFragment extends Fragment {
 
                     if (filterList(localRoute)) {
                         View view = inflater.inflate(R.layout.route_list_item, null);
-                        ((TextView) view.findViewById(R.id.route_name)).setText(
+                        ((TextView) view.findViewById(R.id.ride_name)).setText(
                                 localRoute.getRidename()
                         );
                         ((TextView) view.findViewById(R.id.date)).setText(
@@ -247,6 +247,10 @@ public class RouteListFragment extends Fragment {
                                 startActivityForResult(intent, 0);
                             }
                         });
+
+                        view.findViewById(R.id.cloud).setVisibility(localRoute.isSent() ?
+                                View.VISIBLE : View.GONE
+                        );
 
                         for (String key : previous.keySet()) {
                             if (previous.getBoolean(key, false)) {
@@ -265,6 +269,8 @@ public class RouteListFragment extends Fragment {
             }
         } catch (NullPointerException e){
 
+        } catch (IllegalStateException e){
+            
         }
     }
 

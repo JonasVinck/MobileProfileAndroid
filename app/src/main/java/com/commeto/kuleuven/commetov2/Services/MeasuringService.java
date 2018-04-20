@@ -213,13 +213,12 @@ public class MeasuringService extends IntentService{
             resultIntent.putExtra("id", id);
             resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(resultIntent);
+            deleteFromCache(context, "info");
+            deleteFromCache(context, "backup");
         } catch (NoDistanceException e){
             makeToastLong(context, e.getMessage());
         }catch (Exception e){
             makeToastLong(context, e.getMessage());
-        } finally {
-            deleteFromCache(context, "info");
-            deleteFromCache(context, "backup");
         }
 
         locationManager.removeUpdates(locationListener);

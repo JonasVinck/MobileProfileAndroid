@@ -131,7 +131,7 @@ public class Static {
             done = true;
             id = new Random().nextInt(999999);
 
-            List<LocalRoute> result = localDatabase.localRouteDAO().exists(id);
+            List<LocalRoute> result = localDatabase.localRouteDAO().exists(id, context.getSharedPreferences("commeto", Context.MODE_PRIVATE).getString("username", ""));
             done = (result.size() == 0);
         }
 

@@ -27,8 +27,6 @@ import java.util.List;
 import static com.commeto.kuleuven.commetov2.HTTP.HTTPStatic.getRouteJson;
 import static com.commeto.kuleuven.commetov2.Support.NotifyStatic.postNotification;
 import static com.commeto.kuleuven.commetov2.Support.Static.getIDInteger;
-import static com.commeto.kuleuven.commetov2.Support.Static.makeToastLong;
-import static com.commeto.kuleuven.commetov2.Support.Static.makeToastShort;
 
 /**
  * Created by Jonas on 15/04/2018.
@@ -93,7 +91,11 @@ public class SyncService extends IntentService{
         preferences.edit().putLong("last_changed", System.currentTimeMillis()).apply();
         dao = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO();
 
-        postNotification(getApplicationContext(), "Sync starten...", "");
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
 
         new GetTask(
                 fullIp,
@@ -105,10 +107,7 @@ public class SyncService extends IntentService{
                 preferences.getString("username", ""),
                 preferences.getString("token", "")
         );
-    }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
         return START_NOT_STICKY;
     }
     @Override
@@ -148,7 +147,7 @@ public class SyncService extends IntentService{
     }
 
     private void push(){
-        List<LocalRoute> localRoutesNotSent = dao.getAllNotSent();
+        List<LocalRoute> localRoutesNotSent = dao.getAllNotSent(username);
         toUpload = localRoutesNotSent.size();
         for(LocalRoute localRoute: localRoutesNotSent){
 
@@ -169,7 +168,7 @@ public class SyncService extends IntentService{
             }
         }
 
-        List<LocalRoute> localRoutesUpdated = dao.getAllUpdated();
+        List<LocalRoute> localRoutesUpdated = dao.getAllUpdated(username);
         toUpdate = localRoutesUpdated.size();
         for(LocalRoute localRoute: localRoutesUpdated){
 
@@ -204,18 +203,21 @@ public class SyncService extends IntentService{
         if(toUpload <= 0 && toPull <= 0 && toUpdate <= 0){
             syncInterface.endSync();
             preferences.edit().putLong("last_changed", currentCahnge).apply();
-            postNotification(
-                    getApplicationContext(),
-                    "Sync compleet",
-                    Integer.toString(pulled) + " ritten succesvol opgehaald.\n" +
-                            Integer.toString(uploaded) + " ritten succesvol geupload.\n" +
-                            Integer.toString(updated) + " ritten succesvol geupdate."
-            );
+            if(updated != 0 || uploaded != 0 || pulled != 0) {
+                postNotification(
+                        getApplicationContext(),
+                        getString(R.string.sync_complete),
+                        (pulled == 0 ? "" : Integer.toString(pulled) + " ritten succesvol opgehaald.\n") +
+                                (uploaded == 0 ? "" : Integer.toString(uploaded) + " ritten succesvol geupload.\n") +
+                                (updated == 0 ? "" : Integer.toString(updated) + " ritten succesvol geupdate.")
+                );
+            }
         }
     }
 
     private void interrupt(){
-        postNotification(getApplicationContext(), "Fout", "Er ging iets mis met het ophalen.");
+
+        postNotification(getApplicationContext(), getString(R.string.error), getString(R.string.sync_eror));
 
         syncInterface.endSync();
     }
@@ -232,7 +234,6 @@ public class SyncService extends IntentService{
                 try {
                     getAll(new JSONArray(response.getResponsBody()));
                 } catch (JSONException e){
-                    makeToastLong(getApplicationContext(), getString(R.string.error));
                     interrupt();
                 }
             } else {
@@ -252,7 +253,7 @@ public class SyncService extends IntentService{
                     if(responseObject.getString("code").equals("ok")){
 
                         LocalRoute localRoute = null;
-                        List<LocalRoute> localRoutes = dao.existsServerId(response.getId());
+                        List<LocalRoute> localRoutes = dao.existsServerId(response.getId(), username);
                         if (localRoutes.size() > 0) localRoute = localRoutes.get(0);
 
                         if(responseObject.getBoolean("deleted")){
@@ -346,13 +347,12 @@ public class SyncService extends IntentService{
                 int localId = Integer.parseInt(responseArray[0]);
                 if(localId != -1){
 
-                    LocalRoute localRoute = dao.exists(localId).get(0);
+                    LocalRoute localRoute = dao.exists(localId, username).get(0);
 
                     if(localRoute != null){
 
                         localRoute.setSent(true);
                         localRoute.setId(Integer.parseInt(responseArray[1]));
-                        localRoute.setLastUpdated(System.currentTimeMillis());
                         localRoute.setUpdated(false);
                         dao.update(localRoute);
                     }
@@ -376,12 +376,11 @@ public class SyncService extends IntentService{
                     JSONObject object = new JSONObject(responseArray[1]);
                     if (localId != -1 && object.getString("code").equals("ok")) {
 
-                        LocalRoute localRoute = dao.exists(localId).get(0);
+                        LocalRoute localRoute = dao.exists(localId, username).get(0);
 
                         if (localRoute != null) {
 
                             localRoute.setSent(true);
-                            localRoute.setLastUpdated(lastChanged);
                             localRoute.setUpdated(false);
                             dao.update(localRoute);
                         }

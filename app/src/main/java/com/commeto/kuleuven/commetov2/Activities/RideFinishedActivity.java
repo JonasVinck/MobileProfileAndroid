@@ -52,7 +52,8 @@ public class RideFinishedActivity extends AppCompatActivity implements AsyncResp
         context = getApplicationContext();
 
         localRoute = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO().exists(
-                getIntent().getIntExtra("id", 0)
+                getIntent().getIntExtra("id", 0),
+                getSharedPreferences("commeto", MODE_PRIVATE).getString("username", "")
         ).get(0);
 
         ((EditText) findViewById(R.id.ride_name)).setText(localRoute.getRidename());

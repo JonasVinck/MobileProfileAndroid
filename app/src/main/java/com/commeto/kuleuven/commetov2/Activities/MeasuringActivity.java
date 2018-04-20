@@ -209,6 +209,8 @@ public class MeasuringActivity extends AppCompatActivity{
         adapter = new MeasuringPagerAdapter(getSupportFragmentManager(), fragments);
         (pager = findViewById(R.id.pager)).setAdapter(adapter);
         pager.setOffscreenPageLimit(4);
+
+        if(backupExists(context)) backupAlert();
     }
 
     @Override
@@ -282,10 +284,7 @@ public class MeasuringActivity extends AppCompatActivity{
                     Manifest.permission.ACCESS_FINE_LOCATION
             };
             requestPermissions(permissions, 123);
-        } else{
-            if(backupExists(context)) backupAlert();
-            else startMeasuring(null, null);
-        }
+        } else startMeasuring(null, null);
     }
 
     @Override

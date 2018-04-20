@@ -113,8 +113,12 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
             );
         }
         catch (Exception e){
-            int i = 0;
-            i++;
+            result = new HTTPResponse(
+                    -2,
+                    "no connection",
+                    "offline",
+                    -1
+            );
         }
 
         return succes;

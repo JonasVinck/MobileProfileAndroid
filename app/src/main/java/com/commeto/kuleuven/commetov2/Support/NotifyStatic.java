@@ -25,14 +25,12 @@ public class NotifyStatic {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "commeto")
                 .setSmallIcon(R.drawable.logo_svg_clicked)
-                .setCustomContentView(bigView)
+                .setCustomContentView(smallView)
                 .setCustomBigContentView(bigView)
                 .setStyle(new NotificationCompat.BigTextStyle());
 
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
         notificationManager.notify(1, notification);
     }
 }

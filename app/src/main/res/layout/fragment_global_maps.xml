@@ -38,7 +38,6 @@
 
                 <TextView style="@style/title"
                     android:textColor="@color/white"
-                    android:textSize="22sp"
                     android:id="@+id/map_option"
                     android:layout_weight="1"
                     android:textAlignment="center"/>

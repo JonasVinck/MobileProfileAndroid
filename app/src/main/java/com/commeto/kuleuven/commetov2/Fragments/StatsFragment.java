@@ -119,27 +119,11 @@ public class StatsFragment extends Fragment{
 //==================================================================================================
     //private functions
 
-    private View generateView(final LocalRoute localRoute, String option){
+    private View generateView(final LocalRoute localRoute, String option, int id){
 
         LayoutInflater inflater = getLayoutInflater();
-        DateFormat format = SimpleDateFormat.getDateTimeInstance();
         View view = inflater.inflate(R.layout.route_list_item, null);
-        ((TextView) view.findViewById(R.id.route_name)).setText(
-                localRoute.getRidename()
-        );
-        ((TextView) view.findViewById(R.id.date)).setText(
-                format.format(new Date(localRoute.getTime()))
-        );
-
-        view.findViewById(R.id.outer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), RideDisplayActivity.class);
-                intent.putExtra("id", localRoute.getLocalId());
-                startActivityForResult(intent, 0);
-            }
-        });
-        view.findViewById(R.id.outer).setBackgroundColor(getResources().getColor(R.color.white));
+        view.setId(id);
 
         options.get(option).invoke(view, localRoute);
 
@@ -219,15 +203,54 @@ public class StatsFragment extends Fragment{
                 (float) totalAverageKm / forAverage / 1000
         ));
 
-        ((LinearLayout) activity.findViewById(R.id.fastest_ride)).addView(
-                generateView(fastest, "snelheid")
+        if(activity.findViewById(R.id.fastest_view) != null) {
+            updateView(R.id.fastest_view, fastest);
+        } else {
+            ((LinearLayout) activity.findViewById(R.id.fastest_ride)).addView(
+                    generateView(fastest, "snelheid", R.id.fastest_view)
+            );
+            updateView(R.id.fastest_view, fastest);
+        }
+
+        if(activity.findViewById(R.id.furthest_view) != null) {
+            updateView(R.id.furthest_view, fastest);
+        } else {
+            ((LinearLayout) activity.findViewById(R.id.furthest_ride)).addView(
+                    generateView(furthest, "afstand", R.id.furthest_view)
+            );
+            updateView(R.id.furthest_view, fastest);
+        }
+
+        if(activity.findViewById(R.id.longest_view) != null) {
+            updateView(R.id.longest_view, fastest);
+        } else {
+            ((LinearLayout) activity.findViewById(R.id.longest_ride)).addView(
+                    generateView(longest, "duur",R.id.longest_view)
+            );
+            updateView(R.id.longest_view, fastest);
+        }
+    }
+
+    private void updateView(int id, final LocalRoute localRoute){
+
+        View view = activity.findViewById(id);
+        DateFormat format = SimpleDateFormat.getDateTimeInstance();
+        ((TextView) view.findViewById(R.id.ride_name)).setText(
+                localRoute.getRidename()
         );
-        ((LinearLayout) activity.findViewById(R.id.furthest_ride)).addView(
-                generateView(furthest, "afstand")
+        ((TextView) view.findViewById(R.id.date)).setText(
+                format.format(new Date(localRoute.getTime()))
         );
-        ((LinearLayout) activity.findViewById(R.id.longest_ride)).addView(
-                generateView(longest, "duur")
-        );
+
+        view.findViewById(R.id.outer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RideDisplayActivity.class);
+                intent.putExtra("id", localRoute.getLocalId());
+                startActivityForResult(intent, 0);
+            }
+        });
+        view.findViewById(R.id.outer).setBackgroundColor(getResources().getColor(R.color.white));
     }
 //==================================================================================================
     //public functions

@@ -99,7 +99,9 @@ public class HTTPSendAllService extends IntentService implements AsyncResponseIn
         this.url = "https://" + getSharedPreferences("commeto", MODE_PRIVATE)  + ":8181/MP/service/test";
         try {
             LocalDatabase localDatabase = LocalDatabase.getInstance(getApplicationContext());
-            List<LocalRoute> localRoutes = localDatabase.localRouteDAO().getAllNotSent();
+            List<LocalRoute> localRoutes = localDatabase.localRouteDAO().getAllNotSent(
+                    getSharedPreferences("commeto", MODE_PRIVATE).getString("username", "")
+            );
             amount = localRoutes.size();
             current = 0;
             error = 0;

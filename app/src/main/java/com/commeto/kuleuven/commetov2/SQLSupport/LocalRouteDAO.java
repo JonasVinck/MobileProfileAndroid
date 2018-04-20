@@ -51,17 +51,17 @@ public interface LocalRouteDAO {
     @Query("select * from localroute where username = :username order by distance desc")
     List<LocalRoute> getAllByDistanceDescending(String username);
 
-    @Query("select * from localroute where localId = :id")
-    List<LocalRoute> exists(int id);
+    @Query("select * from localroute where localId = :id and username = :username")
+    List<LocalRoute> exists(int id, String username);
 
-    @Query("select * from localroute where id = :id")
-    List<LocalRoute> existsServerId(int id);
+    @Query("select * from localroute where id = :id and username = :username")
+    List<LocalRoute> existsServerId(int id, String username);
 
-    @Query("select * from localroute where sent = 0")
-    List<LocalRoute> getAllNotSent();
+    @Query("select * from localroute where sent = 0 and username = :username")
+    List<LocalRoute> getAllNotSent(String username);
 
-    @Query("select * from localroute where updated = 1")
-    List<LocalRoute> getAllUpdated();
+    @Query("select * from localroute where updated = 1 and username = :username")
+    List<LocalRoute> getAllUpdated(String username);
 
     @Query("update LocalRoute set sent = :sent where id = :id")
     void updateSent(int id, boolean sent);

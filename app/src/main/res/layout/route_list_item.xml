@@ -1,148 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    style="@style/list_box_container"
+    android:layout_margin="0dp">
 
-    <LinearLayout
-        style="@style/list_box_container"
+    <LinearLayout style="@style/list_box_outer"
         android:layout_width="match_parent"
-        android:layout_margin="0dp">
+        android:id="@+id/outer">
 
-        <LinearLayout style="@style/list_box_outer"
+        <android.support.constraint.ConstraintLayout
+            style="@style/list_box_inner"
             android:layout_width="match_parent"
-            android:id="@+id/outer">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-            <LinearLayout style="@style/list_box_inner"
+                <LinearLayout android:id="@+id/ride_name_container"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/date_container"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView style="@style/text_bigger"
+                        android:id="@+id/ride_name"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:scrollHorizontally="true"
+                        android:isScrollContainer="true"/>
+
+                    <TextView style="@style/text"
+                        android:textColor="@color/darker_grey"
+                        android:text="@string/route_name"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/date_container"
+                    app:layout_constraintTop_toBottomOf="@id/ride_name_container"
+                    app:layout_constraintBottom_toTopOf="@id/options_ride_list"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView style="@style/text_bigger"
+                        android:id="@+id/date"/>
+
+                    <TextView style="@style/text"
+                        android:textColor="@color/darker_grey"
+                        android:text="@string/date"/>
+                </LinearLayout>
+
+            <LinearLayout android:id="@+id/options_ride_list"
+                app:layout_constraintTop_toBottomOf="@id/date_container"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_width="match_parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/speed_container"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:baselineAligned="false">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
 
                         <TextView style="@style/text_bigger"
-                            android:id="@+id/route_name"
-                            android:singleLine="true"
-                            android:ellipsize="marquee"
-                            android:marqueeRepeatLimit="marquee_forever"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:scrollHorizontally="true"
-                            android:isScrollContainer="true"/>
+                            android:id="@+id/speed"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
 
                         <TextView style="@style/text"
                             android:textColor="@color/darker_grey"
-                            android:text="@string/route_name"/>
+                            android:text="@string/average_speed"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/distance_container"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <TextView style="@style/text_bigger"
+                            android:id="@+id/distance"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView style="@style/text_bigger"
-                            android:id="@+id/date"/>
+                        android:gravity="end">
 
                         <TextView style="@style/text"
                             android:textColor="@color/darker_grey"
-                            android:text="@string/date"/>
+                            android:text="@string/total_distance"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/duration_container"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <TextView style="@style/text_bigger"
+                            android:id="@+id/duration"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/speed_container"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:baselineAligned="false">
+                        android:gravity="end">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content">
-
-                            <TextView style="@style/text_bigger"
-                                android:id="@+id/speed"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:gravity="end">
-
-                            <TextView style="@style/text"
-                                android:textColor="@color/darker_grey"
-                                android:text="@string/average_speed"/>
-                        </LinearLayout>
+                        <TextView style="@style/text"
+                            android:textColor="@color/darker_grey"
+                            android:text="@string/duration"/>
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/distance_container"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:baselineAligned="false">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content">
-
-                            <TextView style="@style/text_bigger"
-                                android:id="@+id/distance"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:gravity="end">
-
-                            <TextView style="@style/text"
-                                android:textColor="@color/darker_grey"
-                                android:text="@string/total_distance"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/duration_container"
-                        android:gravity="center"
-                        android:visibility="gone"
-                        android:baselineAligned="false">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:gravity="end">
-
-                            <TextView style="@style/text_bigger"
-                                android:id="@+id/duration"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content">
-
-                            <TextView style="@style/text"
-                                android:textColor="@color/darker_grey"
-                                android:text="@string/duration"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+            <ImageView android:id="@+id/cloud"
+                app:layout_constraintBottom_toTopOf="@id/options_ride_list"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:src="@drawable/cloud"
+                android:alpha="0.5"/>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

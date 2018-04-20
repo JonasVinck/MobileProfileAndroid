@@ -18,6 +18,8 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
+import java.util.List;
+
 /**
  * Created by Jonas on 1/03/2018.
  */
@@ -42,7 +44,12 @@ public class FullScreenActivity extends AppCompatActivity implements OnMapReadyC
         context = getApplicationContext();
 
         int id = getIntent().getIntExtra("id", 0);
-        localRoute = LocalDatabase.getInstance(context).localRouteDAO().exists(id).get(0);
+        List<LocalRoute> localRoutes = LocalDatabase.getInstance(context).localRouteDAO().exists(
+                id,
+                getSharedPreferences("commeto", MODE_PRIVATE).getString("username", "")
+        );
+        if(localRoutes.size() > 0) localRoute = localRoutes.get(0);
+        else finish();
         Mapbox.getInstance(context, getResources().getString(R.string.jern_key));
         mapView = findViewById(R.id.map);
         mapView.onCreate(bundle);

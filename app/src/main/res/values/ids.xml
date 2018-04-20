@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fastest_view" type="id"/>
+    <item name="furthest_view" type="id"/>
+    <item name="longest_view" type="id"/>
+</resources>

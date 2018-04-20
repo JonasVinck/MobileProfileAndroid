@@ -54,7 +54,7 @@
                         android:layout_height="20dp"
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="25dp"
-                        android:background="@drawable/legend_round_bad" />
+                        android:background="@drawable/legend_round_adequate" />
 
                     <ImageView android:id="@+id/can_not_measure"
                         android:visibility="gone"
@@ -62,7 +62,7 @@
                         android:layout_height="20dp"
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="25dp"
-                        android:background="@drawable/legend_round_adequate" />
+                        android:background="@drawable/legend_round_bad" />
                 </LinearLayout>
             </LinearLayout>
 

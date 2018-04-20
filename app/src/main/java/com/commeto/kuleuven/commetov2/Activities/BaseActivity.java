@@ -37,6 +37,8 @@ import com.commeto.kuleuven.commetov2.Views.LockableViewPager;
 import java.util.List;
 
 import static com.commeto.kuleuven.commetov2.HTTP.HTTPStatic.convertInputStreamToString;
+import static com.commeto.kuleuven.commetov2.Support.NotifyStatic.postNotification;
+import static com.commeto.kuleuven.commetov2.Support.Static.isNetworkAvailable;
 import static com.commeto.kuleuven.commetov2.Support.Static.makeToastLong;
 import static com.commeto.kuleuven.commetov2.Support.Static.scaleMenuIcon;
 import static com.commeto.kuleuven.commetov2.Support.Static.tryLogin;
@@ -57,6 +59,8 @@ public class BaseActivity extends AppCompatActivity{
                 } catch (NullPointerException e){
                     InternalIO.writeToLog(context, e);
                 }
+            } else if(response != null && response.getResponseCode() == -2){
+                postNotification(context, getString(R.string.offline_mode), getString(R.string.no_internet));
             }
         }
     };
@@ -65,10 +69,13 @@ public class BaseActivity extends AppCompatActivity{
         @Override
         public void endSync() {
             routeListInterface.resetList(null);
-            unbindService(syncServiceConnection);
-            syncServiceConnection = new SyncServiceConnection();
-            syncServiceConnection.setSyncInterface(syncInterface);
-
+            stopService(syncIntent);
+            findViewById(R.id.sync_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sync(view);
+                }
+            });
             basePagerAdapter.updateStatsLayout();
         }
     };
@@ -109,6 +116,7 @@ public class BaseActivity extends AppCompatActivity{
         lastClicked = null;
         syncServiceConnection.setSyncInterface(syncInterface);
         syncIntent = new Intent(this, SyncService.class);
+        BaseActivity.this.bindService(syncIntent, syncServiceConnection, BIND_AUTO_CREATE);
 
         resetDrawable = null;
         currentIcon = null;
@@ -190,7 +198,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
-        unbindService(syncServiceConnection);
+        BaseActivity.this.unbindService(syncServiceConnection);
         if(dialog != null) dialog.dismiss();
     }
 //==================================================================================================
@@ -473,8 +481,21 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     public void sync(View view){
-        routeListInterface.resetList(null);
-        bindService(syncIntent, syncServiceConnection, BIND_AUTO_CREATE);
+        if(isNetworkAvailable(context)) {
+            startService(syncIntent);
+        }
+        if(view != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    disableSync(view);
+                }
+            });
+        }
+    }
+
+    public void disableSync(View view){
+        makeToastLong(context, getString(R.string.already_syncing));
     }
 
     public void crash(View view){

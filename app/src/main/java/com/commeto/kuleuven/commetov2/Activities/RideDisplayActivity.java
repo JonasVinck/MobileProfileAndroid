@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,10 +42,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -131,6 +130,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
                 localRoute.setUpdated(true);
                 localRoute.setLastUpdated(System.currentTimeMillis());
                 LocalDatabase.getInstance(context).localRouteDAO().update(localRoute);
+                ((TextView) findViewById(R.id.ride_name)).setText(localRoute.getRidename());
             }
         }
     };
@@ -184,12 +184,15 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 
         generated = false;
 
-        localRoute = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO().exists(
-                getIntent().getIntExtra("id", 0)
-        ).get(0);
+        List<LocalRoute> localRoutes = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO().exists(
+                getIntent().getIntExtra("id", 0),
+                getSharedPreferences("commeto", MODE_PRIVATE).getString("username", "")
+        );
+        if(localRoutes.size() > 0) localRoute = localRoutes.get(0);
+        else finish();
 
         route_name_edit = findViewById(R.id.route_name_edit);
-        route_name = findViewById(R.id.route_name);
+        route_name = findViewById(R.id.ride_name);
 
         route_name.setText(localRoute.getRidename());
         ((EditText) findViewById(R.id.route_name_edit)).setText(localRoute.getRidename());

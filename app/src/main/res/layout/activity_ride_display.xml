@@ -27,7 +27,7 @@
                     android:textSize="22sp"
                     android:layout_width="wrap_content"
                     android:layout_margin="0dp"
-                    android:id="@+id/route_name"
+                    android:id="@+id/ride_name"
                     android:textAlignment="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="11dp"

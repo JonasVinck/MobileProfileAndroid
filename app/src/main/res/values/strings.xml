@@ -6,17 +6,6 @@
     <string name="password">Wachtwoord</string>
     <string name="login">Login</string>
     <string name="create_new">Geen account? Registreer!</string>
-    <string name="login_error">Username/wachtwoord verkeerd.</string>
-
-    <string name="list_password">Gelieve een wachtwoord in te geven.</string>
-    <string name="list_username">Gelieve een gebruikersnaam in te geven.</string>
-    <string name="wrong_password">Verkeerd wachtwoord.</string>
-    <string name="user_exists">Gebruikersnaam mogelijks al in gebruik.</string>
-    <string name="no_server">Server mogelijks tijdelijk niet beschikbaar.</string>
-    <string name="password_mismatch">Wachtwoorden komen niet overeen.</string>
-    <string name="error">Er ging iets mis.</string>
-    <string name="fill_all">Gelieve alles in te vullen.</string>
-    <string name="user_created">Gebruiker aangemaakt.</string>
 
     <string name="start">Start</string>
     <string name="profile">Profiel</string>
