@@ -53,4 +53,5 @@ dependencies {
     implementation files('libs/GraphView-4.2.1.jar')
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places:0.2.2'
+    compile 'com.jjoe64:graphview:4.2.1'
 }
