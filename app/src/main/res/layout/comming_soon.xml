@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.RideDisplayActivity">
+    tools:context=".activities.RideDisplayActivity">
 
     <LinearLayout style="@style/box_container"
         android:layout_margin="0dp">

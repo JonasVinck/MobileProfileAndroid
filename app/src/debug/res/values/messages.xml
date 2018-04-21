@@ -13,7 +13,8 @@
     <string name="user_created">Gebruiker aangemaakt.</string>
 
     <string name="offline_mode">Offline mode</string>
-    <string name="no_internet">Geen internet beschikbaar, bepaalde functionaliteiten werken waarschijnlijk nier.</string>
+    <string name="no_internet">Geen verbinding</string>
+    <string name="no_internet_message">Geen internet beschikbaar, bepaalde functionaliteiten werken waarschijnlijk nier.</string>
     <string name="no_server">Server mogelijks tijdelijk niet beschikbaar.</string>
     <string name="sync_eror">Er ging iets mis met het ophalen van de ritten van de server. Probeer later opnieuw.</string>
     <string name="already_syncing">Ritten worden al opgehaald.</string>

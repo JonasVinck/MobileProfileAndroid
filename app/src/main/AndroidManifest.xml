@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustPan">
         <activity
-            android:name=".Activities.CheckLoginActivity"
+            android:name=".activities.CheckLoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,36 +26,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.CreateUserActivity"
+            android:name=".activities.CreateUserActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activities.BaseActivity"
+            android:name=".activities.BaseActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.MeasuringActivity"
+        <activity android:name=".activities.MeasuringActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".Activities.MeasuringActivityTest" />
+        <activity android:name=".activities.MeasuringActivityTest" />
         <activity
-            android:name=".Activities.RideDisplayActivity"
+            android:name=".activities.RideDisplayActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.Callibration"
+        <activity android:name=".activities.Callibration"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.RideFinishedActivity"
+        <activity android:name=".activities.RideFinishedActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.FullScreenActivity"
+        <activity android:name=".activities.FullScreenActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.FilterSortActivity"
+        <activity android:name=".activities.FilterSortActivity"
             android:screenOrientation="portrait"/>
 
-        <service android:name=".Services.MeasuringService" />
-        <service android:name=".Services.SensorService" />
-        <service android:name=".HTTP.HTTPSendAllService" />
-        <service android:name=".Services.SyncService" />
+        <service android:name=".services.MeasuringService" />
+        <service android:name=".services.SensorService" />
+        <service android:name=".http.HTTPSendAllService" />
+        <service android:name=".services.SyncService" />
 
-        <receiver android:name=".Activities.MeasuringActivityTest$MeasurementBroadcastReceiver" />
+        <receiver android:name=".activities.MeasuringActivityTest$MeasurementBroadcastReceiver" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

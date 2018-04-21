@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.commeto.kuleuven.commetov2.Activities.CheckLoginActivity"
+    tools:context="com.commeto.kuleuven.commetov2.activities.CheckLoginActivity"
     android:orientation="vertical">
 
     <LinearLayout

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="preferences">commeto</string>
+    <string name="preferences_calibration">calibration</string>
+    <string name="last_changed">last_changed</string>
+
+    <string name="hard_coded_ip">213.118.13.252</string>
+    <string name="hard_coded_socket">443</string>
+</resources>

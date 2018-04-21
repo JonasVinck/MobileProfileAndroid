@@ -154,8 +154,6 @@
     <string name="reset_ip">Ip address opnieuw instellen op</string>
     <string name="reset_socket">Socket opnieuw instellen op</string>
     <string name="reset_ip_dialog">Wijzig huidig ip adress van server</string>
-    <string name="hard_coded_ip">213.118.13.252</string>
-    <string name="hard_coded_socket">443</string>
     <string name="export_full_option">Exporteer full na rit</string>
     <string name="auto_upload_option">Automatisch uploaden na rit</string>
     <string name="auto_sync_option">Ritten automatisch syncen met de databank</string>
@@ -232,4 +230,8 @@
         <item>com.google.android.music</item>
         <item>com.spotify.music</item>
     </array>
+
+    <string name="end_update">Einde update</string>
+    <string name="end_upload">Einde upload</string>
+    <string name="already_uploaded">Einde upload</string>
 </resources>

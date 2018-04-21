@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/black"
-    tools:context=".Activities.MeasuringActivity">
+    tools:context=".activities.MeasuringActivity">
 
     <LinearLayout
         android:id="@+id/top"
@@ -175,7 +175,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <fragment android:name="com.commeto.kuleuven.commetov2.Fragments.MusicControlFragment"
+            <fragment android:name="com.commeto.kuleuven.commetov2.fragments.MusicControlFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/extra">

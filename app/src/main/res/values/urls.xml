@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pull">
+        /MP/service/secured/ride/pull/
+    </string>
+    <string name="push">
+        /MP/service/secured/ride/push/
+    </string>
+    <string name="upload">
+        /MP/service/secured/measurement
+    </string>
+</resources>

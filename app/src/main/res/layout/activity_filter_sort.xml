@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:orientation="vertical"
-    tools:context=".Activities.FilterSortActivity">
+    tools:context=".activities.FilterSortActivity">
 
     <ScrollView
         android:layout_width="match_parent"
