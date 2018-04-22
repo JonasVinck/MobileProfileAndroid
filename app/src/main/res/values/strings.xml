@@ -109,9 +109,6 @@
     <string name="type">Rit type</string>
 
     <string name="description">Beschrijving</string>
-    <string name="show">Tonen op kaart</string>
-    <string name="hide">Kaart verbergen</string>
-    <string name="enlarge">Kaart vergroten</string>
     <string name="title_activity_ride_map_fragment">Map</string>
 
     <string name="waiting_gps">Wachten op gps &#8230;</string>
@@ -119,6 +116,12 @@
     <string name="kmh">km/h</string>
     <string name="m">m</string>
     <string name="km">km</string>
+    <array name="measuring_fragments">
+        <item>Trilling</item>
+        <item>Verlichting</item>
+        <item>Hoogteverschil</item>
+        <item>Kaart</item>
+    </array>
 
     <string name="start_date">Begindatum</string>
     <string name="end_date">Einddatum</string>

@@ -241,7 +241,7 @@
                 <LinearLayout style="@style/settings_outer">
 
                     <LinearLayout style="@style/settings_inner"
-                        android:onClick="setBaseUrl">
+                        android:onClick="setIp">
 
                         <TextView style="@style/test_settings"
                             android:id="@+id/ip"
@@ -258,7 +258,7 @@
                 <LinearLayout style="@style/settings_outer">
 
                     <LinearLayout style="@style/settings_inner"
-                        android:onClick="resetBaseUrl">
+                        android:onClick="resetIp">
 
                         <TextView style="@style/test_settings"
                             android:layout_weight="1"
@@ -277,7 +277,7 @@
                 <LinearLayout style="@style/settings_outer">
 
                     <LinearLayout style="@style/settings_inner"
-                        android:onClick="setBaseSocket">
+                        android:onClick="setSocket">
 
                         <TextView style="@style/test_settings"
                             android:id="@+id/socket"
@@ -294,7 +294,7 @@
                 <LinearLayout style="@style/settings_outer">
 
                     <LinearLayout style="@style/settings_inner"
-                        android:onClick="resetBaseSocket">
+                        android:onClick="resetSocket">
 
                         <TextView style="@style/test_settings"
                             android:layout_weight="1"
@@ -339,17 +339,6 @@
 
                         <TextView style="@style/test_settings"
                             android:text="@string/delete_log"
-                            android:layout_weight="1"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout style="@style/settings_outer">
-
-                    <LinearLayout style="@style/settings_inner"
-                        android:onClick="crash">
-
-                        <TextView style="@style/test_settings"
-                            android:text="@string/crash"
                             android:layout_weight="1"/>
                     </LinearLayout>
                 </LinearLayout>

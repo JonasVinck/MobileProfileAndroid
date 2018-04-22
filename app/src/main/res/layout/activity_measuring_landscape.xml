@@ -137,7 +137,7 @@
             </android.support.v4.view.ViewPager>
         </LinearLayout>
 
-        <fragment android:name="com.commeto.kuleuven.commetov2.fragments.MusicControlFragment"
+        <fragment android:name="com.commeto.kuleuven.MP.fragments.MusicControlFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/extra"/>

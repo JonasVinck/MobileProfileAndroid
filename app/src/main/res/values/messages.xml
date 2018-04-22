@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="not_calibrated">Niet gecallibreerd.</string>
+
+    <string name="ssl_error">Er ging iets mis bij het instellen van het sertificaat.</string>
+    <string name="login_error">Username/wachtwoord verkeerd.</string>
+    <string name="list_password">Gelieve een wachtwoord in te geven.</string>
+    <string name="list_username">Gelieve een gebruikersnaam in te geven.</string>
+    <string name="wrong_password">Verkeerd wachtwoord.</string>
+    <string name="user_exists">Gebruikersnaam mogelijks al in gebruik.</string>
+    <string name="password_mismatch">Wachtwoorden komen niet overeen.</string>
+    <string name="error">Er ging iets mis.</string>
+    <string name="fill_all">Gelieve alles in te vullen.</string>
+    <string name="user_created">Gebruiker aangemaakt.</string>
+
+    <string name="offline_mode">Offline mode</string>
+    <string name="no_internet">Geen verbinding</string>
+    <string name="no_internet_message">Geen internet beschikbaar, bepaalde functionaliteiten werken waarschijnlijk nier.</string>
+    <string name="no_server">Server mogelijks tijdelijk niet beschikbaar.</string>
+    <string name="sync_eror">Er ging iets mis met het ophalen van de ritten van de server. Probeer later opnieuw.</string>
+    <string name="already_syncing">Ritten worden al opgehaald.</string>
+    <string name="sync_complete">Up to date</string>
+</resources>

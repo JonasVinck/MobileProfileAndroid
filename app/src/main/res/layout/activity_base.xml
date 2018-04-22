@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".activities.BaseActivity">
 
-    <com.commeto.kuleuven.commetov2.views.LockableViewPager
+    <com.commeto.kuleuven.MP.views.LockableViewPager
         android:id="@+id/base_pager"
         android:layout_weight="1"
         android:layout_width="match_parent"

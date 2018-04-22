@@ -3,6 +3,8 @@
     <string name="preferences">commeto</string>
     <string name="preferences_calibration">calibration</string>
     <string name="last_changed">last_changed</string>
+    <string name="ip">ip</string>
+    <string name="socket">socket</string>
 
     <string name="hard_coded_ip">213.118.13.252</string>
     <string name="hard_coded_socket">443</string>

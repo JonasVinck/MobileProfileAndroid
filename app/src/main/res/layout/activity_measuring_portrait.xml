@@ -158,7 +158,8 @@
 
             <android.support.v4.view.PagerTitleStrip android:id="@+id/pager_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:background="@color/darker_grey" />
         </android.support.v4.view.ViewPager>
     </LinearLayout>
 
@@ -175,7 +176,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <fragment android:name="com.commeto.kuleuven.commetov2.fragments.MusicControlFragment"
+            <fragment android:name="com.commeto.kuleuven.MP.fragments.MusicControlFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/extra">

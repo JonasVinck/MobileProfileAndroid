@@ -114,7 +114,7 @@
     </LinearLayout>
 
     <fragment android:id="@+id/details"
-        class="com.commeto.kuleuven.commetov2.fragments.DetailsFragment"
+        class="com.commeto.kuleuven.MP.fragments.DetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
