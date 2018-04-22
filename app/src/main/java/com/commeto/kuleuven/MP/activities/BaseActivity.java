@@ -522,7 +522,7 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     public void deleteLog(View view){
-        InternalIO.deleteLog(context);
+        InternalIO.writeToLog(context, "");
     }
 
     public void autoUploadSetting(View view){
