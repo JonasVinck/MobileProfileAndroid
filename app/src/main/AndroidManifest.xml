@@ -37,7 +37,6 @@
         <activity android:name="com.commeto.kuleuven.MP.activities.MeasuringActivity"
             android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.commeto.kuleuven.MP.activities.MeasuringActivityTest" />
         <activity
             android:name="com.commeto.kuleuven.MP.activities.RideDisplayActivity"
             android:screenOrientation="portrait" />
@@ -52,10 +51,7 @@
 
         <service android:name="com.commeto.kuleuven.MP.services.MeasuringService" />
         <service android:name="com.commeto.kuleuven.MP.services.SensorService" />
-        <service android:name="com.commeto.kuleuven.MP.http.HTTPSendAllService" />
         <service android:name="com.commeto.kuleuven.MP.services.SyncService" />
-
-        <receiver android:name="com.commeto.kuleuven.MP.activities.MeasuringActivityTest$MeasurementBroadcastReceiver" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

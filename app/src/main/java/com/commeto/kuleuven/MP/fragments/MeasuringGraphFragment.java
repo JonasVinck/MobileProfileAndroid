@@ -17,12 +17,13 @@ import java.util.LinkedList;
 
 /**
  * Created by Jonas on 10/04/2018.
+ *
+ * Fragment to display graph while riding. Fragment only displays 60 values to lower burden.
  */
 
 public class MeasuringGraphFragment extends Fragment{
 
     private LinkedList<Double> points;
-    private GraphView graphView;
     private LineGraphSeries<DataPoint> series;
     private int x;
     private boolean limited;
@@ -55,7 +56,8 @@ public class MeasuringGraphFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);
 
-        graphView = view.findViewById(R.id.graph);
+        //Setting the GraphView.
+        GraphView graphView = view.findViewById(R.id.graph);
         graphView.getViewport().setScrollable(false);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
@@ -74,6 +76,15 @@ public class MeasuringGraphFragment extends Fragment{
 
         return view;
     }
+
+    /**
+     * <pre>
+     * Method used to add data to the graph.
+     *
+     * When more than 60 points are in the points array, the first one is removed.
+     * </pre>
+     * @param point
+     */
 
     public void append(double point){
         if(x >= 60) points.removeFirst();

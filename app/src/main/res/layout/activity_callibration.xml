@@ -20,7 +20,7 @@
             android:padding="20dp">
 
             <TextView style="@style/title"
-                android:text="@string/callibrationg"/>
+                android:text="@string/calibrate"/>
 
             <TextView android:id="@+id/calibration_message"
                 style="@style/text"

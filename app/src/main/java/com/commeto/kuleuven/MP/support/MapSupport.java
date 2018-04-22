@@ -31,6 +31,8 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 3/04/2018.
+ *
+ * Object to more easily display route on map.
  */
 
 public class MapSupport {
@@ -50,37 +52,11 @@ public class MapSupport {
 //==================================================================================================
     //public functions
 
-    public void displayGeoJson(MapboxMap map){
-
-        InputStream stream;
-        String geoJsonString;
-
-        try {
-            stream = InternalIO.getInputStream(context, localRoute.getLocalId() + ".json");
-            geoJsonString = rideLocalGeoJson(stream);
-            try {
-                JSONObject geojson = new JSONObject(geoJsonString);
-
-                GeoJsonSource source = new GeoJsonSource("geojson", geoJsonString);
-                map.addSource(source);
-                LineLayer lineLayer = new LineLayer("lines", "geojson");
-            lineLayer.setProperties(
-                    PropertyFactory.lineDasharray(new Float[]{0.01f, 2f}),
-                    PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-                    PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-                    PropertyFactory.lineWidth(5f),
-                    PropertyFactory.lineColor(Color.parseColor("#e55e5e"))
-            );
-            map.addLayer(lineLayer);
-            } catch (Exception e){}
-        } catch (IOException e){
-            try {
-                stream = InternalIO.getInputStream(context, localRoute.getLocalId() + "_server.json");
-            } catch (IOException e2){
-                makeToastLong(context, "Er ging iets mis met het inlezen van de route");
-            }
-        }
-    }
+    /**
+     * Method to display ride on map;
+     *
+     * @param map
+     */
 
     public void displayRide(MapboxMap map){
         ArrayList<Position> array = generateRoute();
@@ -123,57 +99,11 @@ public class MapSupport {
 //==================================================================================================
     //private functions
 
-    private String rideLocalGeoJson(InputStream stream){
-
-        JSONObject rideGeoJson = new JSONObject();
-
-        try {
-            JSONObject ride = new JSONObject(convertInputStreamToString(stream));
-            double lat, lon;
-            double maxLat = 0, maxLon = 0, minLat = Double.MAX_VALUE, minLon = Double.MAX_VALUE;
-            JSONArray array = ride.getJSONArray("measurements");
-            JSONArray coords = new JSONArray(), temp;
-            for(int i = 0; i < array.length(); i++){
-                lat = array.getJSONObject(i).getDouble("lat");
-                lon = array.getJSONObject(i).getDouble("lon");
-                temp = new JSONArray();
-                temp.put(lat).put(lon);
-                coords.put(temp);
-                if(lat > maxLat) maxLat = lat;
-                if(lon > maxLon) maxLon = lon;
-                if(lat < minLat) minLat = lat;
-                if(lon < minLon) minLon = lon;
-            }
-            bounds = LatLngBounds.from(
-                    maxLat, maxLon,
-                    minLat, minLon
-            );
-
-            start = new JSONArray();
-            start.put(array.getJSONObject(0).getDouble("lat"));
-            start.put(array.getJSONObject(0).getDouble("lon"));
-            end = new JSONArray();
-            end.put(array.getJSONObject(0).getDouble("lat"));
-            end.put(array.getJSONObject(0).getDouble("lon"));
-
-            int id = context.getResources().getIdentifier(
-                    "line_layer","raw", context.getPackageName()
-            );
-            InputStream inputStream = context.getResources().openRawResource(id);
-            rideGeoJson = new JSONObject(convertInputStreamToString(inputStream));
-            rideGeoJson
-                    .getJSONObject("source")
-                    .getJSONObject("data")
-                    .getJSONObject("geometry")
-                    .put("coordinates", coords);
-        } catch (IOException e){
-            makeToastLong(context, "Er ging iets met het lezen van de rit.");
-        } catch (JSONException e){
-            makeToastLong(context, "Er ging iets mis met het omzetten van de rit.");
-        }
-
-        return rideGeoJson.toString();
-    }
+    /**
+     * Method to generate an array that van be dispalyed in a map.
+     *
+     * @return An ArrayList containing a polyline.
+     */
 
     private ArrayList<Position> generateRoute(){
 
@@ -181,14 +111,17 @@ public class MapSupport {
 
         InputStream stream;
         try{
+            //First see if snapped coords are available.
             stream = InternalIO.getInputStream(context, localRoute.getLocalId() + "_snapped.json");
             route = getServerRoute(stream);
         }catch (IOException e){
             try{
+                //else try if unsnapped coords are available.
                 stream = InternalIO.getInputStream(context, localRoute.getLocalId() + "_unsnapped.json");
                 route = getServerRoute(stream);
             }catch (IOException e2) {
                 try {
+                    //else use generated data.
                     stream = InternalIO.getInputStream(context, localRoute.getLocalId() + ".json");
                     route = getLocalRoute(stream);
                 } catch (IOException e3) {
@@ -200,6 +133,13 @@ public class MapSupport {
 
         return route;
     }
+
+    /**
+     * Method to generate route from snapped or unsnapped coords retrieved from server.
+     *
+     * @param stream inputStream to file.
+     * @return Polyline of route.
+     */
 
     private ArrayList<Position> getServerRoute(InputStream stream){
 
@@ -233,6 +173,13 @@ public class MapSupport {
 
         return null;
     }
+
+    /**
+     * Method to generate route from locally generated file.
+     *
+     * @param stream inputStream to file.
+     * @return Polyline of route.
+     */
 
     private ArrayList<Position> getLocalRoute(InputStream stream){
 

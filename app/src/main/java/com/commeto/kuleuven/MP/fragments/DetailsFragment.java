@@ -10,6 +10,8 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 12/04/2018.
+ *
+ * Fragment to display the different values of the ride information.
  */
 
 public class DetailsFragment extends Fragment{

@@ -18,6 +18,8 @@ import com.commeto.kuleuven.MP.R;
 import com.commeto.kuleuven.MP.sqlSupport.LocalDatabase;
 import com.commeto.kuleuven.MP.sqlSupport.LocalRoute;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,9 +34,32 @@ import static com.commeto.kuleuven.MP.support.Static.timeFormat;
 
 /**
  * Created by Jonas on 12/04/2018.
+ *
+ * Fragment to display a list of all the rides.
  */
 
 public class RouteListFragment extends Fragment {
+//==================================================================================================
+    //constants
+
+    private final String NAME = "Naam";
+    private final String DOWN = "Aflopend";
+    private final String SORT = "sort";
+    private final String BY = "by";
+    private final String DATE = "Datum";
+    private final String DATE_LOWER = "start_date";
+    private final String DATE_UPPER = "end_date";
+    private final String DURATION = "Duur";
+    private final String DURATION_LOWER = "duration_lower";
+    private final String DURATION_UPPER = "duration_upper";
+    private final String SPEED = "Snelheid";
+    private final String SPEED_LOWER = "speed_lower";
+    private final String SPEED_UPPER = "speed_upper";
+    private final String DISTANCE = "Afstand";
+    private final String DISTANCE_LOWER = "distance_lower";
+    private final String DISTANCE_UPPER = "distance_upper";
+//==================================================================================================
+    //interface
 
     private RouteListInterface routeListInterface = new RouteListInterface() {
         @Override
@@ -55,6 +80,8 @@ public class RouteListFragment extends Fragment {
             setView();
         }
     };
+//==================================================================================================
+    //class specs
 
     private Bundle previous;
     private Context context;
@@ -78,6 +105,8 @@ public class RouteListFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+//==================================================================================================
+    //lifecycle methods
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,57 +115,61 @@ public class RouteListFragment extends Fragment {
         this.sorting = new HashMap<>();
         context = getContext();
         user = context.getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE)
-                .getString("username", "offline");
+                .getString("username", "");
         localRouteList = LocalDatabase.getInstance(context).localRouteDAO().getAllByTimeDescending(user);
 
+        //Default bundle for sorting.
         previous = new Bundle();
-        previous.putString("sort", "Datum");
-        previous.putString("by", "Aflopend");
+        previous.putString(SORT, DATE);
+        previous.putString(BY, DOWN);
 
         localDatabase = LocalDatabase.getInstance(getContext());
 
-        sorting.put("Naam", new Function2<String, Void, List<LocalRoute>>() {
+        //Functions to call when ride has to be sorted. Contains queries for sorting.
+        sorting.put(NAME, new Function2<String, Void, List<LocalRoute>>() {
             @Override
             public List<LocalRoute> invoke(String option, Void aVoid) {
-                if (option.equals("Aflopend")) {
+                if (option.equals(DOWN)) {
                     return localDatabase.localRouteDAO().getAllByNameDescending(user);
                 } else return localDatabase.localRouteDAO().getAllByNameAscending(user);
             }
         });
-        sorting.put("Datum", new Function2<String, Void, List<LocalRoute>>() {
+        sorting.put(DATE, new Function2<String, Void, List<LocalRoute>>() {
             @Override
             public List<LocalRoute> invoke(String option, Void aVoid) {
-                if (option.equals("Aflopend")) {
+                if (option.equals(DOWN)) {
                     return localDatabase.localRouteDAO().getAllByTimeDescending(user);
                 } else return localDatabase.localRouteDAO().getAllByTimeAscending(user);
             }
         });
-        sorting.put("Duur", new Function2<String, Void, List<LocalRoute>>() {
+        sorting.put(DURATION, new Function2<String, Void, List<LocalRoute>>() {
             @Override
             public List<LocalRoute> invoke(String option, Void aVoid) {
-                if (option.equals("Aflopend")) {
+                if (option.equals(DOWN)) {
                     return localDatabase.localRouteDAO().getAllByDurationDescending(user);
                 } else return localDatabase.localRouteDAO().getAllByDuratonAscending(user);
             }
         });
-        sorting.put("Snelheid", new Function2<String, Void, List<LocalRoute>>() {
+        sorting.put(SPEED, new Function2<String, Void, List<LocalRoute>>() {
             @Override
             public List<LocalRoute> invoke(String option, Void aVoid) {
-                if (option.equals("Aflopend")) {
+                if (option.equals(DOWN)) {
                     return localDatabase.localRouteDAO().getAllBySpeedDescending(user);
                 } else return localDatabase.localRouteDAO().getAllBySpeedAscending(user);
             }
         });
-        sorting.put("Afstand", new Function2<String, Void, List<LocalRoute>>() {
+        sorting.put(DISTANCE, new Function2<String, Void, List<LocalRoute>>() {
             @Override
             public List<LocalRoute> invoke(String option, Void aVoid) {
-                if (option.equals("Aflopend")) {
+                if (option.equals(DOWN)) {
                     return localDatabase.localRouteDAO().getAllByDistanceDescending(user);
                 } else return localDatabase.localRouteDAO().getAllByDistanceAscending(user);
             }
         });
 
-        options.put("Afstand", new Function2<View, LocalRoute, Void>() {
+        //Default bundle to change layout depending on options chosen. contains functions to
+        //change layout.
+        options.put(DISTANCE, new Function2<View, LocalRoute, Void>() {
             @Override
             public Void invoke(View view, LocalRoute localRoute) {
                 double distance;
@@ -149,7 +182,7 @@ public class RouteListFragment extends Fragment {
                 return null;
             }
         });
-        options.put("Snelheid", new Function2<View, LocalRoute, Void>() {
+        options.put(SPEED, new Function2<View, LocalRoute, Void>() {
             @Override
             public Void invoke(View view, LocalRoute localRoute) {
                 ((TextView) view.findViewById(R.id.speed)).setText(
@@ -159,7 +192,7 @@ public class RouteListFragment extends Fragment {
                 return null;
             }
         });
-        options.put("Duur", new Function2<View, LocalRoute, Void>() {
+        options.put(DURATION, new Function2<View, LocalRoute, Void>() {
             @Override
             public Void invoke(View view, LocalRoute localRoute) {
                 int[] time = timeFormat(localRoute.getDuration());
@@ -176,7 +209,7 @@ public class RouteListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragments_ride_list, container, false);
 
@@ -203,7 +236,7 @@ public class RouteListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle bundle){
+    public void onViewCreated(@NotNull View view, Bundle bundle){
         super.onViewCreated(view, bundle);
         list = view.findViewById(R.id.route_list);
         view.findViewById(R.id.ride_list_search).setOnTouchListener(new UnderlineButtonListener(context));
@@ -218,10 +251,14 @@ public class RouteListFragment extends Fragment {
         setView();
     }
 
+    /**
+     * Method used to reset the list.
+     */
+
     private void setView(){
 
         try {
-            String option = previous.getString("sort", "Datum");
+            String option = previous.getString(SORT, DATE);
             if (list != null) {
                 list.removeAllViews();
                 LayoutInflater inflater = getLayoutInflater();
@@ -257,6 +294,7 @@ public class RouteListFragment extends Fragment {
                                 try {
                                     options.get(key).invoke(view, localRoute);
                                 } catch (Exception e) {
+                                    //Empty, for safety.
                                 }
                             }
                         }
@@ -268,30 +306,35 @@ public class RouteListFragment extends Fragment {
                 }
             }
         } catch (NullPointerException e){
-
+            //Empty, just for safety in fragment.
         } catch (IllegalStateException e){
-            
+            //Empty, just for safety in fragment.
         }
     }
 
+    /**
+     * Method used to filter the list. Method checks if ride meets defined filter.
+     *
+     * @param route Route to be checked.
+     * @return Boolean to represent if Route has to be displayed or not.
+     */
     private boolean filterList(LocalRoute route){
 
         return
                 (search == null || route.getRidename().contains(search)) &&
-                (!previous.getBoolean("Afstand", false) || (route.getDistance() <= previous.getDouble("distance_upper", Double.MAX_VALUE) && route.getDistance() >= previous.getDouble("distance_lower", 0))) &&
-                (!previous.getBoolean("Duur", false) || (route.getDuration() <= previous.getLong("duration_upper", Long.MAX_VALUE) && route.getDuration() >= previous.getLong("duration_lower", 0))) &&
-                (!previous.getBoolean("Snelheid", false) || (route.getSpeed() <= previous.getDouble("speed_upper", Double.MAX_VALUE) && route.getSpeed() >= previous.getDouble("speed_lower", 0))) &&
-                (!previous.getBoolean("Datum", false) || (route.getTime() <= previous.getLong("end_date", Long.MAX_VALUE) && route.getTime() >= previous.getLong("start_date", Long.MIN_VALUE)));
+                (!previous.getBoolean(DISTANCE, false) || (route.getDistance() <= previous.getDouble(DISTANCE_UPPER, Double.MAX_VALUE) && route.getDistance() >= previous.getDouble(DISTANCE_LOWER, 0))) &&
+                (!previous.getBoolean(DURATION, false) || (route.getDuration() <= previous.getLong(DURATION_UPPER, Long.MAX_VALUE) && route.getDuration() >= previous.getLong(DURATION_LOWER, 0))) &&
+                (!previous.getBoolean(SPEED, false) || (route.getSpeed() <= previous.getDouble(SPEED_UPPER, Double.MAX_VALUE) && route.getSpeed() >= previous.getDouble(SPEED_LOWER, 0))) &&
+                (!previous.getBoolean("Datum", false) || (route.getTime() <= previous.getLong(DATE_UPPER, Long.MAX_VALUE) && route.getTime() >= previous.getLong(DATE_LOWER, Long.MIN_VALUE)));
     }
-
 
     private List<LocalRoute> getLocalRoutes(){
 
         try {
             String sort;
             List<LocalRoute> localRoutes = localDatabase.localRouteDAO().getAll(user);
-            if (sorting.containsKey((sort = previous.getString("sort")))) {
-                localRoutes = sorting.get(sort).invoke(previous.getString("by"), null);
+            if (sorting.containsKey((sort = previous.getString(SORT)))) {
+                localRoutes = sorting.get(sort).invoke(previous.getString(BY), null);
             }
             return localRoutes;
         } catch (NullPointerException e){

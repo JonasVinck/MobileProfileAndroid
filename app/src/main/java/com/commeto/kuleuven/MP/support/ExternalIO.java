@@ -13,9 +13,19 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 7/04/2018.
+ *
+ * Static methi-ods to write to external memory.
  */
 
 public class ExternalIO {
+
+    /**
+     * Method used to create a file.
+     *
+     * @param activity Calling activity.
+     * @param mimeType Type of the file.
+     * @param fileName File name.
+     */
 
     @TargetApi(19)
     public static void createFile(Activity activity, String mimeType, String fileName) {
@@ -27,6 +37,16 @@ public class ExternalIO {
         intent.putExtra(Intent.EXTRA_TITLE, fileName);
         startActivityForResult(activity, intent, 43, null); //43 = write request code
     }
+
+    /**
+     * Method used to write data to an external file.
+     *
+     * @param context Application context.
+     * @param toWrite String that has to be written to the file.
+     * @param requestcode Request code from OnActivityResult.
+     * @param resultcode Result code from OnActivityResult.
+     * @param resultData Result data from OnActivityResult.
+     */
 
     public static void alterDocument(Context context, String toWrite, int requestcode, int resultcode, Intent resultData) {
 

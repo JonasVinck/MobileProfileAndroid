@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 
 /**
  * Created by Jonas on 2/03/2018.
+ *
+ * Local ROOM database.
  */
 
 @Database(entities = LocalRoute.class, version = 6, exportSchema = false)

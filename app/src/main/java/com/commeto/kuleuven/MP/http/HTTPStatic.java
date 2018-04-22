@@ -19,10 +19,19 @@ import java.security.cert.CertificateFactory;
 
 /**
  * Created by Jonas on 2/03/2018.
+ *
+ * Static functions for HTTP communication.
  */
 
 public class HTTPStatic {
 
+    /**
+     * Method to convert an inputstream to a String.
+     *
+     * @param inputStream InputStream to be converted.
+     * @return String made from InputStream.
+     * @throws IOException Possibly thrown Exception.
+     */
     public static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line;
@@ -35,6 +44,13 @@ public class HTTPStatic {
 
     }
 
+    /**
+     * Method to set the used certificate.
+     *
+     * @param context Application context.
+     * @param responseInterface Interface used for response.
+     * @throws Exception Possibly thorwn Exception.?
+     */
     public static void setCertificate(Context context, SSLResponseInterface responseInterface) throws Exception{
 
         int id = context.getResources().getIdentifier(
@@ -49,6 +65,15 @@ public class HTTPStatic {
         sslTask.execute();
     }
 
+    /**
+     * Method used to generate a JSON representation of a ride to use in the post message.
+     *
+     * @param context Application context.
+     * @param localRoute Route to use to generate JSON.
+     * @return String representing the JSON.
+     * @throws JSONException Possibly thrown Exception.
+     * @throws IOException Possibly thrown Exception.
+     */
     public static String getRouteJson(Context context, LocalRoute localRoute) throws JSONException, IOException{
 
         JSONObject toWrite;

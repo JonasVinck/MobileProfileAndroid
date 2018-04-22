@@ -12,6 +12,8 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 17/04/2018.
+ *
+ * Adapter used to display the different options for the global map.
  */
 
 public class MapOptionAdapter extends ArrayAdapter<String>{

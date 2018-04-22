@@ -7,6 +7,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 /**
  * Created by Jonas on 2/03/2018.
+ *
+ * LocalRoute object to define rides.
  */
 
 @Entity

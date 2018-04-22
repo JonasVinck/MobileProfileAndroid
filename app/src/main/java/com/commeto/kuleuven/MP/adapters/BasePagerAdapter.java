@@ -12,7 +12,18 @@ import com.commeto.kuleuven.MP.fragments.StatsFragment;
 import com.commeto.kuleuven.MP.interfaces.RouteListInterface;
 
 /**
+ * <pre>
  * Created by Jonas on 13/04/2018.
+ *
+ * Adapter used for the fragments in the BaseActivity.
+ *
+ * Fragments:
+ *  - HomeScreenFragment
+ *  - StatsFragment
+ *  - RouteListFragment
+ *  - SettingsFragment
+ *  - GlobalMapFragment
+ *  </pre>
  */
 
 public class BasePagerAdapter extends FragmentPagerAdapter {
@@ -78,14 +89,18 @@ public class BasePagerAdapter extends FragmentPagerAdapter {
     public void updateStatsLayout(){
         try {
             if (statsFragment != null) statsFragment.getUpdateInterface().update();
-        } catch (IllegalStateException e){}
+        } catch (IllegalStateException e){
+            //Empty, used to make sure function doesn't get called when the fragment isn't attached
+        }
     }
 
     public void updateSettingsLayout(){
         try {
             if (settingsFragment != null && !settingsFragment.isDetached())
                 settingsFragment.getUpdateInterface().update();
-        } catch (IllegalStateException e){}
+        } catch (IllegalStateException e){
+            //Empty, used to make sure function doesn't get called when the fragment isn't attached
+        }
     }
 //==================================================================================================
     //get interfaces

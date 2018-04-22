@@ -16,6 +16,8 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 13/04/2018.
+ *
+ * Activity to display the starting button.
  */
 
 public class HomeScreenFragment extends Fragment {
@@ -74,21 +76,6 @@ public class HomeScreenFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        //TODO sundown
-
-        try {
-            if (preferences.getInt("calibration", 0) == 0) {
-                Intent intent = new Intent(getActivity(), Callibration.class);
-                startActivity(intent);
-            }
-        } catch (Exception e){
-
-            if (preferences.getFloat("calibration", 0) == 0) {
-                Intent intent = new Intent(getActivity(), Callibration.class);
-                startActivity(intent);
-            }
-        }
     }
 
     @Override

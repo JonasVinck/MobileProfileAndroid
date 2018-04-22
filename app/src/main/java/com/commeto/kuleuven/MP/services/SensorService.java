@@ -14,6 +14,8 @@ import java.util.LinkedList;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Service to get sensor data.
  */
 
 public class SensorService extends IntentService implements SensorEventListener{
@@ -117,12 +119,24 @@ public class SensorService extends IntentService implements SensorEventListener{
 //==================================================================================================
     //getters
 
+    /**
+     * Method to get acceleration data. When data has been retrieved, array is cleared.
+     *
+     * @return Acceleration data
+     */
+
     public LinkedList<float[]> getAccelerometerData() {
 
         LinkedList<float[]> temp = new LinkedList<>(accelerometerData);
         accelerometerData = new LinkedList<>();
         return temp;
     }
+
+    /**
+     * Method to get light level data. When data has been retrieved, array is cleared.
+     *
+     * @return Light level data
+     */
 
     public LinkedList<float[]> getLightSensorData() {
 

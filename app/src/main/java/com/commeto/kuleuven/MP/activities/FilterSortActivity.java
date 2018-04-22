@@ -37,12 +37,33 @@ import static java.lang.Math.round;
 
 public class FilterSortActivity extends AppCompatActivity{
 //==================================================================================================
+    //constants
+
+    private final String SORT = "sort";
+    private final String BY = "by";
+    private final String DATE = "Datum";
+    private final String DATE_LOWER = "start_date";
+    private final String DATE_UPPER = "end_date";
+    private final String DURATION = "Duur";
+    private final String DURATION_LOWER = "duration_lower";
+    private final String DURATION_UPPER = "duration_upper";
+    private final String SPEED = "Snelheid";
+    private final String SPEED_LOWER = "speed_lower";
+    private final String SPEED_UPPER = "speed_upper";
+    private final String DISTANCE = "Afstand";
+    private final String DISTANCE_LOWER = "distance_lower";
+    private final String DISTANCE_UPPER = "distance_upper";
+//==================================================================================================
     //class specs
 
     private Context context;
     private Bundle options;
 
     private Calendar start_date, end_date;
+
+    /**
+     * Gets date from dialog and sets beginning date to filter.
+     */
     private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -54,9 +75,13 @@ public class FilterSortActivity extends AppCompatActivity{
                 ((TextView) findViewById(R.id.start_date)).setText(
                         DateFormat.getDateInstance().format(start_date.getTime())
                 );
-            } else makeToastLong(context, "Begindatum kan niet na einddatum liggen.");
+            } else makeToastLong(context, getString(R.string.beginning_date_before_end));
         }
     };
+
+    /**
+     * Gets date from dialog and sets end date to filter.
+     */
     private DatePickerDialog.OnDateSetListener endDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -68,11 +93,16 @@ public class FilterSortActivity extends AppCompatActivity{
                 ((TextView) findViewById(R.id.end_date)).setText(
                         DateFormat.getDateInstance().format(end_date.getTime())
                 );
-            } else makeToastLong(context, "Einddatum kan niet voor begindatum liggen.");
+            } else makeToastLong(context, getString(R.string.end_date_before_beginning));
         }
     };
 
     private Long duration_lower, duration_upper;
+
+    /**
+     * Gets duration from dialog and sets lower bound for duration.
+     */
+
     private TimePickerDialog.OnTimeSetListener durationLowerListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
@@ -90,7 +120,11 @@ public class FilterSortActivity extends AppCompatActivity{
             }
         }
     };
-    private TimePickerDialog.OnTimeSetListener getDurationUpperListener = new TimePickerDialog.OnTimeSetListener() {
+
+    /**
+     * Gets duration from dialog and sets upper bound for duration.
+     */
+    private TimePickerDialog.OnTimeSetListener durationUpperListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
             long temp = (long) hours * 3600 * 1000 + (long) minutes * 60 * 1000;
@@ -112,8 +146,12 @@ public class FilterSortActivity extends AppCompatActivity{
 
     @Override
     public void onCreate(Bundle bundle) {
+
+        //Necessary to initiate activity.
         super.onCreate(bundle);
         setContentView(R.layout.activity_filter_sort);
+
+        //Setting Attributes.
         context = getApplicationContext();
         options = getIntent().getBundleExtra("options");
 
@@ -135,7 +173,6 @@ public class FilterSortActivity extends AppCompatActivity{
                 );
             }
         });
-
         ((Switch) findViewById(R.id.duration_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -144,7 +181,6 @@ public class FilterSortActivity extends AppCompatActivity{
                 );
             }
         });
-
         ((Switch) findViewById(R.id.speed_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -153,7 +189,6 @@ public class FilterSortActivity extends AppCompatActivity{
                 );
             }
         });
-
         ((Switch) findViewById(R.id.distance_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -181,11 +216,23 @@ public class FilterSortActivity extends AppCompatActivity{
 //==================================================================================================
     //button actions
 
+    /**
+     * Open dialog to set the lower bound for the date.
+     *
+     * @param view Unused but necessary for using as onClick in XML
+     */
+
     public void setStartDate(View view){
         DateDialog dateDialog = new DateDialog();
         dateDialog.set(start_date, startDateListener);
         dateDialog.show(getFragmentManager(), "datepicker");
     }
+
+    /**
+     * Open dialog to set the upper bound for the date.
+     *
+     * @param view Unused but necessary for using as onClick in XML.
+     */
 
     public void setEndDate(View view){
         DateDialog dateDialog = new DateDialog();
@@ -193,24 +240,48 @@ public class FilterSortActivity extends AppCompatActivity{
         dateDialog.show(getFragmentManager(), "datepicker");
     }
 
+    /**
+     * Open dialog to set the lower bound for the duration.
+     *
+     * @param view Unused but necessary for using as onClick in XML.
+     */
+
     public void setDurationLower(View view){
         TimeDialog timeDialog = new TimeDialog();
         timeDialog.set(duration_lower, durationLowerListener);
         timeDialog.show(getFragmentManager(), "timepicker");
     }
 
+    /**
+     * Open dialog to set the upper bound for the duration.
+     *
+     * @param view Unused but necessary for using as onClick in XML.
+     */
+
     public void setDurationUpper(View view){
         TimeDialog timeDialog = new TimeDialog();
-        timeDialog.set(duration_upper, getDurationUpperListener);
+        timeDialog.set(duration_upper, durationUpperListener);
         timeDialog.show(getFragmentManager(), "timepicker");
     }
 
+    /**
+     * Clear the current options Bundle.
+     *
+     * @param view Unused but necessary for using as onClick in XML
+     */
+
     public void clear(View view){
         this.options = new Bundle();
-        options.putString("sort", "Datum");
-        options.putString("by", "Aflopend");
+        options.putString(SORT, DATE);
+        options.putString(BY, "Aflopend");
 
     }
+
+    /**
+     * Bundle all the set parameters and finishes activity.
+     *
+     * @param view Unused but necessary for using as onClick in XML
+     */
 
     public void confirm(View view){
 
@@ -218,66 +289,66 @@ public class FilterSortActivity extends AppCompatActivity{
         String tempString;
 
         options.putString(
-                "sort",
+                SORT,
                 ((Spinner) findViewById(R.id.attribute)).getSelectedItem().toString()
         );
         options.putString(
-                "by",
+                BY,
                 ((Spinner) findViewById(R.id.by)).getSelectedItem().toString()
         );
 
         options.putBoolean(
-                "Datum",
+                DATE,
                 (temp = (((Switch) findViewById(R.id.date_switch)).isChecked()))
         );
         options.putLong(
-                "start_date",
+                DATE_LOWER,
                 temp ? start_date.getTimeInMillis() : 0
         );
         options.putLong(
-                "end_date",
+                DATE_UPPER,
                 temp ? end_date.getTimeInMillis() : System.currentTimeMillis()
         );
         long test = start_date.getTimeInMillis();
         options.putBoolean(
-                "Duur",
+                DURATION,
                 (temp = (((Switch) findViewById(R.id.duration_switch)).isChecked()))
         );
         options.putLong(
-                "duration_lower",
+                DURATION_LOWER,
                 duration_lower
         );
         options.putLong(
-                "duration_upper",
+                DURATION_UPPER,
                 duration_upper
         );
 
         options.putBoolean(
-                "Snelheid",
+                SPEED,
                 temp = (((Switch) findViewById(R.id.speed_switch)).isChecked())
         );
         options.putDouble(
-                "speed_lower",
+                SPEED_LOWER,
                 temp && !(tempString = ((EditText) findViewById(R.id.speed_lower)).getText().toString()).equals("")
                         ? Double.parseDouble(tempString) : Double.MIN_VALUE
         );
         options.putDouble(
-                "speed_upper",
+                SPEED_UPPER,
                 temp && !(tempString = ((EditText) findViewById(R.id.speed_upper)).getText().toString()).equals("")
                         ? Double.parseDouble(tempString) : Double.MAX_VALUE
         );
 
         options.putBoolean(
-                "Afstand",
+                DISTANCE,
                 temp = (((Switch) findViewById(R.id.distance_switch)).isChecked())
         );
         options.putDouble(
-                "distance_lower",
+                DISTANCE_LOWER,
                 temp && !(tempString = ((EditText) findViewById(R.id.distance_lower)).getText().toString()).equals("")
                         ? Double.parseDouble(tempString) : Double.MIN_VALUE
         );
         options.putDouble(
-                "distance_upper",
+                DISTANCE_UPPER,
                 temp && !(tempString = ((EditText) findViewById(R.id.distance_upper)).getText().toString()).equals("")
                         ? Double.parseDouble(tempString) : Double.MAX_VALUE
         );
@@ -287,6 +358,10 @@ public class FilterSortActivity extends AppCompatActivity{
     }
 //==================================================================================================
     //private functions
+
+    /**
+     * Sets the layout to match the given options.
+     */
 
     private void setLayout(){
 
@@ -302,7 +377,7 @@ public class FilterSortActivity extends AppCompatActivity{
         );
         array = getResources().getStringArray(R.array.sorter_options);
         for (int i = 0; i < array.length; i++){
-            if(array[i].equals(options.getString("sort", ""))) position = i;
+            if(array[i].equals(options.getString(SORT, ""))) position = i;
         }
         spinner.setSelection(position);
 
@@ -317,7 +392,7 @@ public class FilterSortActivity extends AppCompatActivity{
         array = getResources().getStringArray(R.array.order_options);
         position = 0;
         for (int i = 0; i < array.length; i++){
-            if(array[i].equals(options.getString("by", ""))) position = i;
+            if(array[i].equals(options.getString(BY, ""))) position = i;
         }
         spinner.setSelection(position);
 
@@ -325,28 +400,18 @@ public class FilterSortActivity extends AppCompatActivity{
         Switch tempSwitch;
         long tempLong;
 
-        if((tempLong = options.getLong("start_date", 0)) != 0) {
-            (start_date = Calendar.getInstance()).setTimeInMillis(tempLong);
-        } else {
-            (start_date = Calendar.getInstance()).setTimeInMillis(System.currentTimeMillis());
-        }
+        tempLong = options.getLong(DATE_LOWER, 0);
+        if(tempLong != 0) (start_date = Calendar.getInstance()).setTimeInMillis(tempLong);
+        else (start_date = Calendar.getInstance()).setTimeInMillis(System.currentTimeMillis());
 
-        if((tempLong = options.getLong("end_date", 0)) != 0) {
-            (end_date = Calendar.getInstance()).setTimeInMillis(tempLong);
-        } else {
-            (end_date = Calendar.getInstance()).setTimeInMillis(System.currentTimeMillis());
-        }
+        tempLong = options.getLong(DATE_UPPER, 0);
+        if(tempLong != 0) (end_date = Calendar.getInstance()).setTimeInMillis(tempLong);
+        else (end_date = Calendar.getInstance()).setTimeInMillis(System.currentTimeMillis());
 
-        duration_lower = options.getLong("duration_lower", 0);
-        duration_upper = options.getLong("duration_upper", 0);
+        duration_lower = options.getLong(DURATION, 0);
+        duration_upper = options.getLong(DURATION_UPPER, 0);
 
-        if((tempLong = options.getLong("end_date", 0)) != 0) {
-            (end_date = Calendar.getInstance()).setTimeInMillis(tempLong);
-        } else {
-            (end_date = Calendar.getInstance()).setTimeInMillis(System.currentTimeMillis());
-        }
-
-        (tempSwitch = findViewById(R.id.date_switch)).setChecked(options.getBoolean("Datum", false));
+        (tempSwitch = findViewById(R.id.date_switch)).setChecked(options.getBoolean(DATE, false));
         findViewById(R.id.date_container).setVisibility(
                 tempSwitch.isChecked() ? View.VISIBLE : View.GONE
         );
@@ -358,7 +423,7 @@ public class FilterSortActivity extends AppCompatActivity{
         );
 
         (tempSwitch = findViewById(R.id.duration_switch)).setChecked(options.getBoolean(
-                "Duur",
+                DURATION,
                 false
         ));
         findViewById(R.id.duration_container).setVisibility(
@@ -373,34 +438,34 @@ public class FilterSortActivity extends AppCompatActivity{
         );
 
         (tempSwitch = findViewById(R.id.distance_switch)).setChecked(options.getBoolean(
-                "Afstand",
+                DISTANCE,
                 false)
         );
         findViewById(R.id.distance_container).setVisibility(
                 tempSwitch.isChecked() ? View.VISIBLE : View.GONE
         );
         ((EditText) findViewById(R.id.distance_lower)).setText(
-                (temp = options.getDouble("distance_lower", Double.MIN_VALUE)) != Double.MIN_VALUE ?
+                (temp = options.getDouble(DISTANCE_LOWER, Double.MIN_VALUE)) != Double.MIN_VALUE ?
                         Double.toString(temp) : ""
         );
         ((EditText) findViewById(R.id.distance_upper)).setText(
-                (temp = options.getDouble("distance_upper", Double.MAX_VALUE)) != Double.MAX_VALUE ?
+                (temp = options.getDouble(DISTANCE_UPPER, Double.MAX_VALUE)) != Double.MAX_VALUE ?
                         Double.toString(temp) : ""
         );
 
         (tempSwitch = findViewById(R.id.speed_switch)).setChecked(options.getBoolean(
-                "Snelheid",
+                SPEED,
                 false)
         );
         findViewById(R.id.speed_container).setVisibility(
                 tempSwitch.isChecked() ? View.VISIBLE : View.GONE
         );
         ((EditText) findViewById(R.id.speed_lower)).setText(
-                (temp = options.getDouble("speed_lower", Double.MIN_VALUE)) != Double.MIN_VALUE ?
+                (temp = options.getDouble(SPEED_LOWER, Double.MIN_VALUE)) != Double.MIN_VALUE ?
                         Double.toString(temp) : ""
         );
         ((EditText) findViewById(R.id.speed_upper)).setText(
-                (temp = options.getDouble("speed_upper", Double.MAX_VALUE)) != Double.MAX_VALUE ?
+                (temp = options.getDouble(SPEED_UPPER, Double.MAX_VALUE)) != Double.MAX_VALUE ?
                         Double.toString(temp) : ""
         );
     }

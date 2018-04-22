@@ -45,11 +45,29 @@ import static com.commeto.kuleuven.MP.support.Static.tryLogin;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Core activity of the application. This activity displays what is essentially the home screen.
+ *
+ * Entry from:
+ *  - LoginActivity
+ *
+ * Next activities:
+ *  - MeasuringActivity
+ *  - CalibrationActivity
+ *  - LoginActivity
+ *  - FilterSortActivity
+ *
+ * Finishes going to:
+ *  - LoginActivity
+ *  - onBackPressed
+ *  - 401 http response
  */
 
 public class BaseActivity extends AppCompatActivity{
 //==================================================================================================
-    //constants for sharedpreferences
+    //constants for shared preferences
+
+    //Not declared final due to the fact that a context is needed to fetch the constants.
     private String CALIBRATION;
     private String IP;
     private String SOCKET;
@@ -59,12 +77,25 @@ public class BaseActivity extends AppCompatActivity{
 //==================================================================================================
     //interfaces
 
+    /**
+     * Interface used to send a request to /MP/service/secured/tokenvalid to see if device is still
+     * authorized for the current user.
+     *
+     * responses:
+     *  401:    User no longer authorized.
+     *              - go to LoginActivity.
+     *              - Clear SharedPreferences.
+     *  -2:     Means no connection could be established.
+     *              - continue normal behavior, give notification.
+     */
+
     private AsyncResponseInterface loginSucces = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
             if(response != null && response.getResponseCode() == 401){
                 startActivity(new Intent(context, LoginActivity.class));
                 try {
+                    preferences.edit().clear().apply();
                     finish();
                 } catch (NullPointerException e){
                     InternalIO.writeToLog(context, e);
@@ -74,6 +105,14 @@ public class BaseActivity extends AppCompatActivity{
             }
         }
     };
+
+    /**
+     * Interface to call when syncing is complete.
+     *
+     *  - Resets list of routes.
+     *  - stops the SyncService.
+     *  - Re-enables the button that starts the SyncService.
+     */
 
     private SyncInterface syncInterface = new SyncInterface() {
         @Override
@@ -124,14 +163,19 @@ public class BaseActivity extends AppCompatActivity{
 
     @Override
     public void onCreate(Bundle bundle){
+
+        //Needed to initiate the activity
+        super.onCreate(bundle);
+        setContentView(R.layout.activity_base);
+
+        //Getting the used constants
         CALIBRATION = getString(R.string.preferences_calibration);
-        IP = getString(R.string.ip);
-        SOCKET = getString(R.string.socket);
+        IP = getString(R.string.preferences_ip);
+        SOCKET = getString(R.string.preferences_socket);
         IP_DEFAULT = getString(R.string.hard_coded_ip);
         SOCKET_DEFAULT = getString(R.string.hard_coded_socket);
 
-        super.onCreate(bundle);
-        setContentView(R.layout.activity_base);
+        //Further attribute declaration.
         this.context = getApplicationContext();
         toWrite = "";
         preferences  = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
@@ -139,7 +183,6 @@ public class BaseActivity extends AppCompatActivity{
         syncServiceConnection.setSyncInterface(syncInterface);
         syncIntent = new Intent(this, SyncService.class);
         BaseActivity.this.bindService(syncIntent, syncServiceConnection, BIND_AUTO_CREATE);
-
         resetDrawable = null;
         currentImageView = null;
         currentText = null;
@@ -177,7 +220,10 @@ public class BaseActivity extends AppCompatActivity{
         findViewById(R.id.to_settings).setOnTouchListener(settingsListener);
         resetListener = startListener;
 
+        //Setting size of menu tab icons, equal parts of total screen width divided by 2.
         int value = (scaleMenuIcon() / 2);
+
+        //Icon for going to HomeScreenfragment bigger.
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 value + 24, value + 24
         );
@@ -193,12 +239,29 @@ public class BaseActivity extends AppCompatActivity{
         findViewById(R.id.map_icon).setLayoutParams(params);
         findViewById(R.id.settings_icon).setLayoutParams(params);
 
+        //Adding BasePagerAdapter and setting ViewPager to hold fragments
         basePager = findViewById(R.id.base_pager);
         basePagerAdapter = new BasePagerAdapter(getSupportFragmentManager());
         routeListInterface = basePagerAdapter.getRouteListInterface();
         basePager.setAdapter(basePagerAdapter);
         basePager.setOffscreenPageLimit(4);
+
+        //First fragment to be shown, calling function sets tab icon as well as fragment.
         toStart(null);
+
+        //Check if already calibrate.
+        try {
+            if (preferences.getInt("calibration", 0) == 0) {
+                Intent intent = new Intent(this, Callibration.class);
+                startActivityForResult(intent, 0);
+            }
+        } catch (Exception e){
+
+            if (preferences.getFloat("calibration", 0) == 0) {
+                Intent intent = new Intent(this, Callibration.class);
+                startActivityForResult(intent, 0);
+            }
+        }
 
         if(preferences.getBoolean("auto_sync_option", true)) sync(null);
     }
@@ -229,6 +292,8 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        //unbind syncService onDestroy and dismiss dialog to avoid leaks!
         BaseActivity.this.unbindService(syncServiceConnection);
         if(dialog != null) dialog.dismiss();
     }
@@ -272,6 +337,34 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     //homescreen fragment --------------------------------------------------------------------------
+
+    /**
+     * <pre>
+     * Button to go to MeasuringActivity.
+     *
+     * Different actions required in coming activities and services depending on choice made.
+     * Choices gotten from array in resources.
+     *
+     * measuring only allowed for devices with an acceleration sensor that can go over 4g (4 times
+     *  gravity. "Meten" option not allowed for devices who can't reach this threshold.
+     *
+     * Choices:
+     *  - 0 - ofroad:
+     *      . No vibration measurement needed.
+     *      . Differnt from sport since coords won't be snapped server side.
+     *  - 1 - sport:
+     *      . No vibration measurement needed.
+     *  - 2 - plezier:
+     *      . Vibration values measured and stored when the speed is correct
+     *      . No feedback when speed too fast/slow.
+     *  - 3 - meten:
+     *      . Vibration values measured and stored when the speed is correct
+     *      . feedback given when speed too fast/slow.
+     * </pre>
+     *
+     * @param view unused, but necessary for using onClick in XML.
+     */
+
     public void start(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(context.getResources().getString(R.string.option_title));
@@ -307,19 +400,20 @@ public class BaseActivity extends AppCompatActivity{
 
     //settings fragment ----------------------------------------------------------------------------
     public void logout(View view){
+
         preferences.edit().clear().apply();
 
+        //Go to CheckLoginActivity to reset certificate if needed.
         Intent intent = new Intent(context, CheckLoginActivity.class);
-        setResult(RESULT_OK);
         startActivity(intent);
         finish();
     }
 
     public void relogin(View view){
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.putExtra("certificate", true);
+
+        //Go to CheckLoginActivity to reset certificate if needed.
+        Intent intent = new Intent(context, CheckLoginActivity.class);
         startActivity(intent);
-        setResult(RESULT_OK);
         finish();
     }
 
@@ -566,7 +660,14 @@ public class BaseActivity extends AppCompatActivity{
     //private methods
 
     /**
+     * <pre>
      * method to easily switch the tab of the fragment currently displayed.
+     *
+     *  - Reset current active tab.
+     *  - set new current attributes.
+     *  - Set new current's styles
+     *  - Enable currently disabled onTouchListener.
+     * </pre>
      *
      * @param newCurrentImageView ImageView of the currently active tab.
      * @param newCurrentText textview of the currently active tab.
@@ -575,24 +676,35 @@ public class BaseActivity extends AppCompatActivity{
 
     private void switchActive(ImageView newCurrentImageView, TextView newCurrentText, int iconId){
 
-        //reset current active tab.
         if(currentImageView != null) currentImageView.setImageDrawable(resetDrawable);
         if(currentText != null) currentText.setTextColor(getResources().getColor(R.color.logo_text));
 
-        //set new current attributes.
         resetDrawable = newCurrentImageView.getDrawable();
         currentImageView = newCurrentImageView;
         currentText = newCurrentText;
 
-        //set new current's styles
         currentImageView.setImageDrawable(getResources().getDrawable(iconId));
         if(currentText != null) currentText.setTextColor(getResources().getColor(R.color.accent));
 
-        //enable currently disabled onTouchListener.
         resetListener.setEnable(true);
     }
 //==================================================================================================
     //activity result
+
+    /**
+     * <pre>
+     * - Resets ride list as default.
+     *
+     * Different request codes:
+     *  - 0: used for starting CalibrationActivity.
+     *  - 43: android system request code, code to create file in external storage.
+     *  - 581: used to identify FilterSortActivity, resets list to the result of this activity.
+     * </pre>
+     *
+     * @param requestCode Request code from startActivityForResult call.
+     * @param resultCode Result code from startActivityForResult call.
+     * @param data Result data from startActivityForResult call.
+     */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -603,9 +715,6 @@ public class BaseActivity extends AppCompatActivity{
             boolean test = preferences.getInt(CALIBRATION, 0) > 45;
             findViewById(R.id.can_measure).setVisibility(test ? View.VISIBLE : View.GONE);
             findViewById(R.id.can_not_measure).setVisibility(test ? View.GONE : View.VISIBLE);
-        }
-        if(requestCode == 580 && resultCode == RESULT_OK){
-            finish();
         }
         if(requestCode == 43) ExternalIO.alterDocument(this, toWrite, requestCode, requestCode, data);
         if(requestCode == 581 && resultCode == RESULT_OK){
@@ -627,6 +736,10 @@ public class BaseActivity extends AppCompatActivity{
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * Override for the back button. Only finishes activity when the back button is pressed twice
+     * within 2 seconds.
+     */
     @Override
     public void onBackPressed() {
 

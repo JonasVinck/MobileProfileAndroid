@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseInt
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("offline", false);
                 editor.putString("username", username);
-                editor.putString("token", response.getResponsBody());
+                editor.putString("token", response.getResponseBody());
                 editor.apply();
 
                 if(getIntent().getBooleanExtra("home", true)) {
@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseInt
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("offline", true);
                 editor.putString("username", username);
-                editor.putString("token", response.getResponsBody());
+                editor.putString("token", response.getResponseBody());
                 editor.apply();
 
                 startActivity(new Intent(context, BaseActivity.class)

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pull_all">
+        /MP/service/secured/ride/pullall/0
+    </string>
     <string name="pull">
         /MP/service/secured/ride/pull/
     </string>
@@ -8,5 +11,11 @@
     </string>
     <string name="upload">
         /MP/service/secured/measurement
+    </string>
+    <string name="create_user">
+        /MP/service/user/create
+    </string>
+    <string name="token_valid">
+        /MP/service/secured/tokenvalid
     </string>
 </resources>

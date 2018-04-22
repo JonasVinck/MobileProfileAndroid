@@ -9,6 +9,8 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 16/03/2018.
+ *
+ * Listener used for the standard tab_inner styled LinearLayouts.
  */
 
 public class UnderlineButtonListener implements View.OnTouchListener{

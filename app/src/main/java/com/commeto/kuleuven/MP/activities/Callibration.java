@@ -24,7 +24,7 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 public class Callibration extends AppCompatActivity{
 //==================================================================================================
-//class specs
+    //class specs
 
     private Context context;
     private LinkedList<float[]> values;
@@ -34,10 +34,15 @@ public class Callibration extends AppCompatActivity{
     private Runnable calibrator;
     private Handler handler;
 //==================================================================================================
+    //lifecycle methods
     @Override
     public void onCreate(Bundle bundle){
+
+        //Needed to initiate activity.
         super.onCreate(bundle);
         setContentView(R.layout.activity_callibration);
+
+        //Setting attributes
         context = getApplicationContext();
         values = null;
         connection = new SensorServiceConnection();
@@ -46,9 +51,9 @@ public class Callibration extends AppCompatActivity{
             public void run() {
                 values = connection.getAccelerometerData();
 
-                int maxtemp = getMax();
-                if(maxtemp > max){
-                    max = maxtemp;
+                int maxTemp = getMax();
+                if(maxTemp > max){
+                    max = maxTemp;
 
                     if (values != null){
                         getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE)
@@ -125,6 +130,10 @@ public class Callibration extends AppCompatActivity{
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    /**
+     * Back button override. Only finish activity when calibrated.
+     */
 
     @Override
     public void onBackPressed() {

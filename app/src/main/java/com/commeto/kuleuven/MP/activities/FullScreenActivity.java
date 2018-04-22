@@ -21,6 +21,8 @@ import java.util.List;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Activity used to display a given route fullscreen.
  */
 
 public class FullScreenActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -115,6 +117,11 @@ public class FullScreenActivity extends AppCompatActivity implements OnMapReadyC
 //==================================================================================================
     //button functions
 
+    /**
+     * Method used to center the route.
+     *
+     * @param view Unused, needed to call method from onClick in XML.
+     */
     public void center(View view){
         if(map != null) map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
     }

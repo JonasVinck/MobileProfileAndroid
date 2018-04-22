@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 
 /**
  * Created by Jonas on 13/04/2018.
+ *
+ * viewPAger that does not allow scrolling through pages.
  */
 
 public class LockableViewPager extends ViewPager {
@@ -21,14 +23,6 @@ public class LockableViewPager extends ViewPager {
     public LockableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.swipeLocked = true;
-    }
-
-    public boolean getSwipeLocked() {
-        return swipeLocked;
-    }
-
-    public void setSwipeLocked(boolean swipeLocked) {
-        this.swipeLocked = swipeLocked;
     }
 
     @Override

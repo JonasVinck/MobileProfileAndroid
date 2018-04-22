@@ -20,6 +20,8 @@ import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString
 
 /**
  * Created by Jonas on 28/02/2018.
+ *
+ * Taks uses for HTTP POST messages.
  */
 
 public class PostTask extends AsyncTask<String, Void, Boolean> implements HostnameVerifier{
@@ -31,8 +33,18 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
     private AsyncResponseInterface asyncResponseInterface;
     private Bundle options;
 
-    public PostTask(String baseUrl, String url, AsyncResponseInterface responseInterface, int id, Bundle options){
-        this.baseUrl = baseUrl;
+    /**
+     * Constructor.
+     *
+     * @param fullip Full IP address of the server.
+     * @param url Path to send the message to?
+     * @param responseInterface Interface used for response.
+     * @param id Id of the possibly specified route being uploaded.
+     * @param options Possible options to be put in the url.
+     */
+
+    public PostTask(String fullip, String url, AsyncResponseInterface responseInterface, int id, Bundle options){
+        this.baseUrl = fullip;
         this.url = url;
         this.id = id;
         this.asyncResponseInterface = responseInterface;
@@ -41,6 +53,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
 //==================================================================================================
     //interface override
 
+    //Bad implementation to use HTTPS.
     @Override
     public boolean verify(String s, SSLSession sslSession) {
         HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
@@ -48,10 +61,11 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
     }
 //==================================================================================================
     //asynctask override
+
     @Override
     protected Boolean doInBackground(String... strings) {
 
-        boolean done = false;
+        boolean done;
 
         try {
             String urlString = "https://" + this.baseUrl + this.url;

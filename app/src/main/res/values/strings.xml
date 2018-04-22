@@ -126,7 +126,7 @@
     <string name="start_date">Begindatum</string>
     <string name="end_date">Einddatum</string>
 
-    <string name="callibrationg">Callibreren</string>
+    <string name="calibrate">Callibreren</string>
     <string name="recallibrate">Opnieuw</string>
     <string name="calibration_message">
         Om te kunnen bepalen of uw apparaat voldoende uitgerust is om metingen te kunnen doen,

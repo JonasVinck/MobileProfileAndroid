@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="preferences">commeto</string>
+    <string name="preferences_username">username</string>
+    <string name="preferences_token">token</string>
     <string name="preferences_calibration">calibration</string>
-    <string name="last_changed">last_changed</string>
-    <string name="ip">ip</string>
-    <string name="socket">socket</string>
+    <string name="preferences_last_changed">last_changed</string>
+    <string name="preferences_ip">ip</string>
+    <string name="preferences_socket">socket</string>
 
     <string name="hard_coded_ip">213.118.13.252</string>
     <string name="hard_coded_socket">443</string>

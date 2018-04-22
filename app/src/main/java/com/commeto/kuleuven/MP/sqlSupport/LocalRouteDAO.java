@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by Jonas on 2/03/2018.
+ *
+ * Used to query local database.
  */
 
 @Dao

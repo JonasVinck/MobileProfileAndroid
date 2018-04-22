@@ -13,6 +13,19 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastShort;
 
 /**
  * Created by Jonas on 10/04/2018.
+ *
+ * Adapter used to fill in part of the MeasuringActivity.
+ *
+ * Fragments:
+ *  - MeasuringMapFragment
+ *  - MeasuringGraphFragment
+ *
+ * 3 different MeasuringGraphFragments used:
+ *  - for light sensor data
+ *  - for acceleration sensor data
+ *  - for height difference
+ *
+ * Fragments are kept in HashMap and titles in String array to make Pager more dynamic.
  */
 
 public class MeasuringPagerAdapter extends FragmentPagerAdapter {

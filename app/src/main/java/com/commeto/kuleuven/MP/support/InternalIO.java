@@ -24,6 +24,13 @@ public class InternalIO {
 //==================================================================================================
     //public functions
 
+    /**
+     * Method used to check if there exists a backup file.
+     *
+     * @param context Application context.
+     * @return Boolean representing the existence of tje file.
+     */
+
     public static synchronized boolean backupExists(Context context){
         try{
             return new File(context.getCacheDir(), "info").exists()
@@ -34,28 +41,13 @@ public class InternalIO {
         }
     }
 
-    public static synchronized String readFromInternal(Context context, String file) {
-
-        try {
-
-            FileInputStream fileInputStream = context.openFileInput(file);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-
-                sb.append(line);
-            }
-
-            bufferedReader.close();
-            return sb.toString();
-        } catch (IOException e) {
-            makeToastLong(context, e.getMessage());
-        }
-
-        return null;
-    }
+    /**
+     * Method used to read a cache file.
+     *
+     * @param context Application context.
+     * @param file File name.
+     * @return To read String.
+     */
 
     public static synchronized String readFromCache(Context context, String file){
 
@@ -81,6 +73,14 @@ public class InternalIO {
         return null;
     }
 
+    /**
+     * Method used to write to internal storage.
+     *
+     * @param context Application context.
+     * @param file File name.
+     * @param content Content to be written to file.
+     * @param overWrite Boolean to define if the old contents should be overwritten.
+     */
     public static synchronized void writeToInternal(Context context, String file, String content, boolean overWrite) {
 
         try {
@@ -96,6 +96,13 @@ public class InternalIO {
         }
     }
 
+    /**
+     * Method used to write to the cache.
+     *
+     * @param context Application context.
+     * @param file Cache file name.
+     * @param content Content to be written.
+     */
     public static synchronized void writeToCache(Context context, String file, String content){
 
         try {
@@ -110,6 +117,14 @@ public class InternalIO {
             makeToastLong(context, e.getMessage());
         }
     }
+
+    /**
+     * Method used to append to a cached file.
+     *
+     * @param context Application context.
+     * @param file File name.
+     * @param content Content to be written.
+     */
 
     public static synchronized void appendToCache(Context context, String file, String content){
 
@@ -127,6 +142,12 @@ public class InternalIO {
         }
     }
 
+    /**
+     * Method to delete a chache file.
+     *
+     * @param context Application context.
+     * @param file Cache file to delete.
+     */
     public static synchronized void deleteFromCache(Context context, String file){
         try{
             File cache = new File(context.getCacheDir(), file);
@@ -136,6 +157,14 @@ public class InternalIO {
         }
     }
 
+    /**
+     * Method to get an InputStream from an internal file.
+     *
+     * @param context Application context.
+     * @param stream file name.
+     * @return InputStream from the given file.
+     * @throws IOException Possibly thrown Exception.
+     */
     public static synchronized InputStream getInputStream(Context context, String stream) throws IOException{
 
         try {
@@ -144,6 +173,13 @@ public class InternalIO {
             throw new IOException(e);
         }
     }
+
+    /**
+     * Method to write to a log file.
+     *
+     * @param context Application context.
+     * @param exception Exception to be written to log.
+     */
 
     public static synchronized void writeToLog(Context context, Exception exception){
 
@@ -160,6 +196,12 @@ public class InternalIO {
         }
     }
 
+    /**
+     * Method to write to log file.
+     *
+     * @param context Application context.
+     * @param message Message to be written.
+     */
     public static synchronized void writeToLog(Context context, String message){
 
         try{
@@ -173,23 +215,5 @@ public class InternalIO {
             writer.close();
         } catch (Exception e){
         }
-    }
-
-    public static synchronized String getLog(Context context){
-
-        try {
-            return convertInputStreamToString(getInputStream(
-                    context,
-                    "log"
-            ));
-        } catch (Exception e){
-            return "Log is leeg.";
-        }
-    }
-
-    public static boolean deleteLog(Context context){
-        File log = new File(context.getFilesDir(), "log");
-        if(!log.exists()) return true;
-        return log.delete();
     }
 }

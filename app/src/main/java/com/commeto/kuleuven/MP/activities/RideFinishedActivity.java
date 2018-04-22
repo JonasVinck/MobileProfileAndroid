@@ -110,7 +110,7 @@ public class RideFinishedActivity extends AppCompatActivity implements AsyncResp
     public void processFinished(HTTPResponse response){
         if(response != null){
             if(response.getResponseCode() == 200){
-                String[] responseBody = response.getResponsBody().split(",");
+                String[] responseBody = response.getResponseBody().split(",");
                 if(!responseBody[0].equals("-1")){
                     int id = Integer.parseInt(responseBody[0]);
                     LocalDatabase database = LocalDatabase.getInstance(getApplicationContext());

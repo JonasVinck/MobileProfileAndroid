@@ -10,6 +10,8 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 19/04/2018.
+ *
+ * Staic methods used to make notifications.
  */
 
 public class NotifyStatic {

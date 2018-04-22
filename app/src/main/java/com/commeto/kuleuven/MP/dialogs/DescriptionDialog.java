@@ -15,14 +15,13 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 12/04/2018.
+ *
+ * Dialog used to view the description of a ride.
  */
 
 public class DescriptionDialog extends DialogFragment{
 
-    private EditDialogInterface editDialogInterface;
     private String description;
-
-    private View view;
     private View.OnClickListener closeListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -30,6 +29,11 @@ public class DescriptionDialog extends DialogFragment{
         }
     };
 
+    /**
+     * Method used to set the description.
+     *
+     * @param description description to be displayed/
+     */
     public void set(String description){
         this.description = description;
     }
@@ -38,7 +42,7 @@ public class DescriptionDialog extends DialogFragment{
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.dialog_description, null);
+        View view = inflater.inflate(R.layout.dialog_description, null);
 
         ((TextView) view.findViewById(R.id.description)).setText(description);
         view.findViewById(R.id.edit).setOnTouchListener(new UnderlineButtonListener(getActivity()));
@@ -46,10 +50,5 @@ public class DescriptionDialog extends DialogFragment{
 
         builder.setView(view);
         return builder.create();
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialogInterface){
-        dialogInterface.dismiss();
     }
 }

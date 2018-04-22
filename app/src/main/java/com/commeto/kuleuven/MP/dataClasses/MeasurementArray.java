@@ -22,6 +22,12 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Class used to bundle all Measurements together with some additional ride info:
+ *  - The name of the ride.
+ *  - The start time of the ride.
+ *  - The average speed.
+ *  - The total distance.
  */
 
 public class MeasurementArray {
@@ -42,6 +48,13 @@ public class MeasurementArray {
         averageSpeed = 0;
         distance = 0;
     }
+
+    /**
+     * Method to reconstruct the object from 2 CSV Strings.
+     *
+     * @param info CSV String representing the rides info.
+     * @param backup CSV String representing the measurement array.
+     */
 
     public MeasurementArray(String[] info, String backup){
         this.name = info[0];
@@ -93,6 +106,13 @@ public class MeasurementArray {
 //==================================================================================================
     //public methods
 
+    /**
+     * Method to generate CSV representation of the information of the object for future
+     * reconstruction.
+     *
+     * @return CSV String representing the information.
+     */
+
     public String toString(){
         return
                 this.name + "," +
@@ -101,6 +121,12 @@ public class MeasurementArray {
                 Double.toString(this.distance);
     }
 
+    /**
+     *
+     * @param measurement Measurement to add.
+     * @param counts boolean representing if the measurement counts towards the total distance.
+     */
+
     public void add(Measurement measurement, boolean counts){
 
         if(counts) distance += measurement.getDistance();
@@ -108,6 +134,17 @@ public class MeasurementArray {
         list.addLast(measurement);
     }
 
+    /**
+     * Method to generate JSON representation of the MeasurementArray and writing it to storage and
+     * adding the info to the room database.
+     *
+     * @param context Context of the application to use IO.
+     * @param username Username of the rider.
+     * @param calibration Used calibration.
+     * @param type Type of the ride.
+     * @return Id generated for the route
+     * @throws NoDistanceException Thrown when ride has a distance of 0.
+     */
     public int toJson(Context context, String username, int calibration, String type) throws NoDistanceException {
 
         if(distance != 0) {

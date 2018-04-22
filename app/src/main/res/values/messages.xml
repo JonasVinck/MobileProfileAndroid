@@ -4,6 +4,7 @@
     <string name="not_calibrated">Niet gecallibreerd.</string>
 
     <string name="ssl_error">Er ging iets mis bij het instellen van het sertificaat.</string>
+    <string name="login_unable">Kan niet inloggen.</string>
     <string name="login_error">Username/wachtwoord verkeerd.</string>
     <string name="list_password">Gelieve een wachtwoord in te geven.</string>
     <string name="list_username">Gelieve een gebruikersnaam in te geven.</string>
@@ -21,4 +22,7 @@
     <string name="sync_eror">Er ging iets mis met het ophalen van de ritten van de server. Probeer later opnieuw.</string>
     <string name="already_syncing">Ritten worden al opgehaald.</string>
     <string name="sync_complete">Up to date</string>
+
+    <string name="beginning_date_before_end">Begindatum kan niet na einddatum liggen.</string>
+    <string name="end_date_before_beginning">Einddatum kan niet voor begindatum liggen.</string>
 </resources>

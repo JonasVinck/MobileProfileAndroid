@@ -1,7 +1,18 @@
 package com.commeto.kuleuven.MP.dataClasses;
 
 /**
+ * <pre>
  * Created by Jonas on 4/03/2018.
+ *
+ * Class to bundle the information gotten from an HTTP response message and the id that might have
+ * been specified.
+ *
+ * Attributes:
+ *  - responseCode      Response code of the HTTP response.
+ *  - responseMessage   Response message of the HTTP response
+ *  - responseBody      Body of the HTTP response.
+ *  - id                Id of the LocalRoute getting uploaded or updates.
+ * </pre>
  */
 
 public class HTTPResponse{
@@ -9,21 +20,21 @@ public class HTTPResponse{
     //class specs
 
     private int responseCode;
-    private String responseMessge;
-    private String responsBody;
+    private String responseMessage;
+    private String responseBody;
     private int id;
 
     public HTTPResponse(){
         this.id = -1;
         this.responseCode = -2;
-        this.responseMessge = "OFFLINE";
-        this.responsBody = "no network connection";
+        this.responseMessage = "OFFLINE";
+        this.responseBody = "no network connection";
     }
 
-    public HTTPResponse(int responseCode, String responseMessge, String responsBody, int id) {
+    public HTTPResponse(int responseCode, String responseMessage, String responseBody, int id) {
         this.responseCode = responseCode;
-        this.responseMessge = responseMessge;
-        this.responsBody = responsBody;
+        this.responseMessage = responseMessage;
+        this.responseBody = responseBody;
         this.id = id;
     }
 //==================================================================================================
@@ -33,12 +44,12 @@ public class HTTPResponse{
         return responseCode;
     }
 
-    public String getResponseMessge() {
-        return responseMessge;
+    public String getResponseMessage() {
+        return responseMessage;
     }
 
-    public String getResponsBody() {
-        return responsBody;
+    public String getResponseBody() {
+        return responseBody;
     }
 
     public int getId() {
@@ -51,12 +62,12 @@ public class HTTPResponse{
         this.responseCode = responseCode;
     }
 
-    public void setResponseMessge(String responseMessge) {
-        this.responseMessge = responseMessge;
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
     }
 
-    public void setResponsBody(String responsBody) {
-        this.responsBody = responsBody;
+    public void setResponseBody(String responseBody) {
+        this.responseBody = responseBody;
     }
 
     public void setId(int id) {

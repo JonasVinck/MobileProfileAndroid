@@ -64,10 +64,10 @@ public class MeasuringActivity extends AppCompatActivity{
 
     private static final String CMDPAUSE = "pause";
     private static final String CMDPLAY = "play";
-    private static final String CMDPREVIOUS = "previous";
-    private static final String CMDNEXT = "next";
-    private static final String SERVICECMD = "com.android.music.musicservicecommand";
-    private static final String CMDNAME = "command";
+    private static final String CMD_PREVIOUS = "previous";
+    private static final String CMD_NEXT = "next";
+    private static final String SERVICE_CMD = "com.android.music.musicservicecommand";
+    private static final String CMD_NAME = "command";
 //==================================================================================================
     //broadcast receivers
 
@@ -432,8 +432,8 @@ public class MeasuringActivity extends AppCompatActivity{
     public void previous(View view){
 
         try {
-            Intent intent = new Intent(SERVICECMD);
-            intent.putExtra(CMDNAME , CMDPREVIOUS);
+            Intent intent = new Intent(SERVICE_CMD);
+            intent.putExtra(CMD_NAME, CMD_PREVIOUS);
             MeasuringActivity.this.sendBroadcast(intent);
         } catch (Exception e){
             InternalIO.writeToLog(context, e);
@@ -446,8 +446,8 @@ public class MeasuringActivity extends AppCompatActivity{
             findViewById(R.id.play_pause_button).setBackgroundResource(audioManager.isMusicActive() ?
                             android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play
             );
-            Intent intent = new Intent(SERVICECMD);
-            intent.putExtra(CMDNAME , audioManager.isMusicActive() ? CMDPAUSE : CMDPLAY);
+            Intent intent = new Intent(SERVICE_CMD);
+            intent.putExtra(CMD_NAME, audioManager.isMusicActive() ? CMDPAUSE : CMDPLAY);
             MeasuringActivity.this.sendBroadcast(intent);
         } catch (Exception e){
             InternalIO.writeToLog(context, e);
@@ -456,8 +456,8 @@ public class MeasuringActivity extends AppCompatActivity{
 
     public void next(View view){
         try {
-            Intent intent = new Intent(SERVICECMD);
-            intent.putExtra(CMDNAME , CMDNEXT);
+            Intent intent = new Intent(SERVICE_CMD);
+            intent.putExtra(CMD_NAME, CMD_NEXT);
             MeasuringActivity.this.sendBroadcast(intent);
         } catch (Exception e){
             InternalIO.writeToLog(context, e);

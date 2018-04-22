@@ -10,6 +10,9 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 15/03/2018.
+ *
+ * Fragment to add music controls to layout. Actions specified in activity. Only used to recycle
+ * layout.
  */
 
 public class MusicControlFragment extends Fragment{

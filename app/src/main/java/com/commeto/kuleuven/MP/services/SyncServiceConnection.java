@@ -8,6 +8,8 @@ import com.commeto.kuleuven.MP.interfaces.SyncInterface;
 
 /**
  * Created by Jonas on 16/04/2018.
+ *
+ * Connection to be used with the SyncService.
  */
 
 public class SyncServiceConnection implements ServiceConnection {

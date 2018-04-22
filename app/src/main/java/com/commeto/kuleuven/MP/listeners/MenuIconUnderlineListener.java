@@ -7,6 +7,9 @@ import android.widget.ImageView;
 
 /**
  * Created by Jonas on 13/04/2018.
+ *
+ * Extension to be used to block the changing of the menu tab of the selected Fragment in the
+ * BaseActivity.
  */
 
 public class MenuIconUnderlineListener extends UnderlineButtonListener{

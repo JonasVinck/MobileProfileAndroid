@@ -18,10 +18,10 @@ public class Measurement{
     private double latitude;
     private double longitude;
     private double elevation;
-    private double accellerationResult;
+    private double accelerationResult;
     private LinkedList<float[]> accelerometerData;
     private double lightResult;
-    private LinkedList<float[]> lightlevelData;
+    private LinkedList<float[]> lightLevelData;
     private double speed;
     private double distance;
     private float accuracy;
@@ -42,9 +42,9 @@ public class Measurement{
         this.elevation = elevation;
         if (accelerometerData == null || speed * 3.6 < 10 || speed * 3.6 > 25) this.accelerometerData = null;
         else this.accelerometerData = new LinkedList<>(accelerometerData);
-        this.accellerationResult = calculateAccelerationResult();
-        if (lightsensorData == null) this.lightlevelData = null;
-        else this.lightlevelData = new LinkedList<>(lightsensorData);
+        this.accelerationResult = calculateAccelerationResult();
+        if (lightsensorData == null) this.lightLevelData = null;
+        else this.lightLevelData = new LinkedList<>(lightsensorData);
         this.lightResult = calculateLightResult();
         this.speed = speed;
         this.distance = distance;
@@ -57,10 +57,10 @@ public class Measurement{
         this.latitude = Double.parseDouble(backup[1]);
         this.longitude = Double.parseDouble(backup[2]);
         this.elevation = Double.parseDouble(backup[3]);
-        this.accellerationResult = Double.parseDouble(backup[4]);
+        this.accelerationResult = Double.parseDouble(backup[4]);
         this.accelerometerData = null;
         this.lightResult = Double.parseDouble(backup[5]);
-        this.lightlevelData = null;
+        this.lightLevelData = null;
         this.speed = Double.parseDouble(backup[6]);
         this.distance = Double.parseDouble(backup[7]);
         this.accuracy = Float.parseFloat(backup[8]);
@@ -84,8 +84,8 @@ public class Measurement{
         return elevation;
     }
 
-    public double getAccellerationResult() {
-        return accellerationResult;
+    public double getAccelerationResult() {
+        return accelerationResult;
     }
 
     public double getLightResult() {
@@ -101,6 +101,18 @@ public class Measurement{
     }
 //==================================================================================================
     //private methods
+
+    /**
+     * <pre>
+     * Reduces the accelerometerData array to 1 value.
+     *
+     * The result is 0.4 times the average of the amplitude values in the array added to 0.6 times
+     * the maximum value in the array.
+     *
+     * Returns -1 if array is empty.
+     * </pre>
+     * @return The acceleration value of the measurement.
+     */
 
     private double calculateAccelerationResult(){
         if(accelerometerData == null) return -1;
@@ -126,18 +138,30 @@ public class Measurement{
         return 0;
     }
 
+    /**
+     * <pre>
+     * Reduces the accelerometerData array to 1 value.
+     *
+     * The result is the average of the values in the array.
+     *
+     * Returns -1 if array is empty.
+     * </pre>
+     * @return The light value for the measurement.
+     */
+
     private double calculateLightResult(){
 
         try {
-            if (!lightlevelData.isEmpty()) {
+            if (!lightLevelData.isEmpty()) {
                 double result = 0;
-                for (float[] data : lightlevelData) {
+                for (float[] data : lightLevelData) {
                     result += data[0];
                 }
-                result = result / lightlevelData.size();
+                result = result / lightLevelData.size();
                 return result;
             }
         } catch (NullPointerException e){
+            //Catch if the array is a null pointer reference.
         }
         return -1;
     }
@@ -160,8 +184,8 @@ public class Measurement{
         this.elevation = elevation;
     }
 
-    public void setAccellerationResult(double accellerationResult) {
-        this.accellerationResult = accellerationResult;
+    public void setAccelerationResult(double accelerationResult) {
+        this.accelerationResult = accelerationResult;
     }
 
     public void setAccelerometerData(LinkedList<float[]> accelerometerData) {
@@ -172,8 +196,8 @@ public class Measurement{
         this.lightResult = lightResult;
     }
 
-    public void setLightlevelData(LinkedList<float[]> lightlevelData) {
-        this.lightlevelData = lightlevelData;
+    public void setLightLevelData(LinkedList<float[]> lightLevelData) {
+        this.lightLevelData = lightLevelData;
     }
 
     public void setSpeed(double speed) {
@@ -186,17 +210,22 @@ public class Measurement{
 //==================================================================================================
     //public methods
 
+    /**
+     * Method used to get a JSON representation of the measurement.
+     *
+     * @return JSON form of the measurement.
+     */
+
     public JSONObject toJSON() {
         JSONObject object = new JSONObject();
 
         try {
-
             object.put("time", time);
             object.put("lat", latitude);
             object.put("lon", longitude);
             object.put("ele", elevation);
             object.put("speed", speed);
-            object.put("result", accellerationResult);
+            object.put("result", accelerationResult);
             object.put("lightResult", lightResult);
             object.put("accuracy", accuracy);
         } catch (JSONException e) {
@@ -204,13 +233,18 @@ public class Measurement{
         return object;
     }
 
+    /**
+     * Method to get a CSV form of the measurement to use to backup the measurements.
+     *
+     * @return The CSV form of the measurement.
+     */
     public String toString(){
         return
                 Long.toString(time) + "," +
                 Double.toString(latitude) + "," +
                 Double.toString(longitude) + "," +
                 Double.toString(elevation) + "," +
-                Double.toString(accellerationResult) + "," +
+                Double.toString(accelerationResult) + "," +
                 Double.toString(lightResult) + "," +
                 Double.toString(speed) + "," +
                 Double.toString(distance) + "," +

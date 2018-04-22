@@ -9,6 +9,8 @@ import java.util.Calendar;
 
 /**
  * Created by Jonas on 6/04/2018.
+ *
+ * Dialog used to get a date.
  */
 
 public class DateDialog extends DialogFragment{
@@ -16,6 +18,12 @@ public class DateDialog extends DialogFragment{
     private Calendar date;
     private DatePickerDialog.OnDateSetListener listener;
 
+    /**
+     * Method to set the default date displayed.
+     *
+     * @param date Date to be set as standard.
+     * @param listener Used OnDateChangedListener.
+     */
     public void set(Calendar date, DatePickerDialog.OnDateSetListener listener){
         this.date = date;
         this.listener = listener;

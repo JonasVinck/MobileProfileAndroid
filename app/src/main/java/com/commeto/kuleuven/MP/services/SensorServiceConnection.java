@@ -8,6 +8,8 @@ import java.util.LinkedList;
 
 /**
  * Created by Jonas on 26/03/2018.
+ *
+ * Connection for the sensorService.
  */
 
 public class SensorServiceConnection implements ServiceConnection{

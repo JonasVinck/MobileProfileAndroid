@@ -23,10 +23,10 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.commeto.kuleuven.MP.support.Static.makeToastShort;
-
 /**
  * Created by Jonas on 10/04/2018.
+ *
+ * Used to dispaly current locaiton while riding.
  */
 
 public class MeasuringMapFragment extends Fragment{
@@ -59,7 +59,7 @@ public class MeasuringMapFragment extends Fragment{
     public void onViewCreated(@NotNull View view, Bundle bundle){
         super.onViewCreated(view, bundle);
 
-        Mapbox.getInstance(context, getResources().getString(R.string.mapbox_key));
+        Mapbox.getInstance(context, getResources().getString(R.string.jern_key));
 
         mapView = view.findViewById(R.id.map);
         mapView.onCreate(bundle);
@@ -78,9 +78,22 @@ public class MeasuringMapFragment extends Fragment{
         });
     }
 
+    /**
+     * Method used to add context to fragment. Context needed to initiate map.
+     *
+     * @param context Application context.
+     */
+
     public void setContext(Context context){
         this.context = context;
     }
+
+    /**
+     * Method used to refresh current location.
+     *
+     * @param lat Current latitude.
+     * @param lon Current Longitude.
+     */
 
     public void append(double lat, double lon){
 
@@ -89,7 +102,6 @@ public class MeasuringMapFragment extends Fragment{
             @Nullable
             @Override
             public CameraPosition getCameraPosition(@NonNull MapboxMap mapboxMap) {
-
                 return new CameraPosition.Builder()
                         .target(mapMarker.getPosition())
                         .build();

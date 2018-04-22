@@ -77,7 +77,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         public void processFinished(HTTPResponse response) {
             if(response.getResponseCode() == 200){
                 try {
-                    JSONObject object = new JSONObject(response.getResponsBody());
+                    JSONObject object = new JSONObject(response.getResponseBody());
                     InternalIO.writeToInternal(
                             context,
                             Integer.toString(localRoute.getLocalId()) + "_snapped.json",
@@ -143,7 +143,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 
         route_name.setText(localRoute.getRidename());
         ((EditText) findViewById(R.id.route_name_edit)).setText(localRoute.getRidename());
-        Mapbox.getInstance(context, getResources().getString(R.string.mapbox_key));
+        Mapbox.getInstance(context, getResources().getString(R.string.jern_key));
         mapView = findViewById(R.id.map);
         mapView.setStyleUrl(getString(R.string.mapbox_style_mapbox_streets));
         mapView.onCreate(bundle);
@@ -461,7 +461,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         @Override
         public void processFinished(HTTPResponse response) {
             if(response.getResponseCode() == 200){
-                String[] responseBody = response.getResponsBody().split(",");
+                String[] responseBody = response.getResponseBody().split(",");
                 if(localRoute.getLocalId() == Integer.parseInt(responseBody[0])){
                     LocalDatabase.getInstance(context).localRouteDAO().delete(localRoute);
                     finish();
@@ -475,7 +475,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         public void processFinished(HTTPResponse response) {
         if (response.getResponseCode() == 200){
 
-            String[] responseBody = response.getResponsBody().split(",");
+            String[] responseBody = response.getResponseBody().split(",");
 
             if(!responseBody[1].equals("-1")) {
                 LocalDatabase database = LocalDatabase.getInstance(getApplicationContext());
@@ -497,7 +497,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
             if (response.getResponseCode() == 200){
 
                 try {
-                    String[] responseString = response.getResponsBody().split(",");
+                    String[] responseString = response.getResponseBody().split(",");
                     JSONObject responseObject = new JSONObject(responseString[1]);
 
                     if(responseObject.get("code").equals("ok")) {

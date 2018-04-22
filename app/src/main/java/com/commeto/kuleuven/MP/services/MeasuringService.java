@@ -24,6 +24,8 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Service used to generate measurement data.
  */
 
 public class MeasuringService extends IntentService{
@@ -37,6 +39,7 @@ public class MeasuringService extends IntentService{
         public void onLocationChanged(Location location) {
 
             if(connection.isBound()) {
+
                 if (!started){
                     previousLocation = location;
                     started = true;
@@ -58,6 +61,7 @@ public class MeasuringService extends IntentService{
                     );
 
                     try {
+                        //Broadcast information to connected Activity.
                         broadcast.putExtra("vbrX", Float.toString(temp.get(0)[0]));
                         broadcast.putExtra("vbrY", Float.toString(temp.get(0)[1]));
                         broadcast.putExtra("vbrZ", Float.toString(temp.get(0)[2]));
@@ -75,12 +79,11 @@ public class MeasuringService extends IntentService{
                     );
                 }
 
-                double temp = previousLocation.bearingTo(location);
-
+                //Broadcast information to connected Activity.
                 broadcast.putExtra("longitude", location.getLongitude());
                 broadcast.putExtra("latitude", location.getLatitude());
                 broadcast.putExtra("altitude", location.getAltitude());
-                broadcast.putExtra("result", measurement.getAccellerationResult());
+                broadcast.putExtra("result", measurement.getAccelerationResult());
                 broadcast.putExtra("lightResult", measurement.getLightResult());
                 broadcast.putExtra("speed", location.getSpeed());
                 broadcast.putExtra("distance", measurementArray.getDistance());
@@ -89,9 +92,12 @@ public class MeasuringService extends IntentService{
                 broadcast.setAction("MeasurementUpdate");
                 sendBroadcast(broadcast);
 
+                //backup ride to cache.
                 InternalIO.writeToCache(context, "info", measurementArray.toString());
                 InternalIO.appendToCache(context, "backup", measurement.toString() + "\n");
 
+                //add measurement to array and add boolean to signify if it counts towards the
+                //distance. Distance only counts if user is moving.
                 measurementArray.add(measurement, location.getSpeed() > 0.5);
                 previousLocation = location;
             }
@@ -131,7 +137,7 @@ public class MeasuringService extends IntentService{
         keep = intent.getBooleanExtra("keep", false);
         type = intent.getStringExtra("type");
         if(type == null) type = "offroad";
-        if(type.equals("")) type = "offroad";
+        if(type.isEmpty()) type = "offroad";
 
         if(intent.getStringArrayExtra("info") != null && intent.getStringExtra("backup") != null){
             measurementArray = new MeasurementArray(intent.getStringArrayExtra("info"), intent.getStringExtra("backup"));
@@ -204,16 +210,22 @@ public class MeasuringService extends IntentService{
 
         try{
             SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
+
+            //Save ride and get id given to ride.
             int id = measurementArray.toJson(
                     context,
                     preferences.getString("username", "offline"),
                     preferences.getInt("calibration", 19),
                     type
             );
+
+            //display ridden ride.
             Intent resultIntent = new Intent(context, RideDisplayActivity.class);
             resultIntent.putExtra("id", id);
             resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(resultIntent);
+
+            //delete cache since data should be safed here.
             deleteFromCache(context, "info");
             deleteFromCache(context, "backup");
         } catch (NoDistanceException e){
@@ -224,11 +236,5 @@ public class MeasuringService extends IntentService{
 
         locationManager.removeUpdates(locationListener);
         super.onDestroy();
-    }
-//==================================================================================================
-    //public methods
-
-    public void giveName(String name){
-        this.measurementArray.setName(name);
     }
 }

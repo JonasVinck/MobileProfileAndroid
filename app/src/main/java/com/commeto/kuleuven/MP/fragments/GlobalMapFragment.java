@@ -30,8 +30,12 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Created by Jonas on 13/04/2018.
+ *
+ * Used to display the global map from the website.
  */
 
 public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
@@ -73,7 +77,7 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_global_maps, container, false);
@@ -85,9 +89,10 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
         Mapbox.getInstance(context, getResources().getString(R.string.jern_key));
         mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        mapView.setStyleUrl(getString(R.string.comfort_style));
+        mapView.setStyleUrl(getString(R.string.fietsverkeer_style));
         mapView.getMapAsync(this);
 
+        //Setting the geo coder.
         final GeoCodeAdapter adapter = new GeoCodeAdapter(activity);
         autocomplete = view.findViewById(R.id.search_bar);
         autocomplete.setLines(1);
@@ -112,7 +117,6 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
         autocomplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AutoCompleteTextView et = (AutoCompleteTextView) v;
                 autocomplete.setText("");
             }
         });
@@ -171,6 +175,12 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
 //==================================================================================================
     //map functions
 
+    /**
+     * Used to center the map around certain coordinates.
+     *
+     * @param lat Latitude of the center.
+     * @param lon Longitude of the center.
+     */
     public void updateMap(double lat, double lon){
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(lat, lon))
@@ -189,6 +199,12 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
     }
 //==================================================================================================
     //private functions
+
+    /**
+     * Method to change the style of the map and show different data.
+     *
+     * @param option Option for the map to be displayed.
+     */
 
     private void setMap(String option){
         ((LinearLayout) activity.findViewById(R.id.legend)).removeAllViews(); //todo nice fuckup

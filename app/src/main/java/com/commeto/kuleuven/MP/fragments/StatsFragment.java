@@ -34,6 +34,8 @@ import static com.commeto.kuleuven.MP.support.Static.timeFormat;
 
 /**
  * Created by Jonas on 12/04/2018.
+ *
+ * Fragment to display user stats.
  */
 
 public class StatsFragment extends Fragment{

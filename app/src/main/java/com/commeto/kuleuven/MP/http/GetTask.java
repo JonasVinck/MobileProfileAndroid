@@ -20,6 +20,8 @@ import javax.net.ssl.SSLSession;
 
 /**
  * Created by Jonas on 4/03/2018.
+ *
+ * AsyncTask used to send HTTP GET messages.
  */
 
 public class GetTask extends AsyncTask<String, Void, Boolean> implements HostnameVerifier{
@@ -31,8 +33,17 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
     private Bundle options;
     private int id;
 
-    public GetTask(final String baseUrl, String url, AsyncResponseInterface asyncResponseInterface, Bundle options, int id) {
-        this.baseUrl = baseUrl;
+    /**
+     * Constructor
+     *
+     * @param fullIp Full IP address of the server.
+     * @param url Url to which message has to be sent.
+     * @param asyncResponseInterface Interface used for response.
+     * @param options Possible options to be put in the url.
+     * @param id Possible id of the ride to be uploaded.
+     */
+    public GetTask(final String fullIp, String url, AsyncResponseInterface asyncResponseInterface, Bundle options, int id) {
+        this.baseUrl = fullIp;
         this.url = url;
         this.asyncResponseInterface = asyncResponseInterface;
         this.options = options;
@@ -41,6 +52,7 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
 //==================================================================================================
     //interface override
 
+    //Bad solution to use HTTPS.
     @Override
     public boolean verify(String s, SSLSession sslSession) {
         HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();

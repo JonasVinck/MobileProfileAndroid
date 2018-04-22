@@ -30,6 +30,8 @@ import static com.commeto.kuleuven.MP.support.Static.getIDInteger;
 
 /**
  * Created by Jonas on 15/04/2018.
+ *
+ * Service to sync local database with server.
  */
 
 public class SyncService extends IntentService{
@@ -53,6 +55,26 @@ public class SyncService extends IntentService{
         return binder;
     }
 //==================================================================================================
+    //constants
+
+    private final String DELETED = "deleted";
+    private final String LAST_CHANGE = "lastChange";
+    private final String NAME = "name";
+    private final String RIDE_ID = "rideId";
+    private final String START_TIME = "startTime";
+    private final String DISTANCE = "distance";
+    private final String SPEED = "avSpeed";
+    private final String DURATION = "duration";
+    private final String TYPE = "type";
+    private final String DESCRIPTION = "description";
+    private final String SNAPPED_EXTENSION = "_snapped.json";
+    private final String UNSNAPPED_EXTENSION = "_unsnapped.json";
+    private final String SNAPPED = "jsonArraySnapped";
+    private final String UNSNAPPED = "jsonArrayUnsnapped";
+    private final String USERNAME = "username";
+    private final String TOKEN = "token";
+    private String FULL_IP;
+//==================================================================================================
     //class specs
 
     private int toPull, toUpload, toUpdate;
@@ -60,7 +82,6 @@ public class SyncService extends IntentService{
     private SharedPreferences preferences;
     private String username;
     private String token;
-    private String fullIp;
     private LocalRouteDAO dao;
 
     private SyncInterface syncInterface;
@@ -78,12 +99,12 @@ public class SyncService extends IntentService{
         toUpdate = 0;
 
         preferences = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
-        username = preferences.getString("username", "");
-        token = preferences.getString("token", "");
-        fullIp =
-                preferences.getString("baseUrl", getString(R.string.hard_coded_ip)) +
+        username = preferences.getString(USERNAME, "");
+        token = preferences.getString(TOKEN, "");
+        FULL_IP =
+                preferences.getString(getString(R.string.preferences_ip), getString(R.string.hard_coded_ip)) +
                 ":" +
-                preferences.getString("socket", getString(R.string.hard_coded_socket));
+                preferences.getString(getString(R.string.preferences_socket), getString(R.string.hard_coded_socket));
         dao = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO();
 
 
@@ -93,14 +114,14 @@ public class SyncService extends IntentService{
     public int onStartCommand(Intent intent, int flags, int startId){
 
         new GetTask(
-                fullIp,
-                "/MP/service/secured/ride/pullall/0",
+                FULL_IP,
+                getString(R.string.pull_all),
                 getAllInterface,
                 null,
                 -1
         ).execute(
-                preferences.getString("username", ""),
-                preferences.getString("token", "")
+                preferences.getString(USERNAME, ""),
+                preferences.getString(TOKEN, "")
         );
 
         return START_NOT_STICKY;
@@ -133,35 +154,35 @@ public class SyncService extends IntentService{
                         localRoute = localRoutes.get(0);
 
 
-                        if (localRoute.getLastUpdated() < jsonArray.getJSONObject(i).getLong("lastChange")){
+                        if (localRoute.getLastUpdated() < jsonArray.getJSONObject(i).getLong(LAST_CHANGE)){
 
                             new GetTask(
-                                    fullIp,
+                                    FULL_IP,
                                     getString(R.string.pull) + Integer.toString(localRoute.getId()) + "/0",
                                     updatePullInterface,
                                     null,
                                     localRoute.getId()
                             ).execute(
-                                    preferences.getString("username", ""),
-                                    preferences.getString("token", "")
+                                    preferences.getString(USERNAME, ""),
+                                    preferences.getString(TOKEN, "")
                             );
-                        } else if(localRoute.getLastUpdated() != jsonArray.getJSONObject(i).getLong("lastChange")){
+                        } else if(localRoute.getLastUpdated() != jsonArray.getJSONObject(i).getLong(LAST_CHANGE)){
 
                             JSONObject toWrite = new JSONObject();
-                            toWrite.put("deleted", false);
-                            toWrite.put("name", localRoute.getRidename());
-                            toWrite.put("description", localRoute.getDescription());
+                            toWrite.put(DELETED, false);
+                            toWrite.put(NAME, localRoute.getRidename());
+                            toWrite.put(DESCRIPTION, localRoute.getDescription());
 
                             new PostTask(
-                                    fullIp,
+                                    FULL_IP,
                                     getString(R.string.push) + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
                                     updatePushInterface,
                                     localRoute.getId(),
                                     null
                             ).execute(
                                     toWrite.toString(),
-                                    preferences.getString("username", ""),
-                                    preferences.getString("token", "")
+                                    preferences.getString(USERNAME, ""),
+                                    preferences.getString(TOKEN, "")
                             );
                         } else {
                             toPull--;
@@ -169,14 +190,14 @@ public class SyncService extends IntentService{
                     } else{
 
                         new GetTask(
-                                fullIp,
+                                FULL_IP,
                                 getString(R.string.pull) + jsonArray.getJSONObject(i).getInt("id") + "/0",
                                 newPullInterface,
                                 null,
                                 jsonArray.getJSONObject(i).getInt("id")
                         ).execute(
-                                preferences.getString("username", ""),
-                                preferences.getString("token", "")
+                                preferences.getString(USERNAME, ""),
+                                preferences.getString(TOKEN, "")
                         );
                     }
                 } catch (JSONException e){
@@ -204,7 +225,7 @@ public class SyncService extends IntentService{
                 try {
                     localRoute = allNotSent.get(i);
                     new PostTask(
-                            fullIp,
+                            FULL_IP,
                             getString(R.string.push) + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
                             notSentPushInterface,
                             localRoute.getLocalId(),
@@ -224,12 +245,12 @@ public class SyncService extends IntentService{
 
                     localRoute = allUpdated.get(i);
                     JSONObject toWrite = new JSONObject();
-                    toWrite.put("deleted", false);
-                    toWrite.put("name", localRoute.getRidename());
-                    toWrite.put("description", localRoute.getDescription());
+                    toWrite.put(DELETED, false);
+                    toWrite.put(NAME, localRoute.getRidename());
+                    toWrite.put(DESCRIPTION, localRoute.getDescription());
 
                     new PostTask(
-                            fullIp,
+                            FULL_IP,
                             getString(R.string.push) + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
                             updatedPushInterface,
                             allUpdated.get(i).getLocalId(),
@@ -288,7 +309,7 @@ public class SyncService extends IntentService{
                 interrupt();
             } else if(response.getResponseCode() == 200){
                 try {
-                    getAll(new JSONArray(response.getResponsBody()));
+                    getAll(new JSONArray(response.getResponseBody()));
                 } catch (JSONException e){
                     interrupt();
                 }
@@ -306,35 +327,35 @@ public class SyncService extends IntentService{
             if(response.getResponseCode() == 200 && response.getId() != -1 && response.getId() != -2) {
 
                 try {
-                    JSONObject responseObject = new JSONObject(response.getResponsBody());
+                    JSONObject responseObject = new JSONObject(response.getResponseBody());
                     LocalRoute localRoute = dao.existsServerId(response.getId(), username).get(0);
 
-                    deleted = responseObject.getBoolean("deleted");
+                    deleted = responseObject.getBoolean(DELETED);
                     if(!deleted) {
-                        localRoute.setId(responseObject.getInt("rideId"));
-                        localRoute.setTime(responseObject.getLong("startTime"));
-                        localRoute.setDistance(responseObject.getDouble("distance"));
-                        localRoute.setSpeed(responseObject.getDouble("avSpeed"));
-                        localRoute.setRidename(responseObject.getString("name"));
-                        localRoute.setDuration(responseObject.getLong("duration"));
-                        localRoute.setType(responseObject.getString("type"));
-                        localRoute.setDescription(responseObject.getString("description"));
+                        localRoute.setId(responseObject.getInt(RIDE_ID));
+                        localRoute.setTime(responseObject.getLong(START_TIME));
+                        localRoute.setDistance(responseObject.getDouble(DISTANCE));
+                        localRoute.setSpeed(responseObject.getDouble(SPEED));
+                        localRoute.setRidename(responseObject.getString(NAME));
+                        localRoute.setDuration(responseObject.getLong(DURATION));
+                        localRoute.setType(responseObject.getString(TYPE));
+                        localRoute.setDescription(responseObject.getString(DESCRIPTION));
                         localRoute.setUpdated(false);
-                        localRoute.setLastUpdated(responseObject.getLong("lastChange"));
+                        localRoute.setLastUpdated(responseObject.getLong(LAST_CHANGE));
                         localRoute.setSent(true);
 
                         dao.update(localRoute);
 
                         InternalIO.writeToInternal(
                                 getApplicationContext(),
-                                Integer.toString(localRoute.getLocalId()) + "_snapped.json",
-                                responseObject.getString("jsonArraySnapped"),
+                                Integer.toString(localRoute.getLocalId()) + SNAPPED_EXTENSION,
+                                responseObject.getString(SNAPPED),
                                 false
                         );
                         InternalIO.writeToInternal(
                                 getApplicationContext(),
-                                Integer.toString(localRoute.getLocalId()) + "_unsnapped.json",
-                                responseObject.getString("jsonArrayUnsnapped"),
+                                Integer.toString(localRoute.getLocalId()) + UNSNAPPED_EXTENSION,
+                                responseObject.getString(UNSNAPPED),
                                 false
                         );
                     } else {
@@ -356,38 +377,38 @@ public class SyncService extends IntentService{
             boolean deleted = false;
             if(response.getResponseCode() == 200 && response.getId() != -1 && response.getId() != -2) {
                 try {
-                    JSONObject responseObject = new JSONObject(response.getResponsBody());
+                    JSONObject responseObject = new JSONObject(response.getResponseBody());
 
-                    deleted = responseObject.getBoolean("deleted");
+                    deleted = responseObject.getBoolean(DELETED);
                     if(!deleted) {
                         LocalRoute localRoute = new LocalRoute(
                                 getIDInteger(getApplicationContext()),
-                                responseObject.getInt("rideId"),
+                                responseObject.getInt(RIDE_ID),
                                 true,
                                 username,
-                                responseObject.getString("name"),
-                                responseObject.getDouble("avSpeed"),
-                                responseObject.getDouble("distance"),
-                                responseObject.getLong("startTime"),
-                                responseObject.getLong("duration"),
+                                responseObject.getString(NAME),
+                                responseObject.getDouble(SPEED),
+                                responseObject.getDouble(DISTANCE),
+                                responseObject.getLong(START_TIME),
+                                responseObject.getLong(DURATION),
                                 0,
-                                responseObject.getString("type"),
+                                responseObject.getString(TYPE),
                                 false,
-                                responseObject.getLong("lastChange"),
-                                responseObject.getString("description")
+                                responseObject.getLong(LAST_CHANGE),
+                                responseObject.getString(DESCRIPTION)
                         );
                         dao.insert(localRoute);
 
                         InternalIO.writeToInternal(
                                 getApplicationContext(),
-                                Integer.toString(localRoute.getLocalId()) + "_snapped.json",
-                                responseObject.getString("jsonArraySnapped"),
+                                Integer.toString(localRoute.getLocalId()) + SNAPPED_EXTENSION,
+                                responseObject.getString(SNAPPED),
                                 false
                         );
                         InternalIO.writeToInternal(
                                 getApplicationContext(),
-                                Integer.toString(localRoute.getLocalId()) + "_unsnapped.json",
-                                responseObject.getString("jsonArrayUnsnapped"),
+                                Integer.toString(localRoute.getLocalId()) + UNSNAPPED_EXTENSION,
+                                responseObject.getString(UNSNAPPED),
                                 false
                         );
                     }

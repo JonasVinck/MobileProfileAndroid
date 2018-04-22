@@ -1,11 +1,9 @@
 package com.commeto.kuleuven.MP.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 
@@ -13,14 +11,10 @@ import com.commeto.kuleuven.MP.dataClasses.HTTPResponse;
 import com.commeto.kuleuven.MP.interfaces.AsyncResponseInterface;
 import com.commeto.kuleuven.MP.interfaces.SSLResponseInterface;
 import com.commeto.kuleuven.MP.R;
-import com.commeto.kuleuven.MP.sqlSupport.LocalDatabase;
-import com.commeto.kuleuven.MP.sqlSupport.LocalRoute;
-import com.commeto.kuleuven.MP.sqlSupport.LocalRouteDAO;
-
-import java.util.List;
+import com.commeto.kuleuven.MP.support.InternalIO;
 
 import static com.commeto.kuleuven.MP.http.HTTPStatic.setCertificate;
-import static com.commeto.kuleuven.MP.support.Static.getLayoutparams;
+import static com.commeto.kuleuven.MP.support.Static.getLayoutParams;
 import static com.commeto.kuleuven.MP.support.Static.isNetworkAvailable;
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 import static com.commeto.kuleuven.MP.support.Static.tryLogin;
@@ -32,34 +26,29 @@ import static com.commeto.kuleuven.MP.support.Static.tryLogin;
 public class CheckLoginActivity extends AppCompatActivity implements SSLResponseInterface{
 
 //==================================================================================================
+    //constants
+
+    private String USERNAME;
+//==================================================================================================
     //class specs
 
     private Context context;
 
     private SharedPreferences preferences;
-    private String toWrite;
-
-    private AlertDialog.Builder builder;
-    private DialogInterface dialogInterface;
 //==================================================================================================
     //login interface
-
-    private AsyncResponseInterface blockingInterface = new AsyncResponseInterface() {
-        @Override
-        public void processFinished(HTTPResponse response) {
-        }
-    };
 
     private AsyncResponseInterface loginInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
 
             if(response == null){
-                makeToastLong(context, "Kan niet inloggen");
+                makeToastLong(context, getString(R.string.login_unable));
             } else{
 
+                //Only go to the BaseActivity if response code of the HTTP request is 200
                 Intent intent = new Intent(CheckLoginActivity.this, response.getResponseCode() == 200
-                        ? BaseActivity.class: LoginActivity.class
+                        ? BaseActivity.class : LoginActivity.class
                 );
                 startActivity(intent);
                 finish();
@@ -73,25 +62,26 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
 //==================================================================================================
     @Override
     public void onCreate(Bundle bundle) {
+
+        //Necessary to initiate activity.
         super.onCreate(bundle);
         setContentView(R.layout.activity_check_login);
+
+        //Setting constants.
+        USERNAME = getString(R.string.username);
+
+        //Setting attributes.
         context = getApplicationContext();
         preferences = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
 
-        (findViewById(R.id.logo)).setLayoutParams(getLayoutparams(context, R.drawable.logo));
+        //Setting the center logo
+        (findViewById(R.id.logo)).setLayoutParams(getLayoutParams(context, R.drawable.logo));
         getWindow().setGravity(Gravity.CENTER_VERTICAL);
-
-        if(preferences.getString("baseUrl", "").equals("")) {
-            preferences.edit().putString("baseUrl", getString(R.string.hard_coded_ip)).apply();
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        List<LocalRoute> routes = LocalDatabase.getInstance(context).localRouteDAO().debug();
-        LocalRouteDAO dao = LocalDatabase.getInstance(context).localRouteDAO();
 
         if(isNetworkAvailable(context)) goOnline();
         else goOffline();
@@ -110,7 +100,6 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(dialogInterface != null) dialogInterface.dismiss();
     }
 //==================================================================================================
     //private methods
@@ -118,28 +107,25 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
     private void goOnline(){
 
         try {
+            //Set certificate before attempting HTTP communication with server.
             setCertificate(this, this);
         } catch (Exception e){
-            makeToastLong(context, e.getMessage());
+            InternalIO.writeToLog(context, e);
         }
     }
 
     private void goOffline(){
 
-        String username = preferences.getString("username", null);
-        String token = preferences.getString("token", null);
+        String username = preferences.getString(USERNAME, null);
 
-        if(token == null || username == null){
-
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("username", "offline");
-            editor.apply();
+        //Only allow online mode when username present in Shared¨Preferences
+        if(username != null) {
+            Intent intent = new Intent(this, BaseActivity.class);
+            startActivityForResult(intent, 0);
+            finish();
+        } else {
+            makeToastLong(context, getString(R.string.no_internet));
         }
-
-        preferences.edit().putString("offline", "1").apply();
-        Intent intent = new Intent(this, BaseActivity.class);
-        startActivityForResult(intent, 0);
-        finish();
     }
 
 //==================================================================================================
@@ -149,8 +135,8 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
     public void onProcessFinished(boolean bool){
 
         if(bool) {
-;
-            String username = preferences.getString("username", null);
+
+            String username = preferences.getString(USERNAME, null);
             String token = preferences.getString("token", null);
 
             if(username == null || token == null){
@@ -160,10 +146,9 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
                 finish();
             } else{
                 tryLogin(context, usedInterface);
-                usedInterface = blockingInterface;
             }
         } else{
-            makeToastLong(context, getString(R.string.ssl_error));
+            makeToastLong(context, getString(R.string.error));
         }
     }
 }

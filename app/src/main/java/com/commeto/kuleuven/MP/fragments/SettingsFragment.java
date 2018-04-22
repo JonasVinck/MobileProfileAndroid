@@ -22,6 +22,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Jonas on 13/04/2018.
+ *
+ * Fragment to display settings.
  */
 
 public class SettingsFragment extends Fragment{

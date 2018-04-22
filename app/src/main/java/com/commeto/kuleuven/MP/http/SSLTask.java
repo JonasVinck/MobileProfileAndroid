@@ -11,6 +11,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 /**
  * Created by Jonas on 6/03/2018.
+ *
+ * Task used to initiate SSL certificate.
+ *
+ * To make HTTPS communication possible with a self signed certificate, this certificate has to be
+ * added to the TrustStore.
  */
 
 public class SSLTask extends AsyncTask<Void, Void, Boolean>{
@@ -19,6 +24,13 @@ public class SSLTask extends AsyncTask<Void, Void, Boolean>{
 
     private SSLResponseInterface responseInterface;
     private Certificate certificate;
+
+    /**
+     * Constructor.
+     *
+     * @param responseInterface Interface used for response.
+     * @param certificate Certificate to be added to TrustStore.
+     */
 
     public SSLTask(SSLResponseInterface responseInterface, Certificate certificate){
 

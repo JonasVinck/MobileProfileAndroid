@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * Created by Jonas on 15/04/2018.
+ *
+ * Adapter used to display geocoding options.
  */
 
 public class GeoCodeAdapter extends BaseAdapter implements Filterable{

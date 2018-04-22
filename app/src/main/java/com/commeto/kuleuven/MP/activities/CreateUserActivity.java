@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.commeto.kuleuven.MP.http.PostTask;
 import com.commeto.kuleuven.MP.interfaces.AsyncResponseInterface;
-import com.commeto.kuleuven.MP.http.CreateUserTask;
 import com.commeto.kuleuven.MP.dataClasses.HTTPResponse;
 import com.commeto.kuleuven.MP.listeners.RoundedListener;
 import com.commeto.kuleuven.MP.R;
@@ -26,6 +26,17 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
  */
 
 public class CreateUserActivity extends AppCompatActivity implements AsyncResponseInterface{
+//==================================================================================================
+    //constants
+
+    //Constants not in resources because only used in this activity.
+    private final String USERNAME = "username";
+    private final String PASSWORD = "password";
+    private final String PASSWORD_CONFIRM = "password_confirm";
+    private final String FIRST_NAME = "firstName";
+    private final String LAST_NAME = "lastName";
+    private final String EMAIL = "email";
+    private String FULL_IP;
 //==================================================================================================
     //class specs
 
@@ -44,17 +55,32 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
 
     @Override
     public void onCreate(Bundle bundle) {
+
+        //Necessary to initiate activity.
         super.onCreate(bundle);
         setContentView(R.layout.activity_create_user);
+
+        //Setting constants.
+        FULL_IP = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE)
+                .getString(
+                        getString(R.string.preferences_ip),
+                        getString(R.string.hard_coded_ip)
+                ) +
+                getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE)
+                .getString(getString(R.string.preferences_socket),
+                        getString(R.string.hard_coded_socket)
+                );
+
+        //Setting attributes.
         context = getApplicationContext();
         findViewById(R.id.register).setOnTouchListener(new RoundedListener(context));
         editTextHashMap = new HashMap<>();
-        editTextHashMap.put("username", (EditText) findViewById(R.id.username));
-        editTextHashMap.put("password", (EditText) findViewById(R.id.password));
-        editTextHashMap.put("password_confirm", (EditText) findViewById(R.id.password_confirm));
-        editTextHashMap.put("first_name", (EditText) findViewById(R.id.name));
-        editTextHashMap.put("last_name", (EditText) findViewById(R.id.last_name));
-        editTextHashMap.put("email", (EditText) findViewById(R.id.email));
+        editTextHashMap.put(USERNAME, (EditText) findViewById(R.id.username));
+        editTextHashMap.put(PASSWORD, (EditText) findViewById(R.id.password));
+        editTextHashMap.put(PASSWORD_CONFIRM, (EditText) findViewById(R.id.password_confirm));
+        editTextHashMap.put(FIRST_NAME, (EditText) findViewById(R.id.name));
+        editTextHashMap.put(LAST_NAME, (EditText) findViewById(R.id.last_name));
+        editTextHashMap.put(EMAIL, (EditText) findViewById(R.id.email));
     }
 
     @Override
@@ -79,14 +105,19 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
 //==================================================================================================
     //interface override
 
+    /**
+     * Sets different error messages depending on the response from the PostTask.
+     * @param response HTTP response from server.
+     */
+
     public void processFinished(HTTPResponse response){
 
         if(response != null) {
-            if (response.getResponseCode() == 200 && response.getResponsBody().equals("Done")) {
+            if (response.getResponseCode() == 200) {
                 makeToastLong(context, "");
                 finish();
             } else if(response.getResponseCode() == -1){
-                makeToastLong(context, getString(R.string.no_server));
+                error(getString(R.string.no_server));
             } else {
                 ((EditText) findViewById(R.id.username)).setHighlightColor(getResources().getColor(R.color.red));
                 error(getString(R.string.user_exists));
@@ -98,17 +129,32 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
 //==================================================================================================
     //private methods
 
+    /**
+     * <pre>
+     * - Clears fields containing passwords.
+     * - Set error message TextView with given message and set visible.
+     * - Re-enable the onClickListener that sneds the HTTP message to create a user?
+     * - Set the background to have red borders.
+     * </pre>
+     * @param message error message needing to be displayed.
+     */
+
     private void error(String message){
 
-        ((EditText) findViewById(R.id.password)).setText("");
-        ((EditText) findViewById(R.id.password_confirm)).setText("");
+        editTextHashMap.get(PASSWORD).setText("");
+        editTextHashMap.get(PASSWORD_CONFIRM).setText("");
 
         ((TextView) findViewById(R.id.error)).setText(message);
         findViewById(R.id.error).setVisibility(View.VISIBLE);
-        findViewById(R.id.container).setBackgroundResource(R.drawable.rounded_error);
+
         findViewById(R.id.register).setOnClickListener(registerListener);
+        findViewById(R.id.container).setBackgroundResource(R.drawable.rounded_error);
         ((View) findViewById(R.id.register).getParent()).setBackgroundResource(R.drawable.rounded_bottom_error);
     }
+
+    /**
+     * Clears any styling done by the error(String message) method.
+     */
 
     private void clear(){
 
@@ -117,8 +163,17 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
         findViewById(R.id.register).setOnClickListener(null);
     }
 
-    private void makeRed(int id){
-        findViewById(id).getBackground().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
+    /**
+     * Changes given EditText's color to red.
+     *
+     * @param editText EditText to change.
+     */
+    private void checkRed(EditText editText){
+        if(editText.getText().toString().isEmpty()) {
+            editText.getBackground().setColorFilter(
+                    getResources().getColor(R.color.red),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
     }
 //==================================================================================================
     //button action
@@ -127,51 +182,56 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
 
         clear();
 
-        String username = editTextHashMap.get("username").getText().toString();
-        String password = editTextHashMap.get("password").getText().toString();
-        String password_confirm = editTextHashMap.get("password_confirm").getText().toString();
-        String firstname = editTextHashMap.get("first_name").getText().toString();
-        String lastname = editTextHashMap.get("last_name").getText().toString();
-        String email = editTextHashMap.get("email").getText().toString();
+        String username = editTextHashMap.get(USERNAME).getText().toString();
+        String password = editTextHashMap.get(PASSWORD).getText().toString();
+        String password_confirm = editTextHashMap.get(PASSWORD_CONFIRM).getText().toString();
+        String firstname = editTextHashMap.get(FIRST_NAME).getText().toString();
+        String lastname = editTextHashMap.get(LAST_NAME).getText().toString();
+        String email = editTextHashMap.get(EMAIL).getText().toString();
 
-        if(username.equals("") ||
-                password.equals("") ||
-                password_confirm.equals("") ||
-                firstname.equals("") ||
-                lastname.equals("") ||
-                email.equals("")
+        if(username.isEmpty() ||
+                password.isEmpty() ||
+                password_confirm.isEmpty() ||
+                firstname.isEmpty() ||
+                lastname.isEmpty() ||
+                email.isEmpty()
                 ){
 
-            if(username.equals("")) makeRed(R.id.username);
-            if(password.equals("")) makeRed(R.id.password);
-            if(password_confirm.equals("")) makeRed(R.id.password_confirm);
-            if(firstname.equals("")) makeRed(R.id.name);
-            if(lastname.equals("")) makeRed(R.id.last_name);
-            if(email.equals("")) makeRed(R.id.email);
+            checkRed(editTextHashMap.get(USERNAME));
+            checkRed(editTextHashMap.get(PASSWORD));
+            checkRed(editTextHashMap.get(PASSWORD_CONFIRM));
+            checkRed(editTextHashMap.get(FIRST_NAME));
+            checkRed(editTextHashMap.get(LAST_NAME));
+            checkRed(editTextHashMap.get(EMAIL));
 
             error(getString(R.string.fill_all));
         } else if(!password.equals(password_confirm)){
-            makeRed(R.id.password);
-            makeRed(R.id.password_confirm);
+            checkRed(editTextHashMap.get(PASSWORD));
+            checkRed(editTextHashMap.get(PASSWORD_CONFIRM));
             error(getString(R.string.password_mismatch));
         } else {
 
             try {
                 JSONObject user = new JSONObject();
-                user.put("username", username);
-                user.put("password", password);
-                user.put("firstName", firstname);
-                user.put("lastName", lastname);
-                user.put("email", email);
+                user.put(USERNAME, username);
+                user.put(PASSWORD, password);
+                user.put(FIRST_NAME, firstname);
+                user.put(LAST_NAME, lastname);
+                user.put(EMAIL, email);
                 user.put("group", "user");
 
-                CreateUserTask createUserTask = new CreateUserTask(
-                        getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE).getString("baseUrl", getString(R.string.hard_coded_ip)),
-                        "/MP/service/user/create",
+                PostTask createUserTask = new PostTask(
+                        FULL_IP,
+                        getString(R.string.create_user),
                         this,
-                        -1
+                        -1,
+                        null
                 );
-                createUserTask.execute(user);
+                createUserTask.execute(
+                        user.toString(),
+                        "",
+                        ""
+                );
             } catch (Exception e){
                 InternalIO.writeToLog(context, e);
             }

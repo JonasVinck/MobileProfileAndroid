@@ -15,6 +15,9 @@ import com.commeto.kuleuven.MP.R;
 
 /**
  * Created by Jonas on 17/04/2018.
+ *
+ * Dialog used to edit the name and description of a ride. Action to be taken on confirm specified
+ * in interface.
  */
 
 public class EditDialog extends DialogFragment{
@@ -35,6 +38,13 @@ public class EditDialog extends DialogFragment{
         }
     };
 
+    /**
+     * Method used to set the information to be displayed.
+     *
+     * @param rideName Name of the ride to be displayed.
+     * @param description Description of the ride. to be displayed.
+     * @param editDialogInterface Used interface.
+     */
     public void set(String rideName, String description, EditDialogInterface editDialogInterface){
         this.rideName = rideName;
         this.description = description;
@@ -55,10 +65,5 @@ public class EditDialog extends DialogFragment{
         this.view = view;
         builder.setView(view);
         return builder.create();
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialogInterface){
-        dialogInterface.dismiss();
     }
 }
