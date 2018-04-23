@@ -99,7 +99,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
             result = new HTTPResponse(
                     urlConnection.getResponseCode(),
                     urlConnection.getResponseMessage(),
-                    Integer.toString(id) + "," + repsonse,
+                    repsonse,
                     this.id
             );
 

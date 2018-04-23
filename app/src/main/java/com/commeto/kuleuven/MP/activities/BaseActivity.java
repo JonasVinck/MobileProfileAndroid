@@ -389,7 +389,7 @@ public class BaseActivity extends AppCompatActivity{
                     String[] options = context.getResources().getStringArray(R.array.options);
                     intent.putExtra("type", options[i]);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
 
                 if(dialogInterface != null) dialogInterface.dismiss();
@@ -713,8 +713,12 @@ public class BaseActivity extends AppCompatActivity{
 
         if(requestCode == 0){
             boolean test = preferences.getInt(CALIBRATION, 0) > 45;
-            findViewById(R.id.can_measure).setVisibility(test ? View.VISIBLE : View.GONE);
-            findViewById(R.id.can_not_measure).setVisibility(test ? View.GONE : View.VISIBLE);
+            try {
+                findViewById(R.id.can_measure).setVisibility(test ? View.VISIBLE : View.GONE);
+                findViewById(R.id.can_not_measure).setVisibility(test ? View.GONE : View.VISIBLE);
+            } catch (NullPointerException e){
+                //catch NullPointerException thrown when view not fully initiated when logging in.
+            }
         }
         if(requestCode == 43) ExternalIO.alterDocument(this, toWrite, requestCode, requestCode, data);
         if(requestCode == 581 && resultCode == RESULT_OK){

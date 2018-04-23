@@ -11,7 +11,12 @@ import com.commeto.kuleuven.MP.dataClasses.HTTPResponse;
 import com.commeto.kuleuven.MP.interfaces.AsyncResponseInterface;
 import com.commeto.kuleuven.MP.interfaces.SSLResponseInterface;
 import com.commeto.kuleuven.MP.R;
+import com.commeto.kuleuven.MP.sqlSupport.LocalDatabase;
+import com.commeto.kuleuven.MP.sqlSupport.LocalRoute;
 import com.commeto.kuleuven.MP.support.InternalIO;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.commeto.kuleuven.MP.http.HTTPStatic.setCertificate;
 import static com.commeto.kuleuven.MP.support.Static.getLayoutParams;
@@ -68,7 +73,7 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
         setContentView(R.layout.activity_check_login);
 
         //Setting constants.
-        USERNAME = getString(R.string.username);
+        USERNAME = getString(R.string.preferences_username);
 
         //Setting attributes.
         context = getApplicationContext();

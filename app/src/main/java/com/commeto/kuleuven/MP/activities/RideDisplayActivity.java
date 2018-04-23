@@ -106,7 +106,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
                 localRoute.setUpdated(true);
                 localRoute.setLastUpdated(System.currentTimeMillis());
                 LocalDatabase.getInstance(context).localRouteDAO().update(localRoute);
-                ((TextView) findViewById(R.id.name)).setText(localRoute.getRidename());
+                route_name.setText(localRoute.getRidename());
             }
         }
     };
@@ -115,7 +115,6 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 
     private MapView mapView;
     private TextView route_name;
-    private EditText route_name_edit;
 
     private boolean generated;
     private String toWrite;
@@ -138,7 +137,6 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         if(localRoutes.size() > 0) localRoute = localRoutes.get(0);
         else finish();
 
-        route_name_edit = findViewById(R.id.route_name_edit);
         route_name = findViewById(R.id.ride_name);
 
         route_name.setText(localRoute.getRidename());
@@ -183,12 +181,13 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
     public void onStop(){
         super.onStop();
         mapView.onStop();
+
+        setResult(RESULT_OK);
+        sync();
     }
 
     @Override
     public void onDestroy(){
-        setResult(RESULT_OK);
-        sync();
 
         super.onDestroy();
         mapView.onDestroy();
@@ -282,7 +281,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
             postNotification(this, "Update", localRoute.getRidename() + " updaten...");
 
             PostTask update = new PostTask(
-                    preferences.getString("baseUrl", getString(R.string.hard_coded_ip)) + ":" + preferences.getString("socket", getString(R.string.hard_coded_socket)),
+                    preferences.getString(getString(R.string.preferences_ip), getString(R.string.hard_coded_ip)) + ":" + preferences.getString(getString(R.string.preferences_socket), getString(R.string.hard_coded_socket)),
                     "/MP/service/secured/ride/push/" + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
                     updateInterface,
                     localRoute.getLocalId(),
@@ -293,7 +292,6 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
                 JSONObject updateObject = new JSONObject();
                 updateObject.put("name", localRoute.getRidename());
                 updateObject.put("description", localRoute.getDescription());
-                updateObject.put("discription", localRoute.getDescription());
                 updateObject.put("deleted", false);
 
                 update.execute(updateObject.toString(),
@@ -319,8 +317,8 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
                 postNotification(this, "Uploaden", localRoute.getRidename() + " uploaden...");
 
                 PostTask upload = new PostTask(
-                        preferences.getString("baseUrl", "") + ":" + preferences.getString("socket", getString(R.string.hard_coded_socket)),
-                        "/MP/service/secured/measurement",
+                        preferences.getString(getString(R.string.preferences_ip), getString(R.string.hard_coded_ip)) + ":" + preferences.getString(getString(R.string.preferences_socket), getString(R.string.hard_coded_socket)),
+                        getString(R.string.measurement),
                         uploadInterface,
                         localRoute.getLocalId(),
                         null
@@ -461,10 +459,14 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         @Override
         public void processFinished(HTTPResponse response) {
             if(response.getResponseCode() == 200){
-                String[] responseBody = response.getResponseBody().split(",");
-                if(localRoute.getLocalId() == Integer.parseInt(responseBody[0])){
-                    LocalDatabase.getInstance(context).localRouteDAO().delete(localRoute);
-                    finish();
+                try {
+                    if (localRoute.getLocalId() == response.getId() &&
+                            new JSONObject(response.getResponseBody()).getString("code").equals("ok")) {
+                        LocalDatabase.getInstance(context).localRouteDAO().delete(localRoute);
+                        finish();
+                    }
+                } catch (JSONException e){
+                    endNotify("Delete", "Verwijderen van " + localRoute.getRidename() + " gefaald.");
                 }
             }
         }
@@ -473,21 +475,20 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
     private AsyncResponseInterface uploadInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
-        if (response.getResponseCode() == 200){
+            if (response.getResponseCode() == 200){
 
-            String[] responseBody = response.getResponseBody().split(",");
+                int id = Integer.parseInt(response.getResponseBody());
+                if (id != -1 && localRoute.getLocalId() == response.getId()) {
+                    LocalDatabase database = LocalDatabase.getInstance(getApplicationContext());
+                    localRoute.setSent(true);
+                    localRoute.setId(Integer.parseInt("2"));
+                    database.localRouteDAO().update(localRoute);
 
-            if(!responseBody[1].equals("-1")) {
-                LocalDatabase database = LocalDatabase.getInstance(getApplicationContext());
-                localRoute.setSent(true);
-                localRoute.setId(Integer.parseInt(responseBody[1]));
-                database.localRouteDAO().update(localRoute);
-
-                endNotify("Einde upload", localRoute.getRidename() + " succesvol geupload.");
-            } else endNotify("Einde upload", localRoute.getRidename() + " niet geupload.");
-        } else {
-            endNotify("Einde upload", "upload " + localRoute.getRidename() + " gefaald.");
-        }
+                    endNotify("Einde upload", localRoute.getRidename() + " succesvol geupload.");
+                } else endNotify("Einde upload", localRoute.getRidename() + " niet geupload.");
+            } else {
+                endNotify("Einde upload", "upload " + localRoute.getRidename() + " gefaald.");
+            }
         }
     };
 
@@ -497,10 +498,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
             if (response.getResponseCode() == 200){
 
                 try {
-                    String[] responseString = response.getResponseBody().split(",");
-                    JSONObject responseObject = new JSONObject(responseString[1]);
+                    JSONObject responseObject = new JSONObject(response.getResponseBody());
 
-                    if(responseObject.get("code").equals("ok")) {
+                    if(responseObject.get("code").equals("ok") && localRoute.getLocalId() == response.getId()) {
                         localRoute.setUpdated(false);
                         localRoute.setLastUpdated(System.currentTimeMillis());
                         LocalDatabase.getInstance(context).localRouteDAO().update(localRoute);

@@ -106,8 +106,6 @@ public class SyncService extends IntentService{
                 ":" +
                 preferences.getString(getString(R.string.preferences_socket), getString(R.string.hard_coded_socket));
         dao = LocalDatabase.getInstance(getApplicationContext()).localRouteDAO();
-
-
     }
 
     @Override
@@ -290,13 +288,10 @@ public class SyncService extends IntentService{
         syncInterface.endSync();
     }
 
-    private void update(int id){
+    private void update(LocalRoute localRoute){
 
-
-        LocalRoute localRoute = dao.exists(id, username).get(0);
         localRoute.setSent(true);
         localRoute.setUpdated(false);
-        dao.update(localRoute);
     }
 //==================================================================================================
     //interface
@@ -330,6 +325,9 @@ public class SyncService extends IntentService{
                     JSONObject responseObject = new JSONObject(response.getResponseBody());
                     LocalRoute localRoute = dao.existsServerId(response.getId(), username).get(0);
 
+                    if(responseObject.getString("code").equals("nok")){
+                        dao.delete(localRoute);
+                    }
                     deleted = responseObject.getBoolean(DELETED);
                     if(!deleted) {
                         localRoute.setId(responseObject.getInt(RIDE_ID));
@@ -424,9 +422,17 @@ public class SyncService extends IntentService{
     private AsyncResponseInterface updatePushInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
-            if(response.getResponseCode() == 200 && response.getId() != -1 && response.getId() != -2){
+            if(response.getResponseCode() == 200 && response.getResponseCode() != -1 && response.getResponseCode() != -2){
 
-                update(response.getId());
+                try {
+                    if (new JSONObject(response.getResponseBody()).getString("code").equals("ok")) {
+                        LocalRoute localRoute = dao.existsServerId(response.getId(), username).get(0);
+                        update(localRoute);
+                        dao.update(localRoute);
+                    }
+                } catch (JSONException e){
+                    //catch possible JSONException.
+                }
             } else if(response.getResponseCode() == 401) interrupt();
 
             updated++;
@@ -438,9 +444,18 @@ public class SyncService extends IntentService{
     private AsyncResponseInterface notSentPushInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
-            if(response.getResponseCode() == 200 && response.getId() != -1 && response.getId() != -2) {
+            if(response.getResponseCode() == 200 && response.getResponseCode() != -1 && response.getResponseCode() != -2) {
 
-                update(response.getId());
+                try {
+                    if (new JSONObject(response.getResponseBody()).getString("code").equals("ok")) {
+                        LocalRoute localRoute = dao.existsServerId(response.getId(), username).get(0);
+                        localRoute.setId(response.getId());
+                        update(localRoute);
+                        dao.update(localRoute);
+                    }
+                } catch (JSONException e){
+                    //Catch possible JSONException.
+                }
             } else if(response.getResponseCode() == 401) interrupt();
 
             toUpload--;
@@ -453,8 +468,15 @@ public class SyncService extends IntentService{
         @Override
         public void processFinished(HTTPResponse response) {
 
-            if(response.getResponseCode() == 200 && response.getId() != -1 && response.getId() != -2) {
+            if(response.getResponseCode() == 200 && response.getResponseCode() != -1 && response.getResponseCode() != -2) {
 
+                try {
+                    LocalRoute localRoute = dao.exists(response.getId(), username).get(0);
+                    update(localRoute);
+                    dao.update(localRoute);
+                } catch (NullPointerException e){
+                    //Ride doesn't exist...somehow...
+                }
             } else if(response.getResponseCode() == 401) interrupt();
 
             toUpdate++;
