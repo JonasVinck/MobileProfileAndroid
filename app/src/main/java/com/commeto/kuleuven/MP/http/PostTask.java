@@ -68,7 +68,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
         boolean done;
 
         try {
-            //TODO
+
             String urlString = "https://" + this.baseUrl + this.url;
             if(options != null){
                 urlString += "?";
