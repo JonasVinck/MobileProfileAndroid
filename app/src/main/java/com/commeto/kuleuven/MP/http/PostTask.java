@@ -19,9 +19,11 @@ import javax.net.ssl.SSLSession;
 import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString;
 
 /**
+ * <pre>
  * Created by Jonas on 28/02/2018.
  *
- * Taks uses for HTTP POST messages.
+ * task used for HTTP POST messages.
+ * </pre>
  */
 
 public class PostTask extends AsyncTask<String, Void, Boolean> implements HostnameVerifier{
@@ -34,8 +36,6 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
     private Bundle options;
 
     /**
-     * Constructor.
-     *
      * @param fullip Full IP address of the server.
      * @param url Path to send the message to?
      * @param responseInterface Interface used for response.
@@ -68,6 +68,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
         boolean done;
 
         try {
+            //TODO
             String urlString = "https://" + this.baseUrl + this.url;
             if(options != null){
                 urlString += "?";

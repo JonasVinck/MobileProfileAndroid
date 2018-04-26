@@ -11,21 +11,20 @@ import android.widget.LinearLayout;
 import com.commeto.kuleuven.MP.interfaces.BaseDialogInterface;
 import com.commeto.kuleuven.MP.R;
 
-/**
+/**<pre>
  * Created by Jonas on 18/04/2018.
  *
  * Basic editing dialog. Action needed specified in interface.
+ * </pre>
  */
 
 public class BaseEditDialogBuilder extends AlertDialog.Builder{
 
     /**
-     * Constructor.
-     *
-     * @param activity Calling activity.
-     * @param title Title to be displayed
-     * @param previous Previous value to be displayed in the EditText.
-     * @param dialogInterface Used interface.
+     * @param activity          Calling activity.
+     * @param title             Title to be displayed
+     * @param previous          Previous value to be displayed in the EditText.
+     * @param dialogInterface   Interface used to return information.
      */
 
     public BaseEditDialogBuilder(Activity activity, String title, String previous, final BaseDialogInterface dialogInterface){

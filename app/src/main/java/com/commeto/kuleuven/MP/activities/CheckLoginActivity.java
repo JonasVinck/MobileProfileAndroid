@@ -26,6 +26,16 @@ import static com.commeto.kuleuven.MP.support.Static.tryLogin;
 
 /**
  * Created by Jonas on 1/03/2018.
+ * <p>
+ * First Activity that opens when the app is started. Will first check for an internet connection,
+ * if no connection is available if will check if there is a username in the SharedPreferences. If
+ * a username is found, it means a user was logged in. The Activity will then route the app to the
+ * BaseActivity ans display a message that it is running in offline mode.
+ * </p>
+ * <pre>
+ * Uses:
+ *  - GetTask
+ * </pre>
  */
 
 public class CheckLoginActivity extends AppCompatActivity implements SSLResponseInterface{
@@ -43,6 +53,9 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
 //==================================================================================================
     //login interface
 
+    /**
+     * Interface used to handle the result of the login message.
+     */
     private AsyncResponseInterface loginInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -109,6 +122,10 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
 //==================================================================================================
     //private methods
 
+    /**
+     * Method called when network is available. First the certificate will be added to the
+     * TrustStore. The interface used to handle this result will decide the next step.
+     */
     private void goOnline(){
 
         try {
@@ -119,6 +136,12 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
         }
     }
 
+    /**
+     * Called when no network connection is found. If there is still a username in the
+     * SharedPreferences, offline mode will be started and the app will route to the BaseActivity.
+     * The BaseActivity checks the login every time the onStart is called to keep checking for the
+     * validity of the token.
+     */
     private void goOffline(){
 
         String username = preferences.getString(USERNAME, null);
@@ -136,6 +159,12 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
 //==================================================================================================
     //Interface Override
 
+    /**
+     * Override for the interface for the SSL setting task response. Will check for the tokens
+     * valididty if the task was successful.
+     *
+     * @param bool If the SSLTask completed successfully.
+     */
     @Override
     public void onProcessFinished(boolean bool){
 

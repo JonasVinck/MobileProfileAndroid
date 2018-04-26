@@ -42,8 +42,6 @@
             android:screenOrientation="portrait" />
         <activity android:name="com.commeto.kuleuven.MP.activities.Callibration"
             android:screenOrientation="portrait" />
-        <activity android:name="com.commeto.kuleuven.MP.activities.RideFinishedActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name="com.commeto.kuleuven.MP.activities.FullScreenActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.commeto.kuleuven.MP.activities.FilterSortActivity"

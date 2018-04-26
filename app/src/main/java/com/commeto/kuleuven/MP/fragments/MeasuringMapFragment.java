@@ -83,7 +83,6 @@ public class MeasuringMapFragment extends Fragment{
      *
      * @param context Application context.
      */
-
     public void setContext(Context context){
         this.context = context;
     }
@@ -94,7 +93,6 @@ public class MeasuringMapFragment extends Fragment{
      * @param lat Current latitude.
      * @param lon Current Longitude.
      */
-
     public void append(double lat, double lon){
 
         mapMarker.setPosition(new LatLng(lat, lon));

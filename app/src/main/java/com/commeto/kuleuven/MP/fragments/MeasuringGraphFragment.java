@@ -16,9 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 
 /**
+ * <pre>
  * Created by Jonas on 10/04/2018.
  *
  * Fragment to display graph while riding. Fragment only displays 60 values to lower burden.
+ * </pre>
  */
 
 public class MeasuringGraphFragment extends Fragment{
@@ -28,6 +30,13 @@ public class MeasuringGraphFragment extends Fragment{
     private int x;
     private boolean limited;
 
+    /**
+     * Get a new instances of the MeasuringGraphFragment. If the MeasuringGraphFragment is limited
+     * the vertical axis will not rescale if the value exceeds 80.
+     *
+     * @param  limited Boolean representing whether the graph is limited or not.
+     * @return A new MeasuringGraphFragment.
+     */
     public static MeasuringGraphFragment newInstance(boolean limited) {
         MeasuringGraphFragment fragment = new MeasuringGraphFragment();
         Bundle args = new Bundle();
@@ -59,16 +68,25 @@ public class MeasuringGraphFragment extends Fragment{
         //Setting the GraphView.
         GraphView graphView = view.findViewById(R.id.graph);
         graphView.getViewport().setScrollable(false);
+        //X limit always 0-60 and not re-scalable.
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(60);
         graphView.getGridLabelRenderer().setGridColor(getResources().getColor(R.color.white));
+
         if(limited) {
+            /*
+            if limited:
+                - Vertical rescaling disabled.
+                - Vertical limit set to 0 - 80.
+                - Axis labels disabled on vertical axis.
+             */
             graphView.getViewport().setYAxisBoundsManual(true);
             graphView.getViewport().setMinY(0);
             graphView.getViewport().setMaxY(80);
             graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
         } else{
+            //If not limited, vertical axis can scale according to given data.
             graphView.getViewport().setYAxisBoundsManual(false);
         }
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);

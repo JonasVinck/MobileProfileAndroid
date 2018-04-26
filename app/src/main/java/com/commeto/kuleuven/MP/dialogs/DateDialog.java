@@ -8,9 +8,11 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 /**
+ * <pre>
  * Created by Jonas on 6/04/2018.
  *
  * Dialog used to get a date.
+ * </pre>
  */
 
 public class DateDialog extends DialogFragment{
@@ -21,8 +23,8 @@ public class DateDialog extends DialogFragment{
     /**
      * Method to set the default date displayed.
      *
-     * @param date Date to be set as standard.
-     * @param listener Used OnDateChangedListener.
+     * @param date      Date to be set as standard.
+     * @param listener  Used OnDateChangedListener to return the information.
      */
     public void set(Calendar date, DatePickerDialog.OnDateSetListener listener){
         this.date = date;

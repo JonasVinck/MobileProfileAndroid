@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import com.commeto.kuleuven.MP.R;
 
 /**
+ * <pre>
  * Created by Jonas on 12/04/2018.
  *
  * Fragment to display the different values of the ride information.
+ * </pre>
  */
 
 public class DetailsFragment extends Fragment{

@@ -11,5 +11,5 @@ import android.os.Bundle;
 public interface RouteListInterface {
     void resetList(Bundle options);
     Bundle getPrevious();
-    void setSearch();
+    void resetList();
 }

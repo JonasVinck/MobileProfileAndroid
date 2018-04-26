@@ -18,10 +18,14 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 
+import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString;
+
 /**
+ * <pre>
  * Created by Jonas on 4/03/2018.
  *
  * AsyncTask used to send HTTP GET messages.
+ * </pre>
  */
 
 public class GetTask extends AsyncTask<String, Void, Boolean> implements HostnameVerifier{
@@ -34,8 +38,6 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
     private int id;
 
     /**
-     * Constructor
-     *
      * @param fullIp Full IP address of the server.
      * @param url Url to which message has to be sent.
      * @param asyncResponseInterface Interface used for response.
@@ -65,23 +67,32 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
     public Boolean doInBackground(String... params){
 
         result = null;
-        boolean succes = false;
-        StringBuilder stringBuilder = new StringBuilder();
+        boolean success = false;
         String temp;
 
         try {
 
-            String urlString = "https://" + baseUrl + this.url;
+            //Setting up the url
+            StringBuilder urlString = new StringBuilder("https://" + baseUrl + this.url);
             if(options != null){
-                urlString += "?";
-                for(String key: options.keySet()) urlString += key + "=" + options.getString(key);
+                urlString.append("?");
+                //Options could be place in url.
+                for(String key: options.keySet()){
+                    urlString.append(key)
+                            .append("=")
+                            .append(options.getString(key));
+                }
             }
-            URL url = new URL(urlString);
+
+            //Setting up the url connection/
+            URL url = new URL(urlString.toString());
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+            //Set custom hostname verifier to verify the server ip.
             urlConnection.setHostnameVerifier(this);
             urlConnection.setSSLSocketFactory(SSLContext.getDefault().getSocketFactory());
             urlConnection.setConnectTimeout(3000);
             urlConnection.setDoInput(true);
+            //Add authorization to header.
             urlConnection.setRequestProperty(
                     "Authorization",
                     "Basic " + Base64.encodeToString(
@@ -90,33 +101,29 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
                     )
             );
 
+            //Get normal InputStream or ErrorStream when the HTTP code is in the error range.
             InputStream inputStream;
             if(urlConnection.getResponseCode() < 400) {
                 inputStream = urlConnection.getInputStream();
             } else{
                 inputStream = urlConnection.getErrorStream();
             }
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            while ((temp = bufferedReader.readLine()) != null){
-                stringBuilder.append(temp);
-            }
-
-            bufferedReader.close();
+            temp = convertInputStreamToString(inputStream);
+            inputStream.close();
 
             result = new HTTPResponse(
                     urlConnection.getResponseCode(),
                     urlConnection.getResponseMessage(),
-                    stringBuilder.toString(),
+                    temp,
                     id
             );
 
-            succes = true;
+            success = true;
 
+            //Disconnect.
             urlConnection.disconnect();
         } catch (SocketTimeoutException e){
-
             result = new HTTPResponse(
                     -1,
                     "no server",
@@ -133,12 +140,13 @@ public class GetTask extends AsyncTask<String, Void, Boolean> implements Hostnam
             );
         }
 
-        return succes;
+        return success;
     }
 
     @Override
     protected void onPostExecute(Boolean succes){
 
+        //Return response back to calling activity.
         asyncResponseInterface.processFinished(result);
     }
 }

@@ -153,10 +153,11 @@
 
     <string name="recalibrate_settings">Hercalibreren</string>
     <string name="version">Versie:</string>
+    <string name="no_version">geen versie gevonden...</string>
     <string name="relogin">Opnieuw inloggen</string>
     <string name="reset_ip">Ip address opnieuw instellen op</string>
     <string name="reset_socket">Socket opnieuw instellen op</string>
-    <string name="reset_ip_dialog">Wijzig huidig ip adress van server</string>
+    <string name="reset_ip_dialog">Wijzig huidig ip address van server</string>
     <string name="export_full_option">Exporteer full na rit</string>
     <string name="auto_upload_option">Automatisch uploaden na rit</string>
     <string name="auto_sync_option">Ritten automatisch syncen met de databank</string>

@@ -33,6 +33,9 @@ import static java.lang.Math.round;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Activity used to generate a Bundle that will serve as a filter for the RouteListFragment.
+ * various criteria will be given a value in the resulting Bundle.
  */
 
 public class FilterSortActivity extends AppCompatActivity{
@@ -62,7 +65,7 @@ public class FilterSortActivity extends AppCompatActivity{
     private Calendar start_date, end_date;
 
     /**
-     * Gets date from dialog and sets beginning date to filter.
+     * Gets date from dialog and sets beginning date in filter.
      */
     private DatePickerDialog.OnDateSetListener startDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -80,7 +83,7 @@ public class FilterSortActivity extends AppCompatActivity{
     };
 
     /**
-     * Gets date from dialog and sets end date to filter.
+     * Gets date from dialog and sets end date in filter.
      */
     private DatePickerDialog.OnDateSetListener endDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -218,10 +221,11 @@ public class FilterSortActivity extends AppCompatActivity{
 
     /**
      * Open dialog to set the lower bound for the date.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML
+     * @param view The clicked view.
      */
-
     public void setStartDate(View view){
         DateDialog dateDialog = new DateDialog();
         dateDialog.set(start_date, startDateListener);
@@ -230,10 +234,11 @@ public class FilterSortActivity extends AppCompatActivity{
 
     /**
      * Open dialog to set the upper bound for the date.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML.
+     * @param view The clicked view.
      */
-
     public void setEndDate(View view){
         DateDialog dateDialog = new DateDialog();
         dateDialog.set(end_date, endDateListener);
@@ -242,10 +247,11 @@ public class FilterSortActivity extends AppCompatActivity{
 
     /**
      * Open dialog to set the lower bound for the duration.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML.
+     * @param view The clicked view.
      */
-
     public void setDurationLower(View view){
         TimeDialog timeDialog = new TimeDialog();
         timeDialog.set(duration_lower, durationLowerListener);
@@ -253,11 +259,12 @@ public class FilterSortActivity extends AppCompatActivity{
     }
 
     /**
-     * Open dialog to set the upper bound for the duration.
+     * Open dialog to set the upper bound for the duration.v
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML.
+     * @param view The clicked view.
      */
-
     public void setDurationUpper(View view){
         TimeDialog timeDialog = new TimeDialog();
         timeDialog.set(duration_upper, durationUpperListener);
@@ -266,10 +273,11 @@ public class FilterSortActivity extends AppCompatActivity{
 
     /**
      * Clear the current options Bundle.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML
+     * @param view The clicked view.
      */
-
     public void clear(View view){
         this.options = new Bundle();
         options.putString(SORT, DATE);
@@ -279,10 +287,11 @@ public class FilterSortActivity extends AppCompatActivity{
 
     /**
      * Bundle all the set parameters and finishes activity.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused but necessary for using as onClick in XML
+     * @param view The clicked view.
      */
-
     public void confirm(View view){
 
         boolean temp;
@@ -360,9 +369,8 @@ public class FilterSortActivity extends AppCompatActivity{
     //private functions
 
     /**
-     * Sets the layout to match the given options.
+     * Sets the layout to match the options given as an argument with the Intent for the Activity.
      */
-
     private void setLayout(){
 
         String[] array;

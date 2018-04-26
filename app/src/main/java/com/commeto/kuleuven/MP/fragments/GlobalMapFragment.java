@@ -33,9 +33,11 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import org.jetbrains.annotations.NotNull;
 
 /**
+ * <pre>
  * Created by Jonas on 13/04/2018.
  *
  * Used to display the global map from the website.
+ * </pre>
  */
 
 public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
@@ -62,6 +64,11 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
 //==================================================================================================
     //lifecycle methods
 
+    /**
+     * Method used to get an instance of the GlobalMapFragment.
+     *
+     * @return A new GlobalMapFragment.
+     */
     public static GlobalMapFragment newInstance() {
         GlobalMapFragment fragment = new GlobalMapFragment();
         Bundle args = new Bundle();
@@ -86,6 +93,7 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
         view.findViewById(R.id.search).setOnTouchListener(new UnderlineButtonListener(context));
         ((TextView) view.findViewById(R.id.map_option)).setText(getResources().getStringArray(R.array.maps_options)[0]);
 
+        //Initiate mapbox attributes set API key.
         Mapbox.getInstance(context, getResources().getString(R.string.jern_key));
         mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -100,9 +108,11 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
         autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 GeocoderFeature result = adapter.getItem(position);
                 autocomplete.setText(result.getText());
                 updateMap(result.getLatitude(), result.getLongitude());
+                //Hiding the softinputkeyboard when a location is selected.
                 try {
                     ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
@@ -121,6 +131,7 @@ public class GlobalMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        //Set the options for the styles of the map.
         try {
             ((ListView) view.findViewById(R.id.map_option_list)).setAdapter(new MapOptionAdapter(
                     getActivity(),

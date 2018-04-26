@@ -4,7 +4,7 @@ package com.commeto.kuleuven.MP.dataClasses;
  * <pre>
  * Created by Jonas on 4/03/2018.
  *
- * Class to bundle the information gotten from an HTTP response message and the id that might have
+ * Class to bundle the information gotten from a HTTP response message and the id that might have
  * been specified.
  *
  * Attributes:
@@ -24,6 +24,15 @@ public class HTTPResponse{
     private String responseBody;
     private int id;
 
+    /**
+     * <pre></pre>
+     * Default offline message:
+     *  - id                = -1
+     *  - responseCode      = -2
+     *  - responseMessage   = OFFLINE
+     *  - responseBody      = no network connection
+     * </pre>
+     */
     public HTTPResponse(){
         this.id = -1;
         this.responseCode = -2;

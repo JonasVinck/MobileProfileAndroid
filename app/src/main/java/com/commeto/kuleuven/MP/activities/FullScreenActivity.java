@@ -23,6 +23,9 @@ import java.util.List;
  * Created by Jonas on 1/03/2018.
  *
  * Activity used to display a given route fullscreen.
+ *
+ * Uses:
+ *  - MapSupport
  */
 
 public class FullScreenActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -103,6 +106,11 @@ public class FullScreenActivity extends AppCompatActivity implements OnMapReadyC
 //==================================================================================================
     //onMapReadyCallBack
 
+    /**
+     * Override for the onMapReadyCallback. When the map is ready, the ride can be added to the map.
+     *
+     * @param map The initiated map.
+     */
     @Override
     public void onMapReady(MapboxMap map){
 
@@ -118,9 +126,11 @@ public class FullScreenActivity extends AppCompatActivity implements OnMapReadyC
     //button functions
 
     /**
-     * Method used to center the route.
+     * Method used to center the ride on the map.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
      *
-     * @param view Unused, needed to call method from onClick in XML.
+     * @param view The clicked view.
      */
     public void center(View view){
         if(map != null) map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));

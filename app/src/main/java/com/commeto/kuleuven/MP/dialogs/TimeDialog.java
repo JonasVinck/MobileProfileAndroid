@@ -6,9 +6,11 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 /**
+ * <pre>
  * Created by Jonas on 6/04/2018.
  *
  * Dialog used to get a duration value.
+ * </pre>
  */
 
 public class TimeDialog extends DialogFragment{
@@ -19,8 +21,8 @@ public class TimeDialog extends DialogFragment{
     /**
      * Method to set the default value to be displayed.
      *
-     * @param time Default time.
-     * @param listener OnTimeSetListener used.
+     * @param time      Default time.
+     * @param listener  OnTimeSetListener used to return the information.
      */
 
     public void set(long time, TimePickerDialog.OnTimeSetListener listener){
