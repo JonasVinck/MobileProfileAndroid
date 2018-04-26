@@ -1,7 +1,6 @@
 package com.commeto.kuleuven.MP.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,14 +20,27 @@ import org.jetbrains.annotations.NotNull;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
+ * <pre>
  * Created by Jonas on 13/04/2018.
  *
  * Fragment to display settings.
+ * </pre>
  */
 
 public class SettingsFragment extends Fragment{
+//==================================================================================================
+    //constants
 
-    private Context context;
+    private String IP;
+    private String SOCKET;
+    private String EXPORT_FULL;
+    private String AUTO_UPLOAD;
+    private String AUTO_SYNC;
+    private String DEBUG;
+    private String CALIBRATION;
+//==================================================================================================
+    //class specs
+
     private Activity activity;
 
     private LayoutUpdateInterface updateInterface = new LayoutUpdateInterface() {
@@ -41,6 +53,11 @@ public class SettingsFragment extends Fragment{
 //==================================================================================================
     //life cycle
 
+    /**
+     * Get a new instance of the SettingsFragment.
+     *
+     * @return A new instance of the SettingsFragment.
+     */
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -52,7 +69,9 @@ public class SettingsFragment extends Fragment{
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         activity = getActivity();
-        context = getActivity();
+
+        //Get used constants from resources.
+        setConstants();
     }
 
     @Override
@@ -66,7 +85,7 @@ public class SettingsFragment extends Fragment{
             );
         } catch (PackageManager.NameNotFoundException e){
             ((TextView) view.findViewById(R.id.version)).setText(
-                    "geen versie gevonden..."
+                    getString(R.string.no_version)
             );
         }
 
@@ -76,7 +95,7 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.edit()
-                        .putBoolean("export_full", b)
+                        .putBoolean(getString(R.string.preferences_export_full), b)
                         .apply();
             }
         });
@@ -85,7 +104,7 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.edit()
-                        .putBoolean("auto_upload", b)
+                        .putBoolean(getString(R.string.preferences_auto_upload), b)
                         .apply();
             }
         });
@@ -94,7 +113,7 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.edit()
-                        .putBoolean("auto_sync", b)
+                        .putBoolean(getString(R.string.preferences_auto_sync), b)
                         .apply();
             }
         });
@@ -103,7 +122,7 @@ public class SettingsFragment extends Fragment{
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.edit()
-                        .putBoolean("debug", b)
+                        .putBoolean(getString(R.string.preferences_debug), b)
                         .apply();
 
                 view.findViewById(R.id.debug_container).setVisibility(b ? View.VISIBLE : View.GONE);
@@ -116,7 +135,6 @@ public class SettingsFragment extends Fragment{
     @Override
     public void onStart(){
         super.onStart();
-
         resetSettings();
     }
 
@@ -145,47 +163,67 @@ public class SettingsFragment extends Fragment{
 //==================================================================================================
     //private functions
 
+    /**
+     * Resets the setting so that it matches the SharedPreferences.
+     */
     private void resetSettings(){
 
         SharedPreferences preferences = activity.getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
-        ((TextView) activity.findViewById(R.id.ip)).setText(preferences.getString("baseUrl", "no ip available"));
-        ((TextView) activity.findViewById(R.id.socket)).setText(preferences.getString("socket", getString(R.string.hard_coded_socket)));
+        ((TextView) activity.findViewById(R.id.ip)).setText(preferences.getString(IP, getString(R.string.hard_coded_ip)));
+        ((TextView) activity.findViewById(R.id.socket)).setText(preferences.getString(SOCKET, getString(R.string.hard_coded_socket)));
 
         ((Switch) activity.findViewById(R.id.export_full_switch)).setChecked(
-                preferences.getBoolean("export_full", false)
+                preferences.getBoolean(EXPORT_FULL, false)
         );
 
         ((Switch) activity.findViewById(R.id.auto_upload_option)).setChecked(
-                preferences.getBoolean("auto_upload", true)
+                preferences.getBoolean(AUTO_UPLOAD, true)
         );
 
         ((Switch) activity.findViewById(R.id.auto_sync_option)).setChecked(
-                preferences.getBoolean("auto_sync", true)
+                preferences.getBoolean(AUTO_SYNC, true)
         );
 
         ((Switch) activity.findViewById(R.id.debug_switch)).setChecked(
-                preferences.getBoolean("debug", true)
+                preferences.getBoolean(DEBUG, true)
         );
 
-        activity.findViewById(R.id.debug_container).setVisibility(preferences.getBoolean("debug", true) ?
+        activity.findViewById(R.id.debug_container).setVisibility(preferences.getBoolean(DEBUG, true) ?
                 View.VISIBLE : View.GONE
         );
 
-        boolean test = preferences.getInt("calibration", 0) > 45;
+        boolean test = preferences.getInt(CALIBRATION, 0) > 45;
         activity.findViewById(R.id.can_measure).setVisibility(test ? View.VISIBLE : View.GONE);
         activity.findViewById(R.id.can_not_measure).setVisibility(test ? View.GONE : View.VISIBLE);
     }
 
+    /**
+     * Resets all the debug options in the SharedPreferences.
+     */
     private void resetDebug(){
 
         SharedPreferences preferences = activity.getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
-        if(!preferences.getBoolean("debug", false)){
+        if(!preferences.getBoolean(DEBUG, false)){
             preferences.edit()
-                    .putBoolean("export_full", false)
-                    .putBoolean("auto_upload", false)
-                    .putString("baseUrl", getString(R.string.hard_coded_ip))
+                    .putBoolean(EXPORT_FULL, false)
+                    .putBoolean(AUTO_UPLOAD, false)
+                    .putString(IP, getString(R.string.hard_coded_ip))
+                    .putString(SOCKET, getString(R.string.hard_coded_socket))
                     .apply();
         }
+    }
+
+    /**
+     * Get the needed constants from the resource files.
+     */
+    private void setConstants(){
+        IP = getString(R.string.preferences_ip);
+        SOCKET = getString(R.string.preferences_socket);
+        EXPORT_FULL = getString(R.string.preferences_export_full);
+        AUTO_UPLOAD = getString(R.string.preferences_auto_upload);
+        AUTO_SYNC = getString(R.string.preferences_auto_sync);
+        DEBUG = getString(R.string.preferences_debug);
+        CALIBRATION = getString(R.string.preferences_calibration);
     }
 //==================================================================================================
     //get interface

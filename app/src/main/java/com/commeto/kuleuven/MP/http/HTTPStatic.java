@@ -18,15 +18,17 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 
 /**
+ * <pre>
  * Created by Jonas on 2/03/2018.
  *
  * Static functions for HTTP communication.
+ * </pre>
  */
 
 public class HTTPStatic {
 
     /**
-     * Method to convert an inputstream to a String.
+     * Method to convert an InputStream to a String.
      *
      * @param inputStream InputStream to be converted.
      * @return String made from InputStream.
@@ -45,11 +47,11 @@ public class HTTPStatic {
     }
 
     /**
-     * Method to set the used certificate.
+     * Method to set the certificate of the server.
      *
      * @param context Application context.
      * @param responseInterface Interface used for response.
-     * @throws Exception Possibly thorwn Exception.?
+     * @throws Exception Possibly thrown Exception.?
      */
     public static void setCertificate(Context context, SSLResponseInterface responseInterface) throws Exception{
 
@@ -67,6 +69,38 @@ public class HTTPStatic {
 
     /**
      * Method used to generate a JSON representation of a ride to use in the post message.
+     *
+     * <p>
+     *     representation
+     * </p>
+     *
+     * <code>
+     *     {
+     *         'name':*rideName*,
+     *         'description':*rideDescription*,
+     *         'distance':*rideDistance*,
+     *         'avSpeed':*rideSpeed*,
+     *         'timeStamp':*rideTime*,
+     *         'duration":*rideDuration*,
+     *         'id':*rideId*,
+     *         'calibration':*rideCalibration*,
+     *         'type':*rideType*,
+     *
+     *         'measurements':[
+     *              'timeStamp':*measurementTimeStamp*,
+     *              'latitude':*measurementLatitude*,
+     *              'longitude':*measurementLongitude*,
+     *              'altitude':*measurementAltitude*,
+     *              'accuracy':*measurementAccuracy*,
+     *              'measurement':*measurementAccelerometerResult*,
+     *              'lightMeasurement':*measurementLightResult*
+     *         ]
+     *     }
+     * </code>
+     *
+     * <p>
+     *     In case no full json file is found the unsnapped coordinates will be used.
+     * </p>
      *
      * @param context Application context.
      * @param localRoute Route to use to generate JSON.
@@ -103,6 +137,8 @@ public class HTTPStatic {
         StringBuilder stringBuilder = new StringBuilder();
         String string;
         try {
+
+            //Try with full measurement.
             InputStream inputStream = InternalIO.getInputStream(context, Integer.toString(localRoute.getLocalId()) + ".json");
 
             JSONObject writeRoute = new JSONObject(convertInputStreamToString(inputStream));
@@ -135,6 +171,8 @@ public class HTTPStatic {
 
             toWrite.put("measurements", sendArray);
         } catch (IOException e){
+
+            //Try with unsnapped coordinates.
             InputStream inputStream = InternalIO.getInputStream(context, Integer.toString(localRoute.getLocalId()) + "_unsnapped.json");
 
             JSONArray array = new JSONArray(convertInputStreamToString(inputStream));
@@ -153,7 +191,6 @@ public class HTTPStatic {
                 sendObject.put("timeStamp", System.currentTimeMillis());
                 sendObject.put("altitude", 400);
                 sendObject.put("accuracy",1);
-                sendObject.put("accuracy", -1);
                 sendObject.put("measurement", -1);
                 sendObject.put("lightMeasurement", -1);
 

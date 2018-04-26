@@ -62,9 +62,17 @@ import static com.commeto.kuleuven.MP.support.Static.timeFormat;
 
 /**
  * Created by Jonas on 12/03/2018.
+ *
+ * Activity to display the information from the rides. The activity is used in combination with
+ * the RideListFragment as well as to display the information after a user has just finished.
+ *
+ * Uses:
+ *  - DetailsFragment
+ *  - EditDialog
+ *  - DescriptionDialog
+ *  - ExternalIO
  */
 
-//TODO verandering uploaden
 public class RideDisplayActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 //==================================================================================================
@@ -72,6 +80,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 
     private Context context;
 
+    /**
+     * Interface used to save the snapped coordinates pulled from the server.
+     */
     private AsyncResponseInterface snappedInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -97,6 +108,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     };
 
+    /**
+     * Interface used to save the unsnapped coordinates pulled from the server.
+     */
     private EditDialogInterface editDialogInterface = new EditDialogInterface() {
         @Override
         public void changeDescription(String rideName, String descriptions) {
@@ -207,6 +221,10 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 //==================================================================================================
     //private functions
 
+    /**
+     * Called at onStop to see if any changes have been made to the ride or if the ride has not yet
+     * been sent. The ride will be either updated or uploaded accordingly.
+     */
     private void sync(){
         if(localRoute.getId() == -1 && !localRoute.isSent()){
             upload(false);
@@ -215,6 +233,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Used to fill in the DetailsFragment after it has been initialised.
+     */
     private void setDetails(){
 
         ((TextView) findViewById(R.id.average_speed)).setText(
@@ -236,6 +257,25 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         );
     }
 
+    /**
+     * Used to initiate the map to display the ride. Before displaying the internet connectivity
+     * will be checked.
+     *
+     * <p>
+     *     possibilities:
+     * </p>
+     * <ul>
+     *     <li>
+     *         wifi connection: Display map.
+     *     </li>
+     *     <li>
+     *         mobile data:     Ask before displaying.
+     *     </li>
+     *     <li>
+     *         no connection:   Ask before trying to display, map might not work fully.
+     *     </li>
+     * </ul>
+     */
     private void setMap(){
 
         try {
@@ -261,6 +301,12 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Used to push a notification as well re enable the button to sync the ride.
+     *
+     * @param title   The title the notification has to have.
+     * @param message The message the notification has to have?
+     */
     private void endNotify(String title, String message){
 
         findViewById(R.id.export).setOnClickListener(new View.OnClickListener() {
@@ -272,6 +318,11 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         postNotification(this, title, message);
     }
 
+    /**
+     * Used to update the ride on the server. This will generate a PostTask and a JSON file
+     * containing the info that can be updated, namely the name and the description of if the ride
+     * has to be deleted. The ride's id is used in the url to tell the server which ride to update.
+     */
     private void updatePush(){
 
         if(isNetworkAvailable(context)){
@@ -282,7 +333,7 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 
             PostTask update = new PostTask(
                     preferences.getString(getString(R.string.preferences_ip), getString(R.string.hard_coded_ip)) + ":" + preferences.getString(getString(R.string.preferences_socket), getString(R.string.hard_coded_socket)),
-                    "/MP/service/secured/ride/push/" + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
+                    getString(R.string.push) + Integer.toString(localRoute.getId()) + "/" + Long.toString(localRoute.getLastUpdated()),
                     updateInterface,
                     localRoute.getLocalId(),
                     null
@@ -307,6 +358,13 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Used to upload the ride to the server. Normally this function should block the ride from
+     * uploading if the ride has already been sent, but an override has been added for debugging
+     * purposes.
+     *
+     * @param override An override to force an upload.
+     */
     private void upload(boolean override){
 
         if(isNetworkAvailable(context)){
@@ -340,6 +398,11 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Save all the data that was collected while riding. Ride info is not added in this file.
+     * Potentially no full file might be available anymore, as the ride might have been pulled
+     * from the server. The user will be notified of this.
+     */
     private void saveJsonFull(){
 
         try {
@@ -352,6 +415,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Save the JSON file that would be used in the POST message to the server.
+     */
     private void saveJsonPost(){
 
         try {
@@ -363,6 +429,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Save the file in gpx format.
+     */
     private void saveGPX(){
 
         try{
@@ -421,6 +490,10 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * An optional component used to ask the user to specify a ride type in case no type was
+     * found in the database.
+     */
     private void optionDialog(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -443,6 +516,11 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 //==================================================================================================
     //map methods
 
+    /**
+     * Override for the onMapReadyCallback.
+     *
+     * @param map The initiated map.
+     */
     @Override
     public void onMapReady(MapboxMap map){
 
@@ -455,6 +533,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 //==================================================================================================
     //AsyncResponseInterface
 
+    /**
+     * Interface used to handle the result when a ride has to be deleted.
+     */
     private AsyncResponseInterface deleteInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -472,6 +553,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     };
 
+    /**
+     * Interface used to handle the result when a ride has been uploaded.
+     */
     private AsyncResponseInterface uploadInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -492,6 +576,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     };
 
+    /**
+     * Interface to handle the result when a ride has been updated.
+     */
     private AsyncResponseInterface updateInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -518,6 +605,9 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     };
 
+    /**
+     * Method to get the snapped and unsnapped coordinates from the server.
+     */
     private void getSnapped(){
 
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE);
@@ -535,6 +625,13 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 //==================================================================================================
     //buttons
 
+    /**
+     * Button action to display the map in case setMap() has blocked it's initiation.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void showAnyway(View view){
 
         if(!generated) {
@@ -545,6 +642,30 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
+    /**
+     * Button action to show a dialog with options for how to export the ride in a certain format.
+     * <ul>
+     *     <li>
+     *         full json
+     *     </li>
+     *     <li>
+     *         post json
+     *     </li>
+     *     <li>
+     *         gpx
+     *     </li>
+     *     <li>
+     *         posting the ride to the server
+     *     </li>
+     *     <li>
+     *         posting the ride to the server with override.
+     *     </li>
+     * </ul>
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void export(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -580,6 +701,13 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         builder.create().show();
     }
 
+    /**
+     * Button action to display a DescriptionDialog to show the rides description.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void description(View view){
 
         DescriptionDialog descriptionDialog = new DescriptionDialog();
@@ -587,12 +715,27 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         descriptionDialog.show(getSupportFragmentManager(), "Description");
     }
 
+    /**
+     * Button to open a FullScreenActivity to display the ride as fullscreen.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void fullscreenMap(View view){
         startActivity(new Intent(this, FullScreenActivity.class)
                 .putExtra("id", localRoute.getLocalId())
         );
     }
 
+    /**
+     * Button action to diaplay an EditDialog to be able to edit the ride's name as well as the
+     * description. an interface is used to handle the response.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void edit(final View view){
 
         EditDialog editDialog = new EditDialog();
@@ -600,6 +743,15 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
         editDialog.show(getSupportFragmentManager(), "Edit");
     }
 
+    /**
+     * Button action to delete the ride. A confirmation dialog will be shown to confirm the action
+     * before deletion. Afterwards a post message will be sent with a json containing a boolean
+     * 'true' in it's field 'deleted'.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void delete(View view){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -652,6 +804,13 @@ public class RideDisplayActivity extends AppCompatActivity implements OnMapReady
 //==================================================================================================
     //activity result
 
+    /**
+     * onActivity result to handle the saving of files.
+     *
+     * @param requestCode The requestCode of the calling intent.
+     * @param resultCode  The returned resultCode.
+     * @param data        The returned resultData.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
 

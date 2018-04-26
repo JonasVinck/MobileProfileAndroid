@@ -33,34 +33,40 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.commeto.kuleuven.MP.support.Static.timeFormat;
 
 /**
+ * <pre>
  * Created by Jonas on 12/04/2018.
  *
  * Fragment to display a list of all the rides.
+ * </pre>
  */
 
 public class RouteListFragment extends Fragment {
 //==================================================================================================
     //constants
 
-    private final String NAME = "Naam";
-    private final String DOWN = "Aflopend";
-    private final String SORT = "sort";
-    private final String BY = "by";
-    private final String DATE = "Datum";
-    private final String DATE_LOWER = "start_date";
-    private final String DATE_UPPER = "end_date";
-    private final String DURATION = "Duur";
-    private final String DURATION_LOWER = "duration_lower";
-    private final String DURATION_UPPER = "duration_upper";
-    private final String SPEED = "Snelheid";
-    private final String SPEED_LOWER = "speed_lower";
-    private final String SPEED_UPPER = "speed_upper";
-    private final String DISTANCE = "Afstand";
-    private final String DISTANCE_LOWER = "distance_lower";
-    private final String DISTANCE_UPPER = "distance_upper";
+    private String NAME;
+    private String DOWN;
+    private String SORT;
+    private String BY;
+    private String DATE;
+    private String DATE_LOWER;
+    private String DATE_UPPER;
+    private String DURATION;
+    private String DURATION_LOWER;
+    private String DURATION_UPPER;
+    private String SPEED;
+    private String SPEED_LOWER;
+    private String SPEED_UPPER;
+    private String DISTANCE;
+    private String DISTANCE_LOWER;
+    private String DISTANCE_UPPER;
 //==================================================================================================
     //interface
 
+    /**
+     * Interface to communicate with the list and perform actions like setting the current filter
+     * resetting the search option and retrieving the current filter.
+     */
     private RouteListInterface routeListInterface = new RouteListInterface() {
         @Override
         public void resetList(Bundle options) {
@@ -75,7 +81,7 @@ public class RouteListFragment extends Fragment {
         }
 
         @Override
-        public void setSearch(){
+        public void resetList(){
             RouteListFragment.this.search = null;
             setView();
         }
@@ -99,6 +105,11 @@ public class RouteListFragment extends Fragment {
         return routeListInterface;
     }
 
+    /**
+     * Getting a new instance of the RouteListFragment.
+     *
+     * @return A new instance of the RouteListFragment
+     */
     public static RouteListFragment newInstance() {
         RouteListFragment fragment = new RouteListFragment();
         Bundle args = new Bundle();
@@ -115,8 +126,10 @@ public class RouteListFragment extends Fragment {
         this.sorting = new HashMap<>();
         context = getContext();
         user = context.getSharedPreferences(getString(R.string.preferences), MODE_PRIVATE)
-                .getString("username", "");
+                .getString(getString(R.string.preferences_username), "");
         localRouteList = LocalDatabase.getInstance(context).localRouteDAO().getAllByTimeDescending(user);
+
+        setConstants();
 
         //Default bundle for sorting.
         previous = new Bundle();
@@ -217,6 +230,7 @@ public class RouteListFragment extends Fragment {
         ((SearchView) view.findViewById(R.id.list_search_bar)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //search option null will reset the list.
                 search = query.equals("") ? null : query;
                 setView();
                 return false;
@@ -254,17 +268,19 @@ public class RouteListFragment extends Fragment {
     /**
      * Method used to reset the list.
      */
-
     private void setView(){
 
         try {
             String option = previous.getString(SORT, DATE);
             if (list != null) {
+
+                //remove all view currently in the list.
                 list.removeAllViews();
                 LayoutInflater inflater = getLayoutInflater();
 
                 DateFormat format = SimpleDateFormat.getDateTimeInstance();
 
+                //Generate a view for every LocalRoute in the list.
                 for (final LocalRoute localRoute : localRouteList) {
 
                     if (filterList(localRoute)) {
@@ -289,6 +305,7 @@ public class RouteListFragment extends Fragment {
                                 View.VISIBLE : View.GONE
                         );
 
+                        //Set certain properties as visible in item when sorting is specified.
                         for (String key : previous.keySet()) {
                             if (previous.getBoolean(key, false)) {
                                 try {
@@ -325,20 +342,50 @@ public class RouteListFragment extends Fragment {
                 (!previous.getBoolean(DISTANCE, false) || (route.getDistance() <= previous.getDouble(DISTANCE_UPPER, Double.MAX_VALUE) && route.getDistance() >= previous.getDouble(DISTANCE_LOWER, 0))) &&
                 (!previous.getBoolean(DURATION, false) || (route.getDuration() <= previous.getLong(DURATION_UPPER, Long.MAX_VALUE) && route.getDuration() >= previous.getLong(DURATION_LOWER, 0))) &&
                 (!previous.getBoolean(SPEED, false) || (route.getSpeed() <= previous.getDouble(SPEED_UPPER, Double.MAX_VALUE) && route.getSpeed() >= previous.getDouble(SPEED_LOWER, 0))) &&
-                (!previous.getBoolean("Datum", false) || (route.getTime() <= previous.getLong(DATE_UPPER, Long.MAX_VALUE) && route.getTime() >= previous.getLong(DATE_LOWER, Long.MIN_VALUE)));
+                (!previous.getBoolean(DATE, false) || (route.getTime() <= previous.getLong(DATE_UPPER, Long.MAX_VALUE) && route.getTime() >= previous.getLong(DATE_LOWER, Long.MIN_VALUE)));
     }
 
+    /**
+     * Method used to gat a new LocalRoute list with the given sorting option.
+     *
+     * @return A new list of LocalRoutes.
+     */
     private List<LocalRoute> getLocalRoutes(){
 
         try {
             String sort;
-            List<LocalRoute> localRoutes = localDatabase.localRouteDAO().getAll(user);
+            List<LocalRoute> localRoutes;
             if (sorting.containsKey((sort = previous.getString(SORT)))) {
                 localRoutes = sorting.get(sort).invoke(previous.getString(BY), null);
+            } else {
+                localRoutes = localDatabase.localRouteDAO().getAll(user);
             }
             return localRoutes;
         } catch (NullPointerException e){
             return null;
         }
+    }
+
+    /**
+     * Method used to get the constant strings from the resources when the Fragment is initiated.
+     */
+    private void setConstants(){
+
+        NAME = getString(R.string.option_name);
+        DOWN = getString(R.string.option_down);
+        SORT = getString(R.string.option_sort);
+        BY = getString(R.string.option_by);
+        DATE = getString(R.string.option_date);
+        DATE_LOWER = getString(R.string.option_date_lower);
+        DATE_UPPER = getString(R.string.option_date_upper);
+        DURATION = getString(R.string.option_duration);
+        DURATION_LOWER = getString(R.string.option_duration_lower);
+        DURATION_UPPER = getString(R.string.option_duration_upper);
+        SPEED = getString(R.string.option_speed);
+        SPEED_LOWER = getString(R.string.option_speed_lower);
+        SPEED_UPPER = getString(R.string.option_speed_upper);
+        DISTANCE = getString(R.string.option_distance);
+        DISTANCE_LOWER = getString(R.string.option_distance_lower);
+        DISTANCE_UPPER = getString(R.string.option_distance_upper);
     }
 }

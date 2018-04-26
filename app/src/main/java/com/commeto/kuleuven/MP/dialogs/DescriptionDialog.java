@@ -14,9 +14,11 @@ import com.commeto.kuleuven.MP.listeners.UnderlineButtonListener;
 import com.commeto.kuleuven.MP.R;
 
 /**
+ * <pre>
  * Created by Jonas on 12/04/2018.
  *
  * Dialog used to view the description of a ride.
+ * </pre>
  */
 
 public class DescriptionDialog extends DialogFragment{
@@ -32,7 +34,7 @@ public class DescriptionDialog extends DialogFragment{
     /**
      * Method used to set the description.
      *
-     * @param description description to be displayed/
+     * @param description description to be displayed.
      */
     public void set(String description){
         this.description = description;

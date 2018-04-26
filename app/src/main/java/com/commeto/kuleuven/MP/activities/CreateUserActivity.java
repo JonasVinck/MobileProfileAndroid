@@ -23,6 +23,11 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 1/03/2018.
+ *
+ * Activity started when a user has to be created.
+ *
+ * Uses:
+ *  - PostTask
  */
 
 public class CreateUserActivity extends AppCompatActivity implements AsyncResponseInterface{
@@ -106,7 +111,9 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
     //interface override
 
     /**
-     * Sets different error messages depending on the response from the PostTask.
+     * Sets different error messages depending on the response from the PostTask. Finishes the
+     * Activity if the post was successful.
+     *
      * @param response HTTP response from server.
      */
 
@@ -164,7 +171,7 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
     }
 
     /**
-     * Changes given EditText's color to red.
+     * Changes given EditText's color to red if it's empty.
      *
      * @param editText EditText to change.
      */
@@ -178,6 +185,20 @@ public class CreateUserActivity extends AppCompatActivity implements AsyncRespon
 //==================================================================================================
     //button action
 
+    /**
+     * Used to check the correctness of the specified information. Will set error messages
+     * accordingly if a specification isn't met.
+     *
+     * <pre>
+     * checks if:
+     *  - All fields are filled in.
+     *  - Both passwords match.
+     * </pre>
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void register(View view){
 
         clear();

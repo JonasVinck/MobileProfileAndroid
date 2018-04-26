@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * <pre>
  * Created by Jonas on 15/04/2018.
  *
- * Adapter used to display geocoding options.
+ * Adapter used to display geocoding options to translate an address to coordinates.
+ * </pre>
  */
 
 public class GeoCodeAdapter extends BaseAdapter implements Filterable{
@@ -54,7 +56,7 @@ public class GeoCodeAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get view
+
         View view;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -79,6 +81,9 @@ public class GeoCodeAdapter extends BaseAdapter implements Filterable{
         return geoCodeFilter;
     }
 
+    /**
+     * Filter class for the geocoder.
+     */
     private class GeoCodeFilter extends Filter{
 
         @Override

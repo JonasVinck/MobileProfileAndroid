@@ -21,6 +21,7 @@ import com.commeto.kuleuven.MP.support.Static;
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
+ * <pre>
  * Created by Jonas on 1/03/2018.
  *
  * Class used to bundle all Measurements together with some additional ride info:
@@ -28,6 +29,7 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
  *  - The start time of the ride.
  *  - The average speed.
  *  - The total distance.
+ * </pre>
  */
 
 public class MeasurementArray {
@@ -50,12 +52,14 @@ public class MeasurementArray {
     }
 
     /**
-     * Method to reconstruct the object from 2 CSV Strings.
+     * <p>
+     * Method to reconstruct the object from 2 CSV Strings. One containing the general info, like
+     * the time and the name and one containing the array.
+     * </p>
      *
-     * @param info CSV String representing the rides info.
-     * @param backup CSV String representing the measurement array.
+     * @param info      CSV String representing the rides info.
+     * @param backup    CSV String representing the measurement array.
      */
-
     public MeasurementArray(String[] info, String backup){
         this.name = info[0];
         this.time = Long.parseLong(info[1]);
@@ -122,6 +126,7 @@ public class MeasurementArray {
     }
 
     /**
+     * Method ued to add a measurement to the array, only if the measurement counts.
      *
      * @param measurement Measurement to add.
      * @param counts boolean representing if the measurement counts towards the total distance.
@@ -135,8 +140,9 @@ public class MeasurementArray {
     }
 
     /**
-     * Method to generate JSON representation of the MeasurementArray and writing it to storage and
-     * adding the info to the room database.
+     * Method to generate JSON representation of the MeasurementArray, writing it to storage and
+     * adding the info to the room database. Throw NoDistanceException if ride has no distance.
+     * Rides with no distance don't have to be saved.
      *
      * @param context Context of the application to use IO.
      * @param username Username of the rider.
@@ -150,8 +156,9 @@ public class MeasurementArray {
         if(distance != 0) {
             int id = Static.getIDInteger(context);
 
-            DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+            DateFormat dateFormat = SimpleDateFormat.getDateTimeInstance();
             LocalDatabase localDatabase = LocalDatabase.getInstance(context);
+            //Default: use date as ride name.
             if (name == null || name.equals("")) name = dateFormat.format(new Date(time));
             localDatabase.localRouteDAO().insert(new LocalRoute(
                     id,
@@ -173,13 +180,16 @@ public class MeasurementArray {
             JSONObject route = new JSONObject();
 
             try {
+                //Add ride id to json file for debugging purposes.
                 route.put("id", id);
                 JSONArray measurements = new JSONArray();
                 for (Measurement measurement : list) {
-
+                    //Add json representation of each measurement.
                     measurements.put(measurement.toJSON());
                 }
                 route.put("measurements", measurements);
+
+                //Write to internal storage as {id}.json for easy retrieval.
                 InternalIO.writeToInternal(context, Integer.toString(id) + ".json", route.toString(), false);
             } catch (JSONException e) {
                 makeToastLong(context, e.getMessage());

@@ -7,21 +7,20 @@ import android.support.v7.app.AlertDialog;
 import com.commeto.kuleuven.MP.interfaces.BaseDialogInterface;
 
 /**
+ * <pre>
  * Created by Jonas on 18/04/2018.
  *
  * Used as a simple confirm dialog. Action is specified in the interface.
+ * </pre>
  */
 
 public class BaseConfirmDialogBuilder extends AlertDialog.Builder{
 
     /**
-     * Constructor.
-     *
-     * @param activity Calling activity.
-     * @param title Title to be displayed.
-     * @param dialogInterface Used interface.
+     * @param activity          Calling activity.
+     * @param title             Title to be displayed.
+     * @param dialogInterface   Interface used to return information.
      */
-
     public BaseConfirmDialogBuilder(Activity activity, String title, final BaseDialogInterface dialogInterface){
         super(activity);
 

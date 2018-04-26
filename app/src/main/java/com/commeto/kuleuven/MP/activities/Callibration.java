@@ -20,6 +20,21 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
  * Created by Jonas on 26/03/2018.
+ *
+ * <p>
+ * This activity is used to calibrate the device. In essence a device cannot be used to measure the
+ * vibration is the sensor can't reach 8g (8 times gravity). This is because otherwise the accuracy
+ * is not good enough.
+ * </p>
+ *
+ * <pre>
+ * Service:
+ *  - SensorService
+ *
+ * finishes:
+ *  - onBackPressed
+ *  - onClick confirm
+ * </pre>
  */
 
 public class Callibration extends AppCompatActivity{
@@ -115,6 +130,8 @@ public class Callibration extends AppCompatActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
+
+        //unbind bound service!
         unbindService(connection);
     }
 //==================================================================================================
@@ -147,6 +164,13 @@ public class Callibration extends AppCompatActivity{
 //==================================================================================================
     //onclick actions
 
+    /**
+     * Method used to end the Activity when the device has been calibrated.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void confirm(View view){
         if(values == null) {
             makeToastLong(context, getString(R.string.not_calibrated));
@@ -155,6 +179,15 @@ public class Callibration extends AppCompatActivity{
         }
     }
 
+    /**
+     * Used to start the calibration. The calibration is function that is repeated every second.
+     * Every second the calibrator will take the vibration from the SensorService and compare it
+     * to the current maximum. If the maximum is lower a new maximum is set.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void calibrate(View view){
 
         if (connection.isBound()) {

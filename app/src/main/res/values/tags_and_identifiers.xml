@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="option_name">Naam</string>
+    <string name="option_down">Aflopend</string>
+    <string name="option_sort">sort</string>
+    <string name="option_by">by</string>
+    <string name="option_date">Datum</string>
+    <string name="option_date_lower">date_lower</string>
+    <string name="option_date_upper">date_upper</string>
+    <string name="option_duration">Duur</string>
+    <string name="option_duration_lower">duration_lower</string>
+    <string name="option_duration_upper">duration_upper</string>
+    <string name="option_speed">Snelheid</string>
+    <string name="option_speed_lower">speed_lower</string>
+    <string name="option_speed_upper">speed_upper</string>
+    <string name="option_distance">Afstand</string>
+    <string name="option_distance_lower">distance_lower</string>
+    <string name="option_distance_upper">distance_upper</string>
+</resources>

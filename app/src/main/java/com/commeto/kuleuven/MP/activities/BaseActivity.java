@@ -44,23 +44,53 @@ import static com.commeto.kuleuven.MP.support.Static.scaleMenuIcon;
 import static com.commeto.kuleuven.MP.support.Static.tryLogin;
 
 /**
+ * <pre>
  * Created by Jonas on 1/03/2018.
  *
  * Core activity of the application. This activity displays what is essentially the home screen.
+ * </pre>
  *
+ * <p>
  * Entry from:
- *  - LoginActivity
+ * </p>
+ * <ul>
+ *     <li>
+ *  LoginActivity
+ *      </li>
+ *  </ul>
  *
+ * <p>
  * Next activities:
- *  - MeasuringActivity
- *  - CalibrationActivity
- *  - LoginActivity
- *  - FilterSortActivity
+ * </p>
+ * <ul>
+ *  <li>
+ *  MeasuringActivity
+ *  </li>
+ *  <li>
+ *  CalibrationActivity
+ *  </li>
+ *  <li>
+ *  LoginActivity
+ *  </li>
+ *  <li>
+ *  FilterSortActivity
+ *  </li>
+ * </ul>
  *
+ * <p>
  * Finishes going to:
- *  - LoginActivity
- *  - onBackPressed
- *  - 401 http response
+ * </p>
+ * <ul>
+ *  <li>
+ *  LoginActivity
+ *  </li>
+ *  <li>
+ *  onBackPressed
+ *  </li>
+ *  <li>
+ *  401 http response
+ *  </li>
+ * </ul>
  */
 
 public class BaseActivity extends AppCompatActivity{
@@ -78,15 +108,21 @@ public class BaseActivity extends AppCompatActivity{
     //interfaces
 
     /**
+     * <p>
      * Interface used to send a request to /MP/service/secured/tokenvalid to see if device is still
      * authorized for the current user.
+     * </p>
      *
+     * <p>
      * responses:
+     * </p>
+     * <pre>
      *  401:    User no longer authorized.
      *              - go to LoginActivity.
      *              - Clear SharedPreferences.
      *  -2:     Means no connection could be established.
      *              - continue normal behavior, give notification.
+     * </pre>
      */
 
     private AsyncResponseInterface loginSucces = new AsyncResponseInterface() {
@@ -107,11 +143,13 @@ public class BaseActivity extends AppCompatActivity{
     };
 
     /**
+     * <pre>
      * Interface to call when syncing is complete.
      *
      *  - Resets list of routes.
      *  - stops the SyncService.
      *  - Re-enables the button that starts the SyncService.
+     *  </pre>
      */
 
     private SyncInterface syncInterface = new SyncInterface() {
@@ -269,6 +307,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void onStart(){
 
+        //check if token still valid.
         tryLogin(context, loginSucces);
 
         super.onStart();
@@ -301,6 +340,14 @@ public class BaseActivity extends AppCompatActivity{
     //button actions
 
     //menu tabs ------------------------------------------------------------------------------------
+
+    /**
+     * Switch to HomescreenFragment and style menu icon as clicked.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void toStart(View view){
         basePager.setCurrentItem(2);
         switchActive((ImageView) findViewById(R.id.start_icon), null, R.drawable.logo_svg_clicked);
@@ -308,6 +355,13 @@ public class BaseActivity extends AppCompatActivity{
         resetListener = startListener;
     }
 
+    /**
+     * Switch to ProfileFragment and style menu icon as clicked.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void toProfile(View view){
         basePager.setCurrentItem(1);
         switchActive((ImageView) findViewById(R.id.profile_icon), (TextView) findViewById(R.id.user_text), R.drawable.ic_user_clicked);
@@ -315,6 +369,13 @@ public class BaseActivity extends AppCompatActivity{
         resetListener = profileListener;
     }
 
+    /**
+     * Switch to RouteListFragment and style menu icon as clicked.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void toList(View view){
         basePager.setCurrentItem(3);
         switchActive((ImageView) findViewById(R.id.list_icon), (TextView) findViewById(R.id.list_text), R.drawable.ic_list_clicked);
@@ -322,6 +383,13 @@ public class BaseActivity extends AppCompatActivity{
         resetListener = listListener;
     }
 
+    /**
+     * Switch to GlobalMapFragment and style menu icon as clicked.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void toMap(View view){
         basePager.setCurrentItem(0);
         switchActive((ImageView) findViewById(R.id.map_icon), (TextView) findViewById(R.id.map_text), R.drawable.ic_map_clicked);
@@ -329,6 +397,13 @@ public class BaseActivity extends AppCompatActivity{
         resetListener = mapListener;
     }
 
+    /**
+     * Switch to SettingsFragment and style menu icon as clicked.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void toSettings(View view){
         basePager.setCurrentItem(4);
         switchActive((ImageView) findViewById(R.id.settings_icon), (TextView) findViewById(R.id.settings_text), R.drawable.ic_settings_clicked);
@@ -362,7 +437,9 @@ public class BaseActivity extends AppCompatActivity{
      *      . feedback given when speed too fast/slow.
      * </pre>
      *
-     * @param view unused, but necessary for using onClick in XML.
+     * onClick used in HomeScreenFragment.
+     *
+     * @param view The clicked view.
      */
 
     public void start(View view){
@@ -399,29 +476,86 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     //settings fragment ----------------------------------------------------------------------------
+
+    /**
+     * Clear shared preferences, open new CheckLoginActivity and finish activity. Button will open
+     * dialog to confirm. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void logout(View view){
 
-        preferences.edit().clear().apply();
 
-        //Go to CheckLoginActivity to reset certificate if needed.
-        Intent intent = new Intent(context, CheckLoginActivity.class);
-        startActivity(intent);
-        finish();
+        BaseDialogInterface baseDialogInterface = new BaseDialogInterface() {
+            @Override
+            public void confirm(String string) {
+
+                preferences.edit().clear().apply();
+                //Go to CheckLoginActivity to reset certificate if needed.
+                //CheckLogin wil reroute to LoginActivity.
+                Intent intent = new Intent(context, CheckLoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+
+        new BaseConfirmDialogBuilder(
+                this,
+                getString(R.string.logout) + "?",
+                baseDialogInterface
+        ).show();
     }
 
+    /**
+     * Method should be unnecessary, but can be used to resend a message to the server to get a
+     * new token. Method will finish activity and open a new CheckLoginActivity. Opens dialog to
+     * confirm. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void relogin(View view){
 
-        //Go to CheckLoginActivity to reset certificate if needed.
-        Intent intent = new Intent(context, CheckLoginActivity.class);
-        startActivity(intent);
-        finish();
+        BaseDialogInterface baseDialogInterface = new BaseDialogInterface() {
+            @Override
+            public void confirm(String string) {
+
+                //Go to CheckLoginActivity to reset certificate if needed.
+                Intent intent = new Intent(context, CheckLoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        new BaseConfirmDialogBuilder(
+                this,
+                getString(R.string.relogin) + "?",
+                baseDialogInterface
+        ).show();
     }
 
+    /**
+     * Method used to recalibrate the device. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void recalibrate(View view){
         Intent intent = new Intent(this, Callibration.class);
         startActivityForResult(intent, 0);
     }
 
+    /**
+     * Used to reset the IP address of the server to the hardcoded address. Opens a dialog
+     * confirm the action. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void resetIp(View view){
 
         BaseDialogInterface dialogInterface = new BaseDialogInterface() {
@@ -442,6 +576,14 @@ public class BaseActivity extends AppCompatActivity{
         confirmDialog.show();
     }
 
+    /**
+     * Method used to set the ip address to a new ip address. Opens a new dialog containing an
+     * EditText. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void setIp(View view){
 
         BaseDialogInterface dialogInterface = new BaseDialogInterface() {
@@ -467,6 +609,14 @@ public class BaseActivity extends AppCompatActivity{
         editDialog.show();
     }
 
+    /**
+     * Used to reset the socket used at the server to the hardcoded socket. Opens a dialog
+     * confirm the action. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void resetSocket(View view){
 
         BaseDialogInterface dialogInterface = new BaseDialogInterface() {
@@ -487,6 +637,14 @@ public class BaseActivity extends AppCompatActivity{
         confirmDialog.show();
     }
 
+    /**
+     * Method used to set the socket to a new socket. Opens a new dialog containing an
+     * EditText. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void setSocket(View view){
 
         BaseDialogInterface dialogInterface = new BaseDialogInterface() {
@@ -512,6 +670,14 @@ public class BaseActivity extends AppCompatActivity{
         editDialog.show();
     }
 
+    /**
+     * Method used to export the log file. Uses the ExternalIO class and uses onActivityResult of
+     * the current activity to pass the data. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void exportLog(View view){
         try {
             toWrite = convertInputStreamToString(InternalIO.getInputStream(context, "log"));
@@ -521,55 +687,107 @@ public class BaseActivity extends AppCompatActivity{
         ExternalIO.createFile(this, "text/plain", "log.txt");
     }
 
+    /**
+     * Method used to delete the log file. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void deleteLog(View view){
         InternalIO.writeToLog(context, "");
     }
 
+    /**
+     * Method used to toggle The auto_upload_option Switch when clicking the wrapping LinearLayout.
+     * onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void autoUploadSetting(View view){
         ((Switch) findViewById(R.id.auto_upload_option)).toggle();
     }
 
+    /**
+     * Method to toggle The auto_sync_option Switch when clicking the wrapping LinearLayout.
+     * onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void autoSyncSetting(View view){
         ((Switch) findViewById(R.id.auto_sync_option)).toggle();
     }
 
+    /**
+     * Method used to toggle The export_full_switch Switch when clicking the wrapping LinearLayout.
+     * onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void exportFullSetting(View view){
 
         ((Switch) view.findViewById(R.id.export_full_switch)).toggle();
     }
 
+    /**
+     * Method used to toggle The debug_switch Switch when clicking the wrapping LinearLayout.
+     * onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void debugSetting(View view){
 
         ((Switch) view.findViewById(R.id.debug_switch)).toggle();
     }
 
+    /**
+     * Debug method used to set all current rides in the Room database as "not sent". Opens a
+     * dialog to confirm action. onClick used in SettingsFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void setAllNotSent(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.warning));
-        builder.setMessage(getString(R.string.set_all_not_sent_message));
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+        BaseDialogInterface baseDialogInterface = new BaseDialogInterface() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void confirm(String string) {
                 LocalDatabase localDatabase;
                 List<LocalRoute> routes = (localDatabase = LocalDatabase.getInstance(context)).localRouteDAO().debug();
                 for(LocalRoute route: routes){
                     route.setSent(false);
                     localDatabase.localRouteDAO().update(route);
                 }
-                if(dialogInterface != null) dialogInterface.dismiss();
             }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        };
 
-                if(dialogInterface != null) dialogInterface.dismiss();
-            }
-        });
+        BaseConfirmDialogBuilder builder = new BaseConfirmDialogBuilder(
+                this,
+                getString(R.string.warning),
+                baseDialogInterface
+        );
+        builder.setMessage(getString(R.string.set_all_not_sent_message));
         builder.show();
     }
 
     //globalmap fragment ---------------------------------------------------------------------------
+
+    /**
+     * Method to hide the searchbar in the GlobalMapFragment when it is no longer needed.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void endSearch(View view){
         findViewById(R.id.search_bar_container).setVisibility(View.GONE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -581,6 +799,13 @@ public class BaseActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Method used to show the searchbar in the GlobalMapFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void search(View view){
         findViewById(R.id.search_bar_container).setVisibility(View.VISIBLE);
         view.setOnClickListener(new View.OnClickListener() {
@@ -591,6 +816,13 @@ public class BaseActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Used to show and hide the map's legend in the GlobalMapFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void info(View view){
         findViewById(R.id.legend).setVisibility(
                 findViewById(R.id.legend).getVisibility() == View.VISIBLE ?
@@ -602,6 +834,13 @@ public class BaseActivity extends AppCompatActivity{
         );
     }
 
+    /**
+     * Used to display the ListView to choose which map to show in the GlobalMapFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void mapOption(View view){
 
         int visibility = findViewById(R.id.map_option_list).getVisibility();
@@ -611,6 +850,14 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     // ridelist fragment ---------------------------------------------------------------------------
+
+    /**
+     * Used to open a new FilterSortActivity in order to edit the filter for the RouteListFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void sort(View view){
         startActivityForResult(
                 new Intent(this, FilterSortActivity.class).putExtra("options", routeListInterface.getPrevious()),
@@ -618,6 +865,14 @@ public class BaseActivity extends AppCompatActivity{
         );
     }
 
+    /**
+     * Used to show the searchbar in the RouteListFragment. Sets onClickListener for this view
+     * to hideSearchList(View view).
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void searchList(View view){
         findViewById(R.id.list_search_bar_container).setVisibility(View.VISIBLE);
         view.setOnClickListener(new View.OnClickListener() {
@@ -628,9 +883,17 @@ public class BaseActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Used to hide the searchbar in the RouteListFragment. Doing so will automatically reset the
+     * list. Sets onClickListener for this view to earchList(View view).
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void hideSearchList(View view){
         findViewById(R.id.list_search_bar_container).setVisibility(View.GONE);
-        routeListInterface.setSearch();
+        routeListInterface.resetList();
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -639,6 +902,14 @@ public class BaseActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Used to start syncing. When sync started sets onClickListener to disableSync(View view).
+     * Used in onClick in RouteListFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void sync(View view){
         if(isNetworkAvailable(context)) {
             startService(syncIntent);
@@ -653,6 +924,14 @@ public class BaseActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * Used to block the sync button while the SyncService is still running to avoid duplicates.
+     * Used in onClick in RouteListFragment.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void disableSync(View view){
         makeToastLong(context, getString(R.string.already_syncing));
     }
@@ -693,7 +972,7 @@ public class BaseActivity extends AppCompatActivity{
 
     /**
      * <pre>
-     * - Resets ride list as default.
+     * - Resets ride list as default if the requestCode wasn't 581.
      *
      * Different request codes:
      *  - 0: used for starting CalibrationActivity.
@@ -709,7 +988,7 @@ public class BaseActivity extends AppCompatActivity{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
 
-        routeListInterface.resetList(null);
+        if(resultCode != 581) routeListInterface.resetList(null);
 
         if(requestCode == 0){
             boolean test = preferences.getInt(CALIBRATION, 0) > 45;

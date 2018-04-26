@@ -6,7 +6,24 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 
 /**
+ * <pre>
  * Created by Jonas on 1/03/2018.
+ *
+ * Class meant to bundle the different measurement values and calculate the result.
+ *
+ * values:
+ *  - Time of the measurement.
+ *  - Latitude of the measurement.
+ *  - longitude of the measurement.
+ *  - Altitude (elevation) of the measurement.
+ *  - The result calculated from the accelerometer data.
+ *  - The accelerometer data.
+ *  - The result calculated from the light level data.
+ *  - The light level data.
+ *  - The speed.
+ *  - The covered distance.
+ *  - The gps' accuracy.
+ * </pre>
  */
 
 public class Measurement{
@@ -51,6 +68,11 @@ public class Measurement{
         this.accuracy = accuracy;
     }
 
+    /**
+     * Constructor to reconstruct the measurement from a csv String.
+     *
+     * @param backup A CSV String.
+     */
     public Measurement(String[] backup){
 
         this.time = Long.parseLong(backup[0]);
@@ -133,6 +155,7 @@ public class Measurement{
                 result = result / n;
                 return result * 0.4 + max * 0.6;
             } catch (Exception e) {
+                //EMpty, safety to prevent crash on empty array.
             }
         }
         return 0;
@@ -140,7 +163,7 @@ public class Measurement{
 
     /**
      * <pre>
-     * Reduces the accelerometerData array to 1 value.
+     * Reduces the light level array to 1 value.
      *
      * The result is the average of the values in the array.
      *
@@ -213,7 +236,7 @@ public class Measurement{
     /**
      * Method used to get a JSON representation of the measurement.
      *
-     * @return JSON form of the measurement.
+     * @return JSONObject form of the measurement.
      */
 
     public JSONObject toJSON() {
@@ -229,6 +252,7 @@ public class Measurement{
             object.put("lightResult", lightResult);
             object.put("accuracy", accuracy);
         } catch (JSONException e) {
+            //Empty, to prevent crash on JSONException.
         }
         return object;
     }

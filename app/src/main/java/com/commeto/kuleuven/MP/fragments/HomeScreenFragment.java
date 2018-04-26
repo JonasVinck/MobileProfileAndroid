@@ -15,9 +15,11 @@ import com.commeto.kuleuven.MP.activities.Callibration;
 import com.commeto.kuleuven.MP.R;
 
 /**
+ * <pre>
  * Created by Jonas on 13/04/2018.
  *
- * Activity to display the starting button.
+ * Fragment to display the starting button.
+ * </pre>
  */
 
 public class HomeScreenFragment extends Fragment {
@@ -31,6 +33,11 @@ public class HomeScreenFragment extends Fragment {
 //==================================================================================================
     //lifecycle methods
 
+    /**
+     * Gets a new instance of the HomeScreenFragment.
+     *
+     * @return A new HomecreenFragment.
+     */
     public static HomeScreenFragment newInstance() {
         HomeScreenFragment fragment = new HomeScreenFragment();
         Bundle args = new Bundle();
@@ -50,6 +57,7 @@ public class HomeScreenFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
 
+        //Changing the logo color onTouch.
         view.findViewById(R.id.start).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

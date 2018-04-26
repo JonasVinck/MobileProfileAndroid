@@ -23,7 +23,7 @@ import com.commeto.kuleuven.MP.interfaces.RouteListInterface;
  *  - RouteListFragment
  *  - SettingsFragment
  *  - GlobalMapFragment
- *  </pre>
+ * </pre>
  */
 
 public class BasePagerAdapter extends FragmentPagerAdapter {
@@ -36,6 +36,9 @@ public class BasePagerAdapter extends FragmentPagerAdapter {
     private SettingsFragment settingsFragment;
     private GlobalMapFragment globalMapFragment;
 
+    /**
+     * @param manager The fragment manager given by the calling activity.
+     */
     public BasePagerAdapter(FragmentManager manager){
 
         super(manager);
@@ -86,6 +89,9 @@ public class BasePagerAdapter extends FragmentPagerAdapter {
 //==================================================================================================
     //update layout
 
+    /**
+     * Method to update the content of the StatsFragment.
+     */
     public void updateStatsLayout(){
         try {
             if (statsFragment != null) statsFragment.getUpdateInterface().update();
@@ -94,6 +100,9 @@ public class BasePagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    /**
+     * Method to update the SettingsFragment.
+     */
     public void updateSettingsLayout(){
         try {
             if (settingsFragment != null && !settingsFragment.isDetached())

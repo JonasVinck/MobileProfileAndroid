@@ -71,6 +71,11 @@ public class MeasuringActivity extends AppCompatActivity{
 //==================================================================================================
     //broadcast receivers
 
+    /**
+     * BroadcastReceiver class to receive the data from the MeasuringService.
+     *
+     * Fills in all fields of the measuring_layout with the data from the MeasuringService.
+     */
     public class MeasurementBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -170,17 +175,18 @@ public class MeasuringActivity extends AppCompatActivity{
 
         measuring = getIntent().getBooleanExtra("measuring", false);
 
+        //Register the receiver to get the data.
         measurementBroadcastReceiver = new MeasuringActivity.MeasurementBroadcastReceiver();
         this.registerReceiver(
                 measurementBroadcastReceiver,
                 new IntentFilter("MeasurementUpdate")
         );
 
+        //Initiate AudioManager to control music vpolume.
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.android.music.metachanged");
         registerReceiver(receiver, intentFilter);
-
 
         findViewById(R.id.end).setOnTouchListener(new UnderlineButtonListener(context));
         findViewById(R.id.end).setOnClickListener(new View.OnClickListener() {
@@ -198,6 +204,8 @@ public class MeasuringActivity extends AppCompatActivity{
         HashMap<String, Fragment> fragments = new HashMap<>();
         String[] titles, titleOptions = getResources().getStringArray(R.array.measuring_fragments);
 
+        //Which fragments are shown depends on whether the user is measuring or not.
+        //Vibration graph not shown unless user is measuring.
         if(measuring){
             titles = new String[4];
             fragments.put(titleOptions[0], MeasuringGraphFragment.newInstance(true));
@@ -215,6 +223,7 @@ public class MeasuringActivity extends AppCompatActivity{
         fragments.put(titleOptions[2], MeasuringGraphFragment.newInstance(false));
         fragments.put(titleOptions[3], MeasuringMapFragment.newInstance(context));
 
+        //Getting the adapter for the extra view and filling it.
         adapter = new MeasuringPagerAdapter(getSupportFragmentManager(), fragments, titles);
         pager = findViewById(R.id.pager);
         pager.setAdapter(adapter);
@@ -227,6 +236,7 @@ public class MeasuringActivity extends AppCompatActivity{
     public void onStart(){
         super.onStart();
 
+        //Check if gps is turned on.
         try {
             if(!((LocationManager) context.getSystemService(Context.LOCATION_SERVICE))
                     .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -276,6 +286,9 @@ public class MeasuringActivity extends AppCompatActivity{
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * onBackPressed override.
+     */
     @Override
     public void onBackPressed() {
 
@@ -285,6 +298,9 @@ public class MeasuringActivity extends AppCompatActivity{
 //==================================================================================================
     //permission check
 
+    /**
+     * Checking for permissions to use the gps is only necessary starting from API level 19.
+     */
     @TargetApi(Build.VERSION_CODES.M)
     private void checkForPermisions(){
 
@@ -297,9 +313,17 @@ public class MeasuringActivity extends AppCompatActivity{
         } else startMeasuring(null, null);
     }
 
+    /**
+     * If permissions are not granted, finish activity. If permissions are granted first checks for
+     * possible backup. If none exists, starts measuring, otherwise ask user to reload backup.
+     *
+     * @param requestCode  The requestCode for the permission check.
+     * @param permissions  The permissions being asked.
+     * @param grantResults The permissions granted.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NotNull String permissions[],
+                                           @NotNull String[] permissions,
                                            @NotNull int[] grantResults) {
 
         if(requestCode == 123) {
@@ -314,6 +338,9 @@ public class MeasuringActivity extends AppCompatActivity{
 //==================================================================================================
     //private methods
 
+    /**
+     * Shows a dialog to confirm the end of the measuring.
+     */
     private void finishAlert(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -340,7 +367,11 @@ public class MeasuringActivity extends AppCompatActivity{
         builder.show();
     }
 
-
+    /**
+     * Shows a dialog asking if the backup should be restored. If the backup has to be restored,
+     * read the info and backup file from memory and reconstruct the MeasurementArray. Otherwise
+     * delete the backup.
+     */
     private void backupAlert(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -377,6 +408,9 @@ public class MeasuringActivity extends AppCompatActivity{
         builder.show();
     }
 
+    /**
+     * Unbind the MeasuringService and unregister the BroadcastReceiver before finishing.
+     */
     private void end(){
 
         unbindService(serviceConnection);
@@ -384,8 +418,12 @@ public class MeasuringActivity extends AppCompatActivity{
         finish();
     }
 
-
-
+    /**
+     * Start the services necessary to start measuring and pass the needed values to them.
+     *
+     * @param info   The possibly existing backup info about a ride.
+     * @param backup The possibly existing backup data fom a ride.
+     */
     private void startMeasuring(String info, String backup){
 
         boolean keep = getIntent().getBooleanExtra("keep", false);
@@ -416,6 +454,13 @@ public class MeasuringActivity extends AppCompatActivity{
     }
 */
 
+    /**
+     * Method to turn down the volume.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void volumeDown(View view){
 
         try {
@@ -429,6 +474,13 @@ public class MeasuringActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * Method to go to the previous song. Broadcasts a message to the running music player.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void previous(View view){
 
         try {
@@ -440,6 +492,13 @@ public class MeasuringActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * Method to paly or pause the music. Broadcasts a message to the running music player.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void playPause(View view){
 
         try {
@@ -454,6 +513,13 @@ public class MeasuringActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * Method to go to the next song. Broadcasts a message to the running music player.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void next(View view){
         try {
             Intent intent = new Intent(SERVICE_CMD);
@@ -464,6 +530,14 @@ public class MeasuringActivity extends AppCompatActivity{
         }
     }
 
+
+    /**
+     * Method to turn up the volume.
+     * The view parameter is never used, but is necessary in order to use the function with the
+     * onClick xml attribute.
+     *
+     * @param view The clicked view.
+     */
     public void volumeUp(View view){
 
         try {
