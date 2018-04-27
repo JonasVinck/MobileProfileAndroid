@@ -21,9 +21,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * <pre>
  * Created by Jonas on 1/03/2018.
  *
  * Static helper functions.
+ * </pre>
  */
 
 public class Static {
@@ -170,8 +172,8 @@ public class Static {
      * Method used to set an images width to the screen width.
      *
      * @param context Application context.
-     * @param id Id if the image's drawable.
-     * @return LayoutParams for ImageView.
+     * @param id      Id if the image's drawable.
+     * @return        LayoutParams for ImageView.
      */
 
     public static LinearLayout.LayoutParams getLayoutParams(Context context, int id){
@@ -188,8 +190,8 @@ public class Static {
     /**
      * Method to generate new random local id.
      *
-     * @param context Applicaiton context.
-     * @return Integer id.
+     * @param context The calling application context.
+     * @return        Integer id.
      */
 
     public static int getIDInteger(Context context) {

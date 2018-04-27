@@ -1,1 +1,14 @@
 com.commeto.kuleuven.MP.activities
+com.commeto.kuleuven.MP.adapters
+com.commeto.kuleuven.MP.dataClasses
+com.commeto.kuleuven.MP.dialogs
+com.commeto.kuleuven.MP.exceptions
+com.commeto.kuleuven.MP.fragments
+com.commeto.kuleuven.MP.geoCoding
+com.commeto.kuleuven.MP.http
+com.commeto.kuleuven.MP.interfaces
+com.commeto.kuleuven.MP.listeners
+com.commeto.kuleuven.MP.services
+com.commeto.kuleuven.MP.sqlSupport
+com.commeto.kuleuven.MP.support
+com.commeto.kuleuven.MP.views

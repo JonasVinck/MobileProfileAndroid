@@ -9,13 +9,22 @@ import android.widget.RemoteViews;
 import com.commeto.kuleuven.MP.R;
 
 /**
+ * <pre>
  * Created by Jonas on 19/04/2018.
  *
- * Staic methods used to make notifications.
+ * Static methods used to make notifications.
+ * </pre>
  */
 
 public class NotifyStatic {
 
+    /**
+     * Shows a notification using an xml file as layout with the given information.
+     *
+     * @param context The calling application context.
+     * @param title   The title needing to be displayed.
+     * @param message The message to be displayed.
+     */
     public static void postNotification(Context context, String title, String message){
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

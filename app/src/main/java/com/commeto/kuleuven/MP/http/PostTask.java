@@ -29,22 +29,22 @@ import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString
 public class PostTask extends AsyncTask<String, Void, Boolean> implements HostnameVerifier{
 
     private Integer id;
-    private String baseUrl;
+    private String fullIp;
     private String url;
     private HTTPResponse result;
     private AsyncResponseInterface asyncResponseInterface;
     private Bundle options;
 
     /**
-     * @param fullip Full IP address of the server.
+     * @param fullIp Full IP address of the server.
      * @param url Path to send the message to?
      * @param responseInterface Interface used for response.
      * @param id Id of the possibly specified route being uploaded.
      * @param options Possible options to be put in the url.
      */
 
-    public PostTask(String fullip, String url, AsyncResponseInterface responseInterface, int id, Bundle options){
-        this.baseUrl = fullip;
+    public PostTask(String fullIp, String url, AsyncResponseInterface responseInterface, int id, Bundle options){
+        this.fullIp = fullIp;
         this.url = url;
         this.id = id;
         this.asyncResponseInterface = responseInterface;
@@ -57,10 +57,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
     @Override
     public boolean verify(String s, SSLSession sslSession) {
         HostnameVerifier hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier();
-        return hostnameVerifier.verify(s, sslSession) || s.equals(baseUrl.split(":")[0]);
+        return hostnameVerifier.verify(s, sslSession) || s.equals(fullIp.split(":")[0]);
     }
 //==================================================================================================
-    //asynctask override
+    //Asynctask override
 
     @Override
     protected Boolean doInBackground(String... strings) {
@@ -69,7 +69,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> implements Hostna
 
         try {
 
-            String urlString = "https://" + this.baseUrl + this.url;
+            String urlString = "https://" + this.fullIp + this.url;
             if(options != null){
                 urlString += "?";
                 for(String key: options.keySet()) urlString += key + "=" + options.getString(key);

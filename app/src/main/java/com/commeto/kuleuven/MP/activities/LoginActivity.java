@@ -14,12 +14,10 @@ import android.widget.TextView;
 import com.commeto.kuleuven.MP.interfaces.AsyncResponseInterface;
 import com.commeto.kuleuven.MP.dataClasses.HTTPResponse;
 import com.commeto.kuleuven.MP.http.GetTask;
-import com.commeto.kuleuven.MP.interfaces.SSLResponseInterface;
 import com.commeto.kuleuven.MP.listeners.RoundedListener;
 import com.commeto.kuleuven.MP.R;
 import com.commeto.kuleuven.MP.support.InternalIO;
 
-import static com.commeto.kuleuven.MP.http.HTTPStatic.setCertificate;
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**

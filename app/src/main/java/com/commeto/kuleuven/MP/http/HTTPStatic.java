@@ -2,7 +2,6 @@ package com.commeto.kuleuven.MP.http;
 
 import android.content.Context;
 
-import com.commeto.kuleuven.MP.interfaces.SSLResponseInterface;
 import com.commeto.kuleuven.MP.sqlSupport.LocalRoute;
 import com.commeto.kuleuven.MP.support.InternalIO;
 
@@ -14,8 +13,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 /**
  * <pre>
@@ -47,24 +50,35 @@ public class HTTPStatic {
     }
 
     /**
-     * Method to set the certificate of the server.
+     * Method used to add the server's self signed certificate to the TrustStore to enable HTTPS
+     * communication.
      *
-     * @param context Application context.
-     * @param responseInterface Interface used for response.
-     * @throws Exception Possibly thrown Exception.?
+     * @param context Tha calling context of the method.
+     * @throws Exception Exception is thrown when setting certificate fails.
      */
-    public static void setCertificate(Context context, SSLResponseInterface responseInterface) throws Exception{
+    public static void setCertificate(Context context) throws Exception{
 
+        //Load certificate.
         int id = context.getResources().getIdentifier(
                 "s1as","raw", context.getPackageName()
         );
-
         InputStream inputStream = context.getResources().openRawResource(id);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-
         Certificate certificate = certificateFactory.generateCertificate(inputStream);
-        SSLTask sslTask = new SSLTask(responseInterface, certificate);
-        sslTask.execute();
+
+        //Get keystore and add certificate.
+        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("s1as", certificate);
+
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm()
+        );
+        trustManagerFactory.init(keyStore);
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+        SSLContext.setDefault(sslContext);
     }
 
     /**

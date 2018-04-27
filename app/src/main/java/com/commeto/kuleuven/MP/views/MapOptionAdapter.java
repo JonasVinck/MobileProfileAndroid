@@ -11,9 +11,12 @@ import com.commeto.kuleuven.MP.interfaces.MapStyleInterface;
 import com.commeto.kuleuven.MP.R;
 
 /**
+ * <pre>
  * Created by Jonas on 17/04/2018.
  *
  * Adapter used to display the different options for the global map.
+ * </pre>
+ *
  */
 
 public class MapOptionAdapter extends ArrayAdapter<String>{

@@ -15,7 +15,15 @@ import java.util.LinkedList;
 /**
  * Created by Jonas on 1/03/2018.
  *
+ * <p>
  * Service to get sensor data.
+ * </p>
+ *
+ * <p>
+ *     Activities and services can access this service to request data from the accelerometer and
+ *     the light sensor. When the data from the sensor is requested and returned, the internal
+ *     buffer is cleared.
+ * </p>
  */
 
 public class SensorService extends IntentService implements SensorEventListener{

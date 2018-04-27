@@ -10,7 +10,9 @@ import com.commeto.kuleuven.MP.R;
 /**
  * Created by Jonas on 15/04/2018.
  *
+ * <p>
  * Listener used to change the half rounded buttons in the LoginActivity and the CreateUserActivity.
+ * </p>
  */
 
 public class RoundedListener  implements View.OnTouchListener{

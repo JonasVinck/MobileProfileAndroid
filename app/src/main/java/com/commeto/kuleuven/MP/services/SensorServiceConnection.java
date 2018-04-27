@@ -9,7 +9,9 @@ import java.util.LinkedList;
 /**
  * Created by Jonas on 26/03/2018.
  *
+ * <p>
  * Connection for the sensorService.
+ * </p>
  */
 
 public class SensorServiceConnection implements ServiceConnection{
@@ -22,10 +24,20 @@ public class SensorServiceConnection implements ServiceConnection{
         bound = false;
     }
 
+    /**
+     * Gets the accelerometer data from the SensorService.
+     *
+     * @return A list containing float arrays with 3 elements.
+     */
     public LinkedList<float[]> getAccelerometerData(){
         return sensorService.getAccelerometerData();
     }
 
+    /**
+     * Gets the light level data from the SensorService.
+     *
+     * @return A list containing a float array with 1 element.
+     */
     public LinkedList<float[]> getLightsensorData(){
         return sensorService.getLightSensorData();
     }

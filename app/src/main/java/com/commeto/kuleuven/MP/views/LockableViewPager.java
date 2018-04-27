@@ -6,9 +6,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
+ * <pre>
  * Created by Jonas on 13/04/2018.
  *
- * viewPAger that does not allow scrolling through pages.
+ * viewPager that does not allow scrolling through pages.
+ * </pre>
  */
 
 public class LockableViewPager extends ViewPager {

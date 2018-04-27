@@ -7,9 +7,11 @@ import android.os.IBinder;
 import com.commeto.kuleuven.MP.interfaces.SyncInterface;
 
 /**
+ * <pre>
  * Created by Jonas on 16/04/2018.
  *
  * Connection to be used with the SyncService.
+ * </pre>
  */
 
 public class SyncServiceConnection implements ServiceConnection {
