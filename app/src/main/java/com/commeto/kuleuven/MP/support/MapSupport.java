@@ -30,9 +30,11 @@ import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
+ * <pre>
  * Created by Jonas on 3/04/2018.
  *
  * Object to more easily display route on map.
+ * </pre>
  */
 
 public class MapSupport {
@@ -43,7 +45,6 @@ public class MapSupport {
 
     private Context context;
     private LocalRoute localRoute;
-    private JSONArray start, end;
 
     public MapSupport(Context context, LocalRoute localRoute){
         this.context = context;
@@ -55,7 +56,7 @@ public class MapSupport {
     /**
      * Method to display ride on map;
      *
-     * @param map
+     * @param map The map on which the ride has to be displayed
      */
 
     public void displayRide(MapboxMap map){
@@ -100,7 +101,7 @@ public class MapSupport {
     //private functions
 
     /**
-     * Method to generate an array that van be dispalyed in a map.
+     * Method to generate an array that can be that on a map.
      *
      * @return An ArrayList containing a polyline.
      */
@@ -135,10 +136,10 @@ public class MapSupport {
     }
 
     /**
-     * Method to generate route from snapped or unsnapped coords retrieved from server.
+     * Method to generate route from snapped or unsnapped coordinates retrieved from server.
      *
      * @param stream inputStream to file.
-     * @return Polyline of route.
+     * @return Array of displayable positions.
      */
 
     private ArrayList<Position> getServerRoute(InputStream stream){
@@ -178,7 +179,7 @@ public class MapSupport {
      * Method to generate route from locally generated file.
      *
      * @param stream inputStream to file.
-     * @return Polyline of route.
+     * @return Array of displayable positions.
      */
 
     private ArrayList<Position> getLocalRoute(InputStream stream){

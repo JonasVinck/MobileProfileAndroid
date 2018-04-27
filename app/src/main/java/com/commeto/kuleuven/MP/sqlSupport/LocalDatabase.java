@@ -9,9 +9,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 /**
+ * <pre>
  * Created by Jonas on 2/03/2018.
  *
  * Local ROOM database.
+ * </pre>
  */
 
 @Database(entities = LocalRoute.class, version = 6, exportSchema = false)
@@ -78,6 +80,12 @@ public abstract class LocalDatabase extends RoomDatabase{
         }
     };
 
+    /**
+     * Get a singleton object of the room database.
+     *
+     * @param context The calling ApplicationContext.
+     * @return A new instance of the database.
+     */
     public static LocalDatabase getInstance(Context context){
 
         if(instance == null){

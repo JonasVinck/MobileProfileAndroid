@@ -9,9 +9,11 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 /**
+ * <pre>
  * Created by Jonas on 2/03/2018.
  *
  * Used to query local database.
+ * </pre>
  */
 
 @Dao

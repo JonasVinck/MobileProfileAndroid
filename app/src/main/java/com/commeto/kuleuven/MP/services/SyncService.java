@@ -31,7 +31,15 @@ import static com.commeto.kuleuven.MP.support.Static.getIDInteger;
 /**
  * Created by Jonas on 15/04/2018.
  *
+ * <p>
  * Service to sync local database with server.
+ * </p>
+ *
+ * <p>
+ *     Service will send a request to get all rides on the server. The response will contain an
+ *     array of json objects containing the id of the ride on the server and the time it was last
+ *     modified.
+ * </p>
  */
 
 public class SyncService extends IntentService{
@@ -57,6 +65,7 @@ public class SyncService extends IntentService{
 //==================================================================================================
     //constants
 
+    //TODO Move to resources.
     private final String DELETED = "deleted";
     private final String LAST_CHANGE = "lastChange";
     private final String NAME = "name";
@@ -135,6 +144,20 @@ public class SyncService extends IntentService{
 //==================================================================================================
     //private functions
 
+    /**
+     * <p>
+     * Method to process the gotten JSONArray containing all ids.
+     * </p>
+     *
+     * <p>
+     *     If there is no ride in the Room database with the given server id, a get message will be
+     *     sent to get the ride from the server. Otherwise the lastChanged time will be compared.
+     *     Is the ride on the server more recent, a pull message will be sent, otherwise the local
+     *     ride info will be pushed to the server.
+     * </p>
+     *
+     * @param jsonArray JSONArray containing all ids and modified times of the rides on te server/
+     */
     private void getAll(JSONArray jsonArray){
         toPull = jsonArray.length();
 
@@ -207,6 +230,10 @@ public class SyncService extends IntentService{
         if(toPull <= 0) push();
     }
 
+    /**
+     * Method used to push all the rides in the local Room database that have been modified or have
+     * not been sent.
+     */
     private void push(){
 
         List<LocalRoute> allNotSent = dao.getAllNotSent(username);
@@ -267,6 +294,9 @@ public class SyncService extends IntentService{
         if(toUpload <= 0 && toUpdate <= 0) done();
     }
 
+    /**
+     * displays a notification saying the syncing has finished. As well as a few statistics.
+     */
     private void done(){
 
         if(toUpload <= 0 && toPull <= 0 && toUpdate <= 0){
@@ -281,6 +311,10 @@ public class SyncService extends IntentService{
         }
     }
 
+    /**
+     * Method that shows a notification if the algorithm was interrupted, letting the user know
+     * that the rides have not been synced with the database.
+     */
     private void interrupt(){
 
         postNotification(getApplicationContext(), getString(R.string.error), getString(R.string.sync_eror));
@@ -288,6 +322,11 @@ public class SyncService extends IntentService{
         syncInterface.endSync();
     }
 
+    /**
+     * Method to set a ride as sent and not updated.
+     *
+     * @param localRoute The ride to be updated.
+     */
     private void update(LocalRoute localRoute){
 
         localRoute.setSent(true);
@@ -296,6 +335,9 @@ public class SyncService extends IntentService{
 //==================================================================================================
     //interface
 
+    /**
+     * Interface to handle the response for getting the list of all rides.
+     */
     private AsyncResponseInterface getAllInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -314,6 +356,10 @@ public class SyncService extends IntentService{
         }
     };
 
+    /**
+     * Interface to handle the response of getting a ride from the server and updating the local
+     * ride.
+     */
     private AsyncResponseInterface updatePullInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -368,6 +414,10 @@ public class SyncService extends IntentService{
         }
     };
 
+    /**
+     * Interface to handle the response from getting a ride that was not previously stored in the
+     * Room database.
+     */
     private AsyncResponseInterface newPullInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -419,6 +469,9 @@ public class SyncService extends IntentService{
         }
     };
 
+    /**
+     * Interface to handle the response from pushing an update to the server.
+     */
     private AsyncResponseInterface updatePushInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -441,6 +494,9 @@ public class SyncService extends IntentService{
         }
     };
 
+    /**
+     * Interface to handle the response from sending a ride not yet sent to the server.
+     */
     private AsyncResponseInterface notSentPushInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -464,6 +520,9 @@ public class SyncService extends IntentService{
         }
     };
 
+    /**
+     * Interface to handle the response from pushing an updated ride to the server.
+     */
     private AsyncResponseInterface updatedPushInterface = new AsyncResponseInterface() {
         @Override
         public void processFinished(HTTPResponse response) {
@@ -486,6 +545,11 @@ public class SyncService extends IntentService{
     };
 //==================================================================================================
 
+    /**
+     * Set the interface to which the response will be sent when the service is complete.
+     *
+     * @param syncInterface Interface to be set.
+     */
     public void setSyncInterface(SyncInterface syncInterface){
         this.syncInterface = syncInterface;
     }

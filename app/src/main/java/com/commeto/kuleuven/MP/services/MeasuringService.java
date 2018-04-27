@@ -25,7 +25,20 @@ import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 /**
  * Created by Jonas on 1/03/2018.
  *
+ * <p>
  * Service used to generate measurement data.
+ * </p>
+ *
+ * <p>
+ *     Accesses gps sensor to get gps location every second. Each time location is requested, data
+ *     from the SensorService is acquired and stored.
+ * </p>
+ *
+ * <pre>
+ *     Uses:
+ *      - SensorService
+ *      - SensorServiceConnection
+ * </pre>
  */
 
 public class MeasuringService extends IntentService{
@@ -170,6 +183,9 @@ public class MeasuringService extends IntentService{
 //==================================================================================================
     //location methods
 
+    /**
+     * Initialise the location manager and request permission to aces location.
+     */
     private void setLocation(){
 
         locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);

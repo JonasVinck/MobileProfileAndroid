@@ -9,14 +9,8 @@ import android.view.Gravity;
 
 import com.commeto.kuleuven.MP.dataClasses.HTTPResponse;
 import com.commeto.kuleuven.MP.interfaces.AsyncResponseInterface;
-import com.commeto.kuleuven.MP.interfaces.SSLResponseInterface;
 import com.commeto.kuleuven.MP.R;
-import com.commeto.kuleuven.MP.sqlSupport.LocalDatabase;
-import com.commeto.kuleuven.MP.sqlSupport.LocalRoute;
 import com.commeto.kuleuven.MP.support.InternalIO;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import static com.commeto.kuleuven.MP.http.HTTPStatic.setCertificate;
 import static com.commeto.kuleuven.MP.support.Static.getLayoutParams;
@@ -38,7 +32,7 @@ import static com.commeto.kuleuven.MP.support.Static.tryLogin;
  * </pre>
  */
 
-public class CheckLoginActivity extends AppCompatActivity implements SSLResponseInterface{
+public class CheckLoginActivity extends AppCompatActivity{
 
 //==================================================================================================
     //constants
@@ -60,9 +54,9 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
         @Override
         public void processFinished(HTTPResponse response) {
 
-            if(response == null){
+            if (response == null) {
                 makeToastLong(context, getString(R.string.login_unable));
-            } else{
+            } else {
 
                 //Only go to the BaseActivity if response code of the HTTP request is 200
                 Intent intent = new Intent(CheckLoginActivity.this, response.getResponseCode() == 200
@@ -77,7 +71,8 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
     };
 
     private AsyncResponseInterface usedInterface = loginInterface;
-//==================================================================================================
+
+    //==================================================================================================
     @Override
     public void onCreate(Bundle bundle) {
 
@@ -101,7 +96,7 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
     public void onStart() {
         super.onStart();
 
-        if(isNetworkAvailable(context)) goOnline();
+        if (isNetworkAvailable(context)) goOnline();
         else goOffline();
     }
 
@@ -126,12 +121,24 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
      * Method called when network is available. First the certificate will be added to the
      * TrustStore. The interface used to handle this result will decide the next step.
      */
-    private void goOnline(){
+    private void goOnline() {
 
         try {
             //Set certificate before attempting HTTP communication with server.
-            setCertificate(this, this);
-        } catch (Exception e){
+            setCertificate(this);
+
+            String username = preferences.getString(USERNAME, null);
+            String token = preferences.getString(getString(R.string.preferences_token), null);
+
+            if (username == null || token == null) {
+
+                Intent intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                tryLogin(context, usedInterface);
+            }
+        } catch (Exception e) {
             InternalIO.writeToLog(context, e);
         }
     }
@@ -142,47 +149,17 @@ public class CheckLoginActivity extends AppCompatActivity implements SSLResponse
      * The BaseActivity checks the login every time the onStart is called to keep checking for the
      * validity of the token.
      */
-    private void goOffline(){
+    private void goOffline() {
 
         String username = preferences.getString(USERNAME, null);
 
         //Only allow online mode when username present in Shared¨Preferences
-        if(username != null) {
+        if (username != null) {
             Intent intent = new Intent(this, BaseActivity.class);
             startActivityForResult(intent, 0);
             finish();
         } else {
             makeToastLong(context, getString(R.string.no_internet));
-        }
-    }
-
-//==================================================================================================
-    //Interface Override
-
-    /**
-     * Override for the interface for the SSL setting task response. Will check for the tokens
-     * valididty if the task was successful.
-     *
-     * @param bool If the SSLTask completed successfully.
-     */
-    @Override
-    public void onProcessFinished(boolean bool){
-
-        if(bool) {
-
-            String username = preferences.getString(USERNAME, null);
-            String token = preferences.getString("token", null);
-
-            if(username == null || token == null){
-
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            } else{
-                tryLogin(context, usedInterface);
-            }
-        } else{
-            makeToastLong(context, getString(R.string.error));
         }
     }
 }

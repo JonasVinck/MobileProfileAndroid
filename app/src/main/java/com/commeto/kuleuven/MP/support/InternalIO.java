@@ -17,7 +17,11 @@ import static com.commeto.kuleuven.MP.http.HTTPStatic.convertInputStreamToString
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
+ * <pre>
  * Created by Jonas on 1/03/2018.
+ *
+ * Static methods to write to files in the apps internal directory.
+ * </pre>
  */
 
 public class InternalIO {
@@ -76,9 +80,9 @@ public class InternalIO {
     /**
      * Method used to write to internal storage.
      *
-     * @param context Application context.
-     * @param file File name.
-     * @param content Content to be written to file.
+     * @param context   Application context.
+     * @param file      File name.
+     * @param content   Content to be written to file.
      * @param overWrite Boolean to define if the old contents should be overwritten.
      */
     public static synchronized void writeToInternal(Context context, String file, String content, boolean overWrite) {
@@ -122,7 +126,7 @@ public class InternalIO {
      * Method used to append to a cached file.
      *
      * @param context Application context.
-     * @param file File name.
+     * @param file    File name.
      * @param content Content to be written.
      */
 
@@ -143,7 +147,7 @@ public class InternalIO {
     }
 
     /**
-     * Method to delete a chache file.
+     * Method to delete a cache file.
      *
      * @param context Application context.
      * @param file Cache file to delete.
@@ -177,7 +181,7 @@ public class InternalIO {
     /**
      * Method to write to a log file.
      *
-     * @param context Application context.
+     * @param context   Application context.
      * @param exception Exception to be written to log.
      */
 

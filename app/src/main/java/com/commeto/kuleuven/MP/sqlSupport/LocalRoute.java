@@ -6,9 +6,11 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
+ * <pre>
  * Created by Jonas on 2/03/2018.
  *
- * LocalRoute object to define rides.
+ * LocalRoute object to define rides and to persist rides to Room.
+ * </pre>
  */
 
 @Entity

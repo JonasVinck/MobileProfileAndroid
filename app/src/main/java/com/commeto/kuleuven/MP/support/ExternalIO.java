@@ -12,9 +12,11 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 import static com.commeto.kuleuven.MP.support.Static.makeToastLong;
 
 /**
+ * <pre>
  * Created by Jonas on 7/04/2018.
  *
- * Static methi-ods to write to external memory.
+ * Static methods to write to external memory.
+ * </pre>
  */
 
 public class ExternalIO {
